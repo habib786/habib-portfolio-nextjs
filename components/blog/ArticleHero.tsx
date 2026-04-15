@@ -109,17 +109,7 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
             {post.title}
           </Typography>
 
-          {/* Animated underline */}
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: 220 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            style={{ height: 10, marginLeft: '2px', marginBottom: '32px' }}
-          >
-            <svg width="100%" height="100%" viewBox="0 0 120 12" fill="none" preserveAspectRatio="none">
-              <path d="M2 10C2 10 21.0544 2 59.8665 2C98.6787 2 118 10 118 10" stroke="#FACC15" strokeWidth="4" strokeLinecap="round" />
-            </svg>
-          </motion.div>
+
 
           {/* Meta */}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} useFlexGap sx={{ color: 'rgba(255,255,255,0.8)', flexWrap: 'wrap' }}>

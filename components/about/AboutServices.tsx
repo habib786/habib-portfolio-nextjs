@@ -8,37 +8,37 @@ import { createClient } from '@/lib/supabase/client'
 
 const defaultServices = [
   {
-    id: '01.',
+    id: '01',
     title: 'FULL-STACK WEB & MOBILE DEVELOPMENT',
     description: 'Developing high-quality, scalable web and mobile applications using modern technologies.',
     icon: '💻'
   },
   {
-    id: '02.',
+    id: '02',
     title: 'UI/UX DESIGN & DEVELOPMENT',
     description: 'Creating user-centered designs that are both functional and visually appealing.',
     icon: '🎨'
   },
   {
-    id: '03.',
+    id: '03',
     title: 'SERVERLESS ARCHITECTURE & CLOUD SOLUTIONS',
     description: 'Leveraging cloud technologies to build scalable and cost-effective solutions.',
     icon: '☁️'
   },
   {
-    id: '04.',
+    id: '04',
     title: 'E-COMMERCE PLATFORM DEVELOPMENT',
     description: 'Building robust and secure e-commerce platforms to help businesses grow.',
     icon: '🛒'
   },
   {
-    id: '05.',
+    id: '05',
     title: 'DATABASE MANAGEMENT & ANALYTICS',
     description: 'Optimizing and managing data to provide valuable insights for decision-making.',
     icon: '📊'
   },
   {
-    id: '06.',
+    id: '06',
     title: 'API INTEGRATION & TECHNICAL CONSULTING',
     description: 'Expert advice and integration of APIs to enhance application functionality.',
     icon: '🔌'
@@ -85,8 +85,8 @@ export default function AboutServices() {
         if (error || !data || data.length === 0) return
 
         setServices(
-          data.map((item: any) => ({
-            id: item.number_id || String(item.order_index || ''),
+          data.map((item: any, index: number) => ({
+            id: item.number_id || String(item.order_index) || String(index + 1).padStart(2, '0'),
             title: item.title,
             description: item.description,
             icon: item.icon_emoji || '💻',
@@ -144,7 +144,7 @@ export default function AboutServices() {
         <motion.div style={{ y: gridY }}>
           <Grid container spacing={4}>
             {services.map((service, i) => (
-              <Grid size={{ xs: 12, md: 4 }} key={service.id}>
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
                 <motion.div
                   custom={i}
                   variants={cardVariants}

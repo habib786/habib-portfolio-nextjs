@@ -6,10 +6,8 @@ import { motion, useScroll, useTransform, Variants } from 'framer-motion'
 import Counter from '../animations/Counter'
 
 const infoItems = [
-  { label: 'BIRTHDAY', value: '01.07.1993' },
   { label: 'CITY', value: 'URBAN CITY' },
   { label: 'EMAIL', value: 'CONTACT@HABIB.COM' },
-  { label: 'AGE', value: '29' },
   { label: 'DEGREE', value: 'MS CS BS' },
   { label: 'ADDRESS', value: 'PUNJAB, PK' },
   { label: 'NATIONALITY', value: 'PAKISTAN' },

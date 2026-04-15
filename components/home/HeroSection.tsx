@@ -138,18 +138,33 @@ export default function HeroSection({ dict }: { dict?: any }) {
                   >
                     {profile.name}
                   </Typography>
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '100.5%' }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                    style={{ height: 16, position: 'absolute', bottom: -8, left: 0 }}
-                  >
-                    <svg width="100%" height="100%" viewBox="0 0 100 16" fill="none" preserveAspectRatio="none">
-                      <path d="M1 14C15 2 85 2 99 14" stroke="#FACC15" strokeWidth="4" strokeLinecap="round" />
-                      <path d="M5 11C25 5 75 5 95 11" stroke="#FACC15" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+                  <div style={{ height: 24, position: 'absolute', bottom: -16, left: 0, width: '100.5%' }}>
+                    <svg width="100%" height="100%" viewBox="0 0 120 30" fill="none" preserveAspectRatio="none">
+                      <motion.path 
+                        d="M2 20 L10 10 L18 24 L28 14 Q60 32 118 16" 
+                        stroke="#FACC15" 
+                        strokeWidth="4" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        initial={{ pathLength: 0 }}
+                        whileInView={{ pathLength: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, delay: 0.5, ease: 'easeInOut' }}
+                      />
+                      <motion.path 
+                        d="M6 17 L14 7 L22 21 L32 11 Q64 29 114 13" 
+                        stroke="#FACC15" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        opacity="0.6" 
+                        initial={{ pathLength: 0 }}
+                        whileInView={{ pathLength: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, delay: 0.6, ease: 'easeInOut' }}
+                      />
                     </svg>
-                  </motion.div>
+                  </div>
 
                 </Box>
 

@@ -58,6 +58,10 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
   email TEXT NOT NULL,
   subject TEXT NOT NULL,
   message TEXT NOT NULL,
+  inquiry_type TEXT,
+  technical_level TEXT,
+  budget TEXT,
+  timeline TEXT,
   "read" BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );

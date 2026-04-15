@@ -5,6 +5,7 @@ import { Box, Container, Typography } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Counter from '../animations/Counter'
+import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
 /**
  * Visual layer stack (z-order, back → front):
@@ -86,28 +87,19 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
 
           {/* ══ Heading ══ */}
           <motion.div style={{ y: yTitle, opacity: opTitle }}>
-            <Typography
-              variant="h1"
-              sx={{
-                fontSize: { xs: '3.5rem', md: '5.5rem' },
-                fontWeight: 900, mb: 1, lineHeight: 1, textTransform: 'uppercase',
-                textShadow: '0 4px 12px rgba(0,0,0,0.1)'
-              }}
-            >
-              ABOUT ME
-            </Typography>
-
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: 140 }}
-              transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] }}
-              style={{ height: 10 }}
-            >
-              <svg width="100%" height="100%" viewBox="0 0 120 12" fill="none" preserveAspectRatio="none">
-                <path d="M2 10C2 10 21.0544 2 59.8665 2C98.6787 2 118 10 118 10"
-                  stroke="#FACC15" strokeWidth="6" strokeLinecap="round" />
-              </svg>
-            </motion.div>
+            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: '3.5rem', md: '5.5rem' },
+                  fontWeight: 900, mb: 2, lineHeight: 1, textTransform: 'uppercase',
+                  textShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                }}
+              >
+                ABOUT ME
+              </Typography>
+              <AnimatedSquigglyLine width="100%" delay={0.4} />
+            </Box>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

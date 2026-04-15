@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
+import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
 export default function ExperiencePage() {
   const profileImage = useProfileImage()
@@ -50,16 +51,7 @@ export default function ExperiencePage() {
                   >
                     MY<br />JOURNEY
                   </Typography>
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '100.5%' }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                    style={{ height: 16, position: 'absolute', bottom: -12, left: 0 }}
-                  >
-                    <svg width="100%" height="100%" viewBox="0 0 100 16" fill="none" preserveAspectRatio="none">
-                      <path d="M1 14C15 2 85 2 99 14" stroke="#FACC15" strokeWidth="4" strokeLinecap="round" />
-                    </svg>
-                  </motion.div>
+                  <AnimatedSquigglyLine width="100%" delay={0.3} />
                 </Box>
 
                 <motion.div

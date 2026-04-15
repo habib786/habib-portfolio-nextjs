@@ -61,36 +61,34 @@ export default function SectionHeading({
           left: 0, 
           width: '100%', 
           height: 24,
-          overflow: 'hidden',
+          overflow: 'visible',
           pointerEvents: 'none'
         }}>
-          <motion.div 
-            initial={{ x: '-100%' }}
-            whileInView={{ x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <svg width="100%" height="100%" viewBox="0 0 100 24" fill="none" preserveAspectRatio="none">
-              {/* Main brush stroke arc - deeper curve */}
-              <path 
-                d="M1 20C15 4 85 4 99 20" 
-                stroke={underlineColor} 
-                strokeWidth="4" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.1))' }}
-              />
-              {/* Subtle second stroke for more natural brush effect */}
-              <path 
-                d="M5 16C25 8 75 8 95 16" 
-                stroke={underlineColor} 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                opacity="0.5"
-              />
-            </svg>
-          </motion.div>
+          <svg width="100%" height="100%" viewBox="0 0 100 24" fill="none" preserveAspectRatio="none">
+            <motion.path
+              d="M1 20C15 4 85 4 99 20"
+              stroke={underlineColor}
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ strokeDasharray: 150, strokeDashoffset: 150 }}
+              whileInView={{ strokeDashoffset: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+              style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.1))' }}
+            />
+            <motion.path
+              d="M5 16C25 8 75 8 95 16"
+              stroke={underlineColor}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.5"
+              initial={{ strokeDasharray: 120, strokeDashoffset: 120 }}
+              whileInView={{ strokeDashoffset: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            />
+          </svg>
         </Box>
 
       </Box>

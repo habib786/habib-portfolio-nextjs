@@ -7,6 +7,10 @@ const contactSchema = z.object({
   email: z.string().email('Invalid email address'),
   subject: z.string().min(5, 'Subject must be at least 5 characters'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  inquiryType: z.string().min(1, 'Please select what you are reaching out for'),
+  technicalLevel: z.string().optional(),
+  budget: z.string().optional(),
+  timeline: z.string().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -21,7 +25,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { name, email, subject, message } = validationResult.data
+    const { name, email, subject, message, inquiryType, technicalLevel, budget, timeline } = validationResult.data
 
     const supabase = await createClient()
 
@@ -40,6 +44,10 @@ export async function POST(request: NextRequest) {
           email,
           subject,
           message,
+          inquiry_type: inquiryType,
+          technical_level: technicalLevel,
+          budget,
+          timeline,
           read: false,
         },
       ])

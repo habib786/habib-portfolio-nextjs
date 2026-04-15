@@ -9,6 +9,7 @@ import BlogSidebar from '@/components/blog/BlogSidebar'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
+import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
 export default function BlogPage() {
   const profileImage = useProfileImage()
@@ -65,16 +66,7 @@ export default function BlogPage() {
                     <br />
                     ARTICLES
                   </Typography>
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '100.5%' }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                    style={{ height: 16, position: 'absolute', bottom: -12, left: 0 }}
-                  >
-                    <svg width="100%" height="100%" viewBox="0 0 100 16" fill="none" preserveAspectRatio="none">
-                      <path d="M1 14C15 2 85 2 99 14" stroke="#FACC15" strokeWidth="4" strokeLinecap="round" />
-                    </svg>
-                  </motion.div>
+                  <AnimatedSquigglyLine width="100%" delay={0.3} />
 
                 </Box>
 
@@ -182,17 +174,7 @@ export default function BlogPage() {
               >
                 LATEST.<br />ARTICLES.<br />IDEAS.
               </Typography>
-              <motion.div 
-                initial={{ width: 0 }}
-                whileInView={{ width: '100.5%' }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                style={{ height: 12, position: 'absolute', bottom: -4, left: 0 }}
-              >
-                <svg width="100%" height="100%" viewBox="0 0 100 12" fill="none" preserveAspectRatio="none">
-                  <path d="M1 10C15 2 85 2 99 10" stroke="#106A5A" strokeWidth="6" strokeLinecap="round" />
-                </svg>
-              </motion.div>
+
 
             </Box>
 

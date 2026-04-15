@@ -5,7 +5,43 @@ import { Send, CheckCircle, XCircle, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { isValidEmail } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TextField, Box, Alert, CircularProgress } from '@mui/material'
+import { TextField, Box, Alert, CircularProgress, MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@mui/material'
+
+const inquiryTypes = [
+  { value: 'project', label: 'New Project' },
+  { value: 'consulting', label: 'IT Consulting' },
+  { value: 'collaboration', label: 'Collaboration' },
+  { value: 'job', label: 'Job Opportunity' },
+  { value: 'mentorship', label: 'Mentorship' },
+  { value: 'support', label: 'Technical Support' },
+  { value: 'other', label: 'Other' },
+]
+
+const technicalLevels = [
+  { value: 'non-technical', label: 'Non-Technical (Just have an idea)' },
+  { value: 'beginner', label: 'Beginner (Learning the basics)' },
+  { value: 'intermediate', label: 'Intermediate (Know my way around)' },
+  { value: 'advanced', label: 'Advanced (Can build things)' },
+  { value: 'expert', label: 'Expert (Need complex solutions)' },
+]
+
+const budgetRanges = [
+  { value: 'not-sure', label: "Not sure yet" },
+  { value: 'under-1k', label: 'Under $1,000' },
+  { value: '1k-5k', label: '$1,000 - $5,000' },
+  { value: '5k-10k', label: '$5,000 - $10,000' },
+  { value: '10k-25k', label: '$10,000 - $25,000' },
+  { value: '25k-plus', label: '$25,000+' },
+  { value: 'no-budget', label: 'No budget (Just asking)' },
+]
+
+const timelines = [
+  { value: 'asap', label: 'ASAP (Urgent)' },
+  { value: '1-month', label: 'Within 1 month' },
+  { value: '1-3-months', label: '1-3 months' },
+  { value: '3-6-months', label: '3-6 months' },
+  { value: 'flexible', label: 'Flexible / No rush' },
+]
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +49,10 @@ export default function ContactForm() {
     email: '',
     subject: '',
     message: '',
+    inquiryType: '',
+    technicalLevel: '',
+    budget: '',
+    timeline: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -45,6 +85,10 @@ export default function ContactForm() {
       newErrors.message = 'Message must be at least 10 characters'
     }
 
+    if (!formData.inquiryType) {
+      newErrors.inquiryType = 'Please select what you are reaching out for'
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -72,7 +116,7 @@ export default function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success')
-        setFormData({ name: '', email: '', subject: '', message: '' })
+        setFormData({ name: '', email: '', subject: '', message: '', inquiryType: '', technicalLevel: '', budget: '', timeline: '' })
         setErrors({})
       } else {
         setSubmitStatus('error')
@@ -85,10 +129,18 @@ export default function ContactForm() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }))
+    }
+  }
+
+  const handleSelectChange = (e: { target: { name: string; value: string } }) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }))
     }
@@ -125,6 +177,71 @@ export default function ContactForm() {
             variant="outlined"
             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
           />
+        </Box>
+
+        <FormControl fullWidth error={!!errors.inquiryType} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+          <InputLabel>What are you reaching out for? *</InputLabel>
+          <Select
+            name="inquiryType"
+            value={formData.inquiryType}
+            label="What are you reaching out for? *"
+            onChange={handleSelectChange}
+            disabled={isSubmitting}
+          >
+            {inquiryTypes.map(option => (
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+            ))}
+          </Select>
+          {errors.inquiryType && <FormHelperText>{errors.inquiryType}</FormHelperText>}
+        </FormControl>
+
+        <FormControl fullWidth sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+          <InputLabel>Your Technical Level</InputLabel>
+          <Select
+            name="technicalLevel"
+            value={formData.technicalLevel}
+            label="Your Technical Level"
+            onChange={handleSelectChange}
+            disabled={isSubmitting}
+          >
+            {technicalLevels.map(option => (
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>Select the level that best describes you - helps me tailor my response</FormHelperText>
+        </FormControl>
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
+          <FormControl fullWidth sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+            <InputLabel>Budget Range</InputLabel>
+            <Select
+              name="budget"
+              value={formData.budget}
+              label="Budget Range"
+              onChange={handleSelectChange}
+              disabled={isSubmitting}
+            >
+              {budgetRanges.map(option => (
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Optional but helps with planning</FormHelperText>
+          </FormControl>
+
+          <FormControl fullWidth sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+            <InputLabel>Timeline</InputLabel>
+            <Select
+              name="timeline"
+              value={formData.timeline}
+              label="Timeline"
+              onChange={handleSelectChange}
+              disabled={isSubmitting}
+            >
+              {timelines.map(option => (
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
 
         <TextField

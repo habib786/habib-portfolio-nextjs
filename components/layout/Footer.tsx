@@ -2,6 +2,7 @@
 
 import NextLink from 'next/link'
 import { AnimatedLogo } from './AnimatedLogo'
+import LanguageSelector from './LanguageSelector'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope, faMapMarkerAlt, faHeart, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -191,11 +192,14 @@ export default function Footer() {
           sx={{ justifyContent: 'space-between', alignItems: 'center' }}
         >
           <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-            © {currentYear} Habib Farooq. All rights reserved.
+            © {currentYear} Habib. All rights reserved.
           </Typography>
-          <Typography variant="caption" sx={{ color: 'text.disabled', display: 'flex', alignItems: 'center', gap: 1 }}>
-            Made with <FontAwesomeIcon icon={faHeart} style={{ color: '#ef4444' }} /> using Next.js & MUI
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <LanguageSelector />
+            <Typography variant="caption" sx={{ color: 'text.disabled', display: 'flex', alignItems: 'center', gap: 1 }}>
+              Made with <FontAwesomeIcon icon={faHeart} style={{ color: '#ef4444' }} /> using Next.js & MUI
+            </Typography>
+          </Box>
         </Stack>
       </Container>
     </Box>
