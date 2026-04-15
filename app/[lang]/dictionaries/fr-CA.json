@@ -1,0 +1,11 @@
+{
+  "common": {
+    "welcome": "Bienvenue",
+    "nav": {
+      "home": "Accueil",
+      "projects": "Projets",
+      "blog": "Blogue",
+      "contact": "Contact"
+    }
+  }
+}

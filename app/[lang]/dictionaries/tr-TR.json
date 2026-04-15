@@ -1,0 +1,11 @@
+{
+  "common": {
+    "welcome": "Hoş geldiniz",
+    "nav": {
+      "home": "Anaysayfa",
+      "projects": "Projeler",
+      "blog": "Blog",
+      "contact": "İletişim"
+    }
+  }
+}
