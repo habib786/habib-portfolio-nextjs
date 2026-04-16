@@ -40,9 +40,11 @@ const cardVariants = {
   })
 }
 
+import { usePathname } from 'next/navigation'
 import SectionHeading from '../ui/SectionHeading'
 
 export default function AboutTestimonials() {
+  const pathname = usePathname()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [testimonials, setTestimonials] = useState(defaultTestimonials)
 
@@ -56,32 +58,48 @@ export default function AboutTestimonials() {
   const cardsY = useTransform(scrollYProgress, [0, 1], [50, -20])
 
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+      const { data, error } = await supabase
+        .from('portfolio_testimonials')
+        .select('*')
+        .eq('is_active', true)
+        .eq('language', lang)
+        .order('order_index', { ascending: true })
+      if (error) throw error
+      return data || []
+    }
+
     async function loadTestimonials() {
       try {
-        const supabase = createClient()
-        if (!supabase) return
-        const { data, error } = await supabase
-          .from('portfolio_testimonials')
-          .select('*')
-          .eq('is_active', true)
-          .order('order_index', { ascending: true })
-        if (error || !data || data.length === 0) return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
 
-        setTestimonials(
-          data.map((item: any) => ({
-            name: item.name,
-            role: item.role || 'Client',
-            text: item.quote || '',
-            avatar: item.avatar_url || 'https://i.pravatar.cc/150',
-          }))
-        )
+        let data = await fetchData(currentLanguage)
+
+        // Fallback to en-CA
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
+        if (data && data.length > 0) {
+          setTestimonials(
+            data.map((item: any) => ({
+              name: item.name,
+              role: item.role || 'Client',
+              text: item.quote || '',
+              avatar: item.avatar_url || 'https://i.pravatar.cc/150',
+            }))
+          )
+        }
       } catch (error) {
         console.error('Failed to load testimonials:', error)
       }
     }
 
     loadTestimonials()
-  }, [])
+  }, [pathname])
 
   return (
     <Box

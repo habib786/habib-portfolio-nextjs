@@ -79,7 +79,7 @@ export default function ServiceCard({
 
         {showQuoteButton && (
           <Box sx={{ pt: 2 }}>
-            <NextLink href="/contact" style={{ textDecoration: 'none' }}>
+            <NextLink href="/contact#contact-form" style={{ textDecoration: 'none' }}>
               <Button
                 variant="text"
                 color="primary"

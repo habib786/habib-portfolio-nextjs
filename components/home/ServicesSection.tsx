@@ -10,9 +10,22 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
 
   let dbServices = []
   if (supabase) {
-    const { data } = await supabase.from('portfolio_services').select('*').order('order_index', { ascending: true })
+    let query = supabase.from('portfolio_services').select('*').order('order_index', { ascending: true })
+    if (lang) {
+      query = query.eq('language', lang)
+    }
+    const { data } = await query
+    
     if (data && data.length > 0) {
       dbServices = data
+    } else if (lang !== 'en-CA') {
+      // Fallback to English if current language is empty
+      const { data: fallbackData } = await supabase
+        .from('portfolio_services')
+        .select('*')
+        .eq('language', 'en-CA')
+        .order('order_index', { ascending: true })
+      if (fallbackData) dbServices = fallbackData
     }
   }
 

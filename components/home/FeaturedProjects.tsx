@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ExternalLink, Code, Star, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -66,24 +67,40 @@ const defaultProjects = [
 ]
 
 export default function FeaturedProjects() {
+  const pathname = usePathname()
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [projects, setProjects] = useState<any[]>(defaultProjects)
   const theme = useTheme()
 
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('featured', true)
+        .eq('language', lang)
+        .order('order_index', { ascending: true })
+        .limit(4)
+
+      if (error) throw error
+      return data || []
+    }
+
     async function fetchProjects() {
       try {
-        const supabase = createClient()
-        if (!supabase) return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
 
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('featured', true)
-          .order('order_index', { ascending: true })
-          .limit(4)
+        let data = await fetchData(currentLanguage)
 
-        if (error) throw error
+        // Fallback to en-CA
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
         if (data && data.length > 0) {
           setProjects(data)
         }
@@ -92,7 +109,7 @@ export default function FeaturedProjects() {
       }
     }
     fetchProjects()
-  }, [])
+  }, [pathname])
 
   return (
     <Box sx={{ flexGrow: 1, py: 4 }}>

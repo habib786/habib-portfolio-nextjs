@@ -174,7 +174,7 @@ export default function Footer() {
               {!loading && footerContent?.navLinks.map((item: string) => (
                 <NextLink
                   key={item}
-                  href={getLocalizedHref(item === 'Home' ? '/' : `/${item.toLowerCase()}`)}
+                  href={getLocalizedHref(item === 'Home' ? '/' : (item === 'Contact' ? '/contact#contact-form' : `/${item.toLowerCase()}`))}
                   style={{ textDecoration: 'none' }}
                 >
                   <MuiLink
@@ -259,7 +259,7 @@ export default function Footer() {
             <Box sx={{ p: 3, bgcolor: 'rgba(16, 106, 90, 0.05)', borderRadius: 1, border: '1px solid', borderColor: 'rgba(16, 106, 90, 0.1)' }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>{loading ? '...' : footerContent?.ctaTitle}</Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 2 }}>{loading ? '...' : footerContent?.ctaText}</Typography>
-              <NextLink href="/contact" style={{ textDecoration: 'none' }}>
+              <NextLink href="/contact#contact-form" style={{ textDecoration: 'none' }}>
                 <Button 
                   variant="contained" 
                   color="primary" 

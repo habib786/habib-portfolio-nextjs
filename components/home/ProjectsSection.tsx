@@ -3,15 +3,13 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
-import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Box, Container, Typography, Card, CardContent, Chip, Stack, Grid } from '@mui/material'
 import { Button } from '@/components/ui/Button'
 import SectionHeading from '@/components/ui/SectionHeading'
 
 
 export default function ProjectsSection() {
-  const [projects, setProjects] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -21,22 +19,37 @@ export default function ProjectsSection() {
   // Large background text parallax
   const xBg = useTransform(scrollYProgress, [0, 1], [-100, 100])
 
+  const pathname = usePathname()
+  const [projects, setProjects] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('language', lang)
+        .order('order_index', { ascending: true })
+
+      if (error) throw error
+      return data || []
+    }
+
     async function fetchProjects() {
       try {
-        const supabase = createClient()
-        if (!supabase) {
-          setProjects(defaultProjects)
-          setLoading(false)
-          return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
+
+        let data = await fetchData(currentLanguage)
+
+        // Fallback to en-CA
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
         }
 
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('order_index', { ascending: true })
-
-        if (error) throw error
         if (data && data.length > 0) {
           setProjects(data.map(p => ({
             id: p.id,
@@ -46,7 +59,6 @@ export default function ProjectsSection() {
             className: p.grid_class || 'md:col-span-1 md:row-span-1'
           })))
         } else {
-          // Fallback to static data if table is empty
           setProjects(defaultProjects)
         }
       } catch (err) {
@@ -58,7 +70,7 @@ export default function ProjectsSection() {
     }
 
     fetchProjects()
-  }, [])
+  }, [pathname])
 
   const defaultProjects = [
     {

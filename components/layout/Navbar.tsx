@@ -74,7 +74,7 @@ export default function Navbar() {
           const minimalItems = ['Home', 'Projects', 'Contact'].map((title, i) => ({
             id: `minimal-${i}`,
             title,
-            url: title === 'Home' ? '/' : `/${title.toLowerCase()}`,
+            url: title === 'Home' ? '/' : (title === 'Contact' ? '/contact#contact-form' : `/${title.toLowerCase()}`),
             order: i,
             language: 'en-CA',
             created_at: '',
@@ -139,7 +139,7 @@ export default function Navbar() {
           </Box>
 
           {/* Desktop Navigation */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'center', alignItems: 'center', gap: 5 }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'center', alignItems: 'center', gap: 4 }}>
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <Box key={i} sx={{ width: 60, height: 16, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 1 }} />
@@ -160,6 +160,7 @@ export default function Navbar() {
                       textTransform: 'uppercase',
                       color: pathname === getLocalizedHref(item.url) ? 'secondary.main' : 'white',
                       opacity: pathname === getLocalizedHref(item.url) ? 1 : 0.8,
+                      whiteSpace: 'nowrap',
                       '&:hover': { color: 'secondary.main', opacity: 1 },
                       transition: 'all 0.2s',
                       position: 'relative',

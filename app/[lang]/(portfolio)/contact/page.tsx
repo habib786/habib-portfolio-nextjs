@@ -60,6 +60,7 @@ export default async function ContactPage() {
           <Grid size={{ xs: 12, md: 6 }}>
             <ScrollReveal direction="right">
               <Box 
+                id="contact-form"
                 sx={{ 
                   p: { xs: 3, md: 5 }, 
                   bgcolor: 'background.paper', 

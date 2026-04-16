@@ -197,7 +197,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                 <Button 
                   variant="outlined" 
                   component={Link}
-                  href="/contact"
+                  href="/contact#contact-form"
                   sx={{ borderColor: 'white', color: 'white', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }, px: 4 }}
                 >
                   LET'S TALK
