@@ -15,6 +15,7 @@ interface ServiceCardProps {
   features?: string[]
   showQuoteButton?: boolean
   index: number
+  lang?: string
 }
 
 export default function ServiceCard({
@@ -24,7 +25,8 @@ export default function ServiceCard({
   icon,
   features,
   showQuoteButton = false,
-  index
+  index,
+  lang
 }: ServiceCardProps) {
   return (
     <Card sx={{ 

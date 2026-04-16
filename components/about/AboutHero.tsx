@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Counter from '../animations/Counter'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 /**
  * Visual layer stack (z-order, back → front):
@@ -228,6 +229,7 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
 
         </Box>
       </Container>
+      <AnimatedWaveSeparator />
     </Box>
   )
 }

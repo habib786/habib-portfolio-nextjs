@@ -6,6 +6,7 @@ import { Box, Container, Typography, Stack, Grid } from '@mui/material'
 import Link from 'next/link'
 import Image from 'next/image'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
@@ -222,6 +223,7 @@ export default function ProjectsPage() {
             </Grid>
           </Grid>
         </Container>
+        <AnimatedWaveSeparator />
       </Box>
 
       {/* Main Content Area */}

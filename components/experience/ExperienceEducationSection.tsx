@@ -84,7 +84,7 @@ export default function ExperienceEducationSection() {
   }, [pathname])
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ minHeight: '400px' }}>
       <ElevatedContentCard>
         <ExperienceTimeline data={timelineData} />
       </ElevatedContentCard>

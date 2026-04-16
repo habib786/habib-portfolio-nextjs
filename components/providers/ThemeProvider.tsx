@@ -10,7 +10,7 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     if (typeof args[0] === 'string' && args[0].includes('Encountered a script tag while rendering React component')) {
       return;
     }
-    orig.apply(console, args);
+    (orig as (this: typeof console, ...args: unknown[]) => void).apply(console, args as unknown[]);
   };
 }
 

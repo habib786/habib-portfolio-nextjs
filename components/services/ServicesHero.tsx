@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 export default function ServicesHero({ profileImage }: { profileImage: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -238,6 +239,7 @@ export default function ServicesHero({ profileImage }: { profileImage: string })
           </Grid>
         </Grid>
       </Container>
+      <AnimatedWaveSeparator />
     </Box>
   )
 }

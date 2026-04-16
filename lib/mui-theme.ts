@@ -63,7 +63,7 @@ const getDesignTokens = (mode: 'light' | 'dark'): ThemeOptions => ({
             transform: 'translateY(-1px)',
           },
         },
-        containedPrimary: {
+        contained: {
           '&:hover': {
             backgroundColor: mode === 'light' ? '#0d594b' : '#0d9488',
           },

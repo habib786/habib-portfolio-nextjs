@@ -240,8 +240,8 @@ export default function Navbar() {
         anchor="top"
         open={isMenuOpen}
         onClose={closeMenu}
-        PaperProps={{
-          sx: { bgcolor: 'primary.main', backgroundImage: 'linear-gradient(to bottom, #106A5A, #0d594b)', color: 'white', pt: 8 }
+        slotProps={{
+          paper: { sx: { bgcolor: 'primary.main', backgroundImage: 'linear-gradient(to bottom, #106A5A, #0d594b)', color: 'white', pt: 8 } }
         }}
       >
         <List sx={{ px: 2, pb: 4 }}>
@@ -267,11 +267,13 @@ export default function Navbar() {
                 >
                   <ListItemText 
                     primary={item.title} 
-                    primaryTypographyProps={{ 
-                      fontWeight: 700, 
-                      letterSpacing: 2, 
-                      textTransform: 'uppercase',
-                      color: pathname === getLocalizedHref(item.url) ? 'secondary.main' : 'white'
+                    sx={{ 
+                      '& .MuiTypography-root': { 
+                        fontWeight: 700, 
+                        letterSpacing: 2, 
+                        textTransform: 'uppercase',
+                        color: pathname === getLocalizedHref(item.url) ? 'secondary.main' : 'white'
+                      }
                     }} 
                   />
                 </ListItemButton>

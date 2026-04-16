@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 export default function ContactHero({ profileImage }: { profileImage: string }) {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -19,22 +20,50 @@ export default function ContactHero({ profileImage }: { profileImage: string }) 
   return (
     <Box
       ref={heroRef}
+      id="contact-hero"
       sx={{
         bgcolor: 'var(--primary)',
         position: 'relative',
         pt: { xs: 12, md: 20 },
-        pb: { xs: 20, md: 30 },
-        overflow: 'hidden',
+        pb: { xs: 20, md: 35 }, // Increased padding for wave
         color: 'white',
       }}
     >
-      {/* Wavy SVG Background Decor */}
-      <Box sx={{ position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none', zIndex: 0 }}>
+      {/* Wavy SVG Background Decor - Now wrapped in overflow:hidden Box */}
+      <Box sx={{ position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
         <svg width="100%" height="100%" viewBox="0 0 1440 1000" fill="none" preserveAspectRatio="none">
-          <path d="M0 600C400 500 800 700 1200 600C1400 550 1440 600 1440 600V1000H0V600Z" fill="white" fillOpacity="0.05" />
-          <path d="M-100 700C300 550 800 850 1300 700C1500 640 1600 700 1600 700V1000H-100V700Z" fill="white" fillOpacity="0.03" />
-          <path d="M0 200 Q 360 400 720 200 T 1440 200" stroke="white" strokeWidth="1" strokeDasharray="20 20" opacity="0.2" />
-          <path d="M0 300 Q 360 500 720 300 T 1440 300" stroke="white" strokeWidth="0.5" strokeDasharray="10 10" opacity="0.1" />
+          <motion.path 
+            animate={{ x: [-50, 50], y: [-20, 20], rotate: [0, 2, 0] }}
+            transition={{ duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            d="M0 600C400 500 800 700 1200 600C1400 550 1440 600 1440 600V1000H0V600Z" 
+            fill="white" 
+            fillOpacity="0.05" 
+          />
+          <motion.path 
+            animate={{ x: [50, -50], y: [20, -20], rotate: [0, -2, 0] }}
+            transition={{ duration: 12, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            d="M-100 700C300 550 800 850 1300 700C1500 640 1600 700 1600 700V1000H-100V700Z" 
+            fill="white" 
+            fillOpacity="0.03" 
+          />
+          <motion.path 
+            animate={{ x: [-100, 100] }}
+            transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            d="M0 200 Q 360 400 720 200 T 1440 200" 
+            stroke="white" 
+            strokeWidth="1" 
+            strokeDasharray="20 20" 
+            opacity="0.2" 
+          />
+          <motion.path 
+            animate={{ x: [100, -100] }}
+            transition={{ duration: 25, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            d="M0 300 Q 360 500 720 300 T 1440 300" 
+            stroke="white" 
+            strokeWidth="0.5" 
+            strokeDasharray="10 10" 
+            opacity="0.1" 
+          />
         </svg>
       </Box>
 
@@ -139,6 +168,9 @@ export default function ContactHero({ profileImage }: { profileImage: string }) 
           </Grid>
         </Grid>
       </Container>
+
+      {/* Bottom Wave Decor - Animated Layered Waves */}
+      <AnimatedWaveSeparator />
     </Box>
   )
 }

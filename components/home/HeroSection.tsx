@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
 import Counter from '@/components/animations/Counter'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 const MotionBox = motion(Box)
 
@@ -316,6 +317,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
 
         </Grid>
       </Container>
+      <AnimatedWaveSeparator />
     </Box>
   )
 }

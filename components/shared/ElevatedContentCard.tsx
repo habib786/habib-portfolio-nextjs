@@ -4,8 +4,8 @@ import type { ReactNode } from 'react'
 
 type ElevatedContentCardProps = {
   children: ReactNode
-  padding?: SxProps<Theme>
-  sx?: SxProps<Theme>
+  padding?: object
+  sx?: object
 }
 
 export default function ElevatedContentCard({

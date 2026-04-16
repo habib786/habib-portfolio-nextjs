@@ -16,11 +16,11 @@ export const AnimatedLogo = () => {
       pathLength: 1,
       fillOpacity: 1,
       transition: {
-        pathLength: { duration: 1.5, ease: "easeInOut" },
-        fillOpacity: { duration: 0.5, delay: 1.0, ease: "easeIn" }
+        pathLength: { duration: 1.5, ease: "easeInOut" as const },
+        fillOpacity: { duration: 0.5, delay: 1.0, ease: "easeIn" as const }
       }
     }
-  }
+  } as const
 
   // Heart pops in exactly where the 'i' dot is expected
   const heartVariants = {
@@ -32,12 +32,12 @@ export const AnimatedLogo = () => {
       y: 0,
       transition: {
         delay: 1.2,
-        type: "spring",
+        type: "spring" as const,
         stiffness: 400,
         damping: 10
       }
     }
-  }
+  } as const
 
   const handleHover = () => {
     setHoverKey(prev => prev + 1)

@@ -87,6 +87,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                   features={service.features}
                   showQuoteButton={true}
                   index={index}
+                  lang={lang}
                 />
               </ScrollReveal>
             </Grid>
@@ -114,7 +115,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
             <Typography variant="h6" sx={{ mb: 6, opacity: 0.9, fontWeight: 400 }}>
               Let's create something exceptional together. I'm currently available for new projects and collaborations.
             </Typography>
-            <Link href="/contact" style={{ textDecoration: 'none' }}>
+            <Link href="/contact#contact-form" style={{ textDecoration: 'none' }}>
               <Button
                 variant="contained"
                 color="secondary"

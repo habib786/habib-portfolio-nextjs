@@ -4,6 +4,7 @@ import { Box, Container, Typography, Grid } from '@mui/material'
 import ExperienceEducationSection from '@/components/experience/ExperienceEducationSection'
 import { motion } from 'framer-motion'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
+import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
@@ -162,6 +163,7 @@ export default function ExperiencePage() {
             </Grid>
           </Grid>
         </Container>
+        <AnimatedWaveSeparator />
       </Box>
 
       {/* Main Content Area */}

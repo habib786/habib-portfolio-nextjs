@@ -93,8 +93,10 @@ export default function AboutTestimonials() {
             }))
           )
         }
-      } catch (error) {
-        console.error('Failed to load testimonials:', error)
+      } catch (error: any) {
+        // Log the error but don't break the component - it will keep 'defaultTestimonials'
+        console.warn('Testimonials load skipped. Run SQL to add "language" column to portfolio_testimonials table if missing.')
+        console.error('DB Error:', error?.message || error)
       }
     }
 
