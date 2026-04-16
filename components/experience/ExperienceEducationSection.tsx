@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import ExperienceTimeline, { TimelineEvent } from '@/components/experience/ExperienceTimeline'
 import { createClient } from '@/lib/supabase/client'
+import { Container } from '@mui/material'
+import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 
 export default function ExperienceEducationSection() {
   const [timelineData, setTimelineData] = useState<TimelineEvent[] | undefined>(undefined)
@@ -60,5 +62,11 @@ export default function ExperienceEducationSection() {
     }
   }, [])
 
-  return <ExperienceTimeline data={timelineData} />
+  return (
+    <Container maxWidth="xl">
+      <ElevatedContentCard>
+        <ExperienceTimeline data={timelineData} />
+      </ElevatedContentCard>
+    </Container>
+  )
 }

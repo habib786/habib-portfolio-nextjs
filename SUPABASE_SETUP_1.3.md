@@ -41,6 +41,14 @@ create index if not exists idx_blog_posts_category on public.blog_posts(category
 -- =========================
 -- 2) Dynamic portfolio tables
 -- =========================
+alter table if exists public.portfolio_services
+  add column if not exists icon_url text,
+  add column if not exists icon_emoji text;
+
+alter table if exists public.portfolio_services 
+  alter column icon_url drop not null,
+  alter column icon_emoji drop not null;
+
 create table if not exists public.portfolio_services (
   id uuid primary key default uuid_generate_v4(),
   number_id text not null,
@@ -209,3 +217,6 @@ set order_index = coalesce(order_index, 0),
 - This is additive and safe for existing data.
 - If policy names already exist in your DB, drop old policy first or rename these.
 - After running, restart app so schema cache refreshes.
+
+
+<!--  -->

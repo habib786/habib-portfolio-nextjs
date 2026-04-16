@@ -243,20 +243,29 @@ export default function FeaturedProjects() {
                 </Button>
                 <Stack direction="row" spacing={1}>
                   {project.github_url && (
-                    <a href={project.github_url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                      <Button variant="outline" size="sm">
-                        <Code size={16} style={{ marginRight: 8 }} />
-                        Code
-                      </Button>
-                    </a>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      component="a" 
+                      href={project.github_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <Code size={16} style={{ marginRight: 8 }} />
+                      Code
+                    </Button>
                   )}
                   {project.live_url && (
-                    <a href={project.live_url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                      <Button size="sm">
-                        <ExternalLink size={16} style={{ marginRight: 8 }} />
-                        Live
-                      </Button>
-                    </a>
+                    <Button 
+                      size="sm" 
+                      component="a" 
+                      href={project.live_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink size={16} style={{ marginRight: 8 }} />
+                      Live
+                    </Button>
                   )}
                 </Stack>
               </CardActions>

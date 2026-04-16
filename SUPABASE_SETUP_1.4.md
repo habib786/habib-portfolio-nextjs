@@ -279,8 +279,8 @@ UNION ALL
 SELECT 'portfolio_clients', language, COUNT(*) FROM portfolio_clients GROUP BY language
 UNION ALL
 SELECT 'portfolio_tech_stack', language, COUNT(*) FROM portfolio_tech_stack GROUP BY language
-UNION ALL
-SELECT 'portfolio_testimonials', language, COUNT(*) FROM portfolio_testimonials GROUP BY language
+-- UNION ALL
+-- SELECT 'portfolio_testimonials', language, COUNT(*) FROM portfolio_testimonials GROUP BY language
 ORDER BY table_name, language;
 ```
 

@@ -4,7 +4,6 @@ import { Box, Container, Typography, Grid } from '@mui/material'
 import ExperienceEducationSection from '@/components/experience/ExperienceEducationSection'
 import { motion } from 'framer-motion'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
-import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
@@ -166,11 +165,9 @@ export default function ExperiencePage() {
       </Box>
 
       {/* Main Content Area */}
-      <Container maxWidth="xl" sx={{ mt: { xs: -10, md: -15 }, position: 'relative', zIndex: 10 }}>
-        <ElevatedContentCard>
-          <ExperienceEducationSection />
-        </ElevatedContentCard>
-      </Container>
+      <Box sx={{ mt: { xs: -10, md: -15 }, position: 'relative', zIndex: 10 }}>
+        <ExperienceEducationSection />
+      </Box>
     </Box>
   )
 }

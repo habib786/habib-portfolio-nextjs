@@ -31,12 +31,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <ProjectsSection />
       </ScrollReveal>
 
-      <Box sx={{ bgcolor: 'rgba(16, 106, 90, 0.02)', py: 10 }}>
+      <Box sx={{ py: { xs: 8, md: 15 } }}>
         <ExperienceEducationSection />
       </Box>
 
       <ScrollReveal direction="right">
-        <ServicesSection />
+        <ServicesSection lang={lang} />
       </ScrollReveal>
 
       <ScrollReveal direction="left">

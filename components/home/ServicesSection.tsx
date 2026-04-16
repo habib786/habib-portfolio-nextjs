@@ -1,10 +1,11 @@
 import React from 'react'
 import { createClient } from '@/lib/supabase/server'
-import { Box, Container, Typography, Card, CardContent, Avatar, Grid } from '@mui/material'
+import { Box, Container, Typography, Card, CardContent, Avatar, Grid, Button } from '@mui/material'
+import NextLink from 'next/link'
 import SectionHeading from '@/components/ui/SectionHeading'
 
 
-export default async function ServicesSection() {
+export default async function ServicesSection({ lang }: { lang?: string }) {
   const supabase = await createClient()
 
   let dbServices = []
@@ -150,8 +151,35 @@ export default async function ServicesSection() {
             </Grid>
           ))}
         </Grid>
+
+        <Box sx={{ mt: 10, textAlign: 'center' }}>
+          <NextLink href={lang ? `/${lang}/services` : '/services'} style={{ textDecoration: 'none' }}>
+            <Button
+              component="span"
+              variant="outlined"
+              size="large"
+              sx={{
+                px: 6,
+                py: 2,
+                borderRadius: 1,
+                fontWeight: 800,
+                letterSpacing: 2,
+                textTransform: 'uppercase',
+                fontSize: '0.9rem',
+                borderWidth: 2,
+                textDecoration: 'none',
+                '&:hover': {
+                  borderWidth: 2,
+                  bgcolor: 'primary.main',
+                  color: 'white'
+                }
+              }}
+            >
+              Explore More Services
+            </Button>
+          </NextLink>
+        </Box>
       </Container>
     </Box>
   )
 }
-

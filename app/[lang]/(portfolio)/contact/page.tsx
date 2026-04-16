@@ -34,8 +34,8 @@ export default async function ContactPage() {
       <ContactHero profileImage={profileImage} />
 
 
-      {/* Experience Timeline Section (Requested Layout) */}
-      <Box sx={{ bgcolor: 'rgba(16, 106, 90, 0.02)', py: 10, mb: 12 }}>
+      {/* Experience Timeline Section */}
+      <Box sx={{ py: { xs: 8, md: 12 } }}>
         <ExperienceEducationSection />
       </Box>
 

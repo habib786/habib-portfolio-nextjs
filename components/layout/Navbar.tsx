@@ -13,35 +13,25 @@ import { createClient } from '@/lib/supabase/client'
 import type { MenuItem } from '@/lib/types'
 import LanguageSelector from './LanguageSelector'
 
-const defaultNavItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Experience', href: '/experience' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-]
 
 async function getMenuFromSupabase(supabase: any, language?: string) {
-  let query = supabase
-    .from('menu_items')
-    .select('*')
-    .order('order', { ascending: true });
+  try {
+    let query = supabase
+      .from('menu_items')
+      .select('*')
+      .order('order', { ascending: true });
 
-  if (language) {
-    query = query.eq('language', language);
-  }
-
-  const { data, error } = await query;
-  
-  if (error) {
-    if (!error.message?.includes('schema cache') && error.code !== '42P01') {
-      console.warn('Notice: Using default menu items (Supabase table not found or unavailable).');
+    if (language) {
+      query = query.eq('language', language.trim());
     }
-    return [];
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  } catch (e) {
+    console.error('Supabase menu fetch error:', e);
+    return null;
   }
-  
-  return data || [];
 }
 
 export default function Navbar() {
@@ -50,9 +40,7 @@ export default function Navbar() {
   const [loading, setLoading] = useState(true)
   const pathname = usePathname()
 
-  const supabase = useMemo(() => {
-    return createClient()
-  }, [])
+  const supabase = useMemo(() => createClient(), [])
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const closeMenu = () => setIsMenuOpen(false)
@@ -60,51 +48,36 @@ export default function Navbar() {
   useEffect(() => {
     async function fetchMenu() {
       try {
-        const currentLanguage = 'en-CA';
-        let menuData: any[] = [];
+        const segments = pathname.split('/').filter(Boolean);
+        const currentLanguage = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR'].includes(segments[0]) 
+          ? segments[0] 
+          : 'en-CA';
         
-        if (supabase) {
-          menuData = await getMenuFromSupabase(supabase, currentLanguage);
+        if (!supabase) return;
+
+        // 1. Try to fetch requested language
+        let menuData = await getMenuFromSupabase(supabase, currentLanguage);
+        
+        // 2. If empty and not English, try fetching English as fallback from DB
+        if ((!menuData || menuData.length === 0) && currentLanguage !== 'en-CA') {
+          console.warn(`No menu found for ${currentLanguage}, falling back to English DB data`);
+          menuData = await getMenuFromSupabase(supabase, 'en-CA');
         }
         
         if (menuData && menuData.length > 0) {
-          const flatMenu = flattenMenu(menuData);
-          setNavItems(flatMenu);
+          setNavItems(flattenMenu(menuData));
         } else {
-          setNavItems(defaultNavItems.map(item => ({
-            id: item.name.toLowerCase(),
-            title: item.name,
-            url: item.href,
-            order: defaultNavItems.indexOf(item) + 1,
-            language: 'en',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            icon: null,
-            parent_id: null,
-            is_external: false
-          })));
+          setNavItems([]);
         }
       } catch (error) {
-        console.error('Error fetching menu:', error);
-        setNavItems(defaultNavItems.map(item => ({
-          id: item.name.toLowerCase(),
-          title: item.name,
-          url: item.href,
-          order: defaultNavItems.indexOf(item) + 1,
-          language: 'en',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          icon: null,
-          parent_id: null,
-          is_external: false
-        })));
+        console.error('Error in fetchMenu:', error);
       } finally {
         setLoading(false);
       }
     }
 
     fetchMenu();
-  }, [supabase]);
+  }, [pathname, supabase]);
 
   // Helper function to flatten hierarchical menu
   const flattenMenu = (items: any[]): MenuItem[] => {
