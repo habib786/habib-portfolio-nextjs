@@ -54,6 +54,20 @@ CREATE TABLE IF NOT EXISTS public.footer_content (
 DELETE FROM public.menu_items;
 DELETE FROM public.footer_content;
 
+-- 2.5 Ensure Permissions (RLS)
+ALTER TABLE public.menu_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.footer_content ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public read" ON public.menu_items;
+CREATE POLICY "Allow public read" ON public.menu_items FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read" ON public.footer_content;
+CREATE POLICY "Allow public read" ON public.footer_content FOR SELECT USING (true);
+
+-- Grant access to anon role (for API)
+GRANT SELECT ON public.menu_items TO anon, authenticated;
+GRANT SELECT ON public.footer_content TO anon, authenticated;
+
 -- 3. Ensure languages exist
 INSERT INTO public.languages (code, name, is_default, is_active)
 VALUES 

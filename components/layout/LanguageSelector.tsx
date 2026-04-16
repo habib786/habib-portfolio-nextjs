@@ -1,25 +1,45 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Globe, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu as MuiMenu, MenuItem, Fade } from '@mui/material'
+import { Menu as MuiMenu, MenuItem, Fade, Box } from '@mui/material'
 import { createClient } from '@/lib/supabase/client'
 
 type LocaleItem = {
   code: string
   name: string
-  flag: string
+  country_code: string
 }
 
 const defaultLanguages: LocaleItem[] = [
-  { code: 'en-CA', name: 'English (CA)', flag: 'CA' },
-  { code: 'fr-CA', name: 'Francais (CA)', flag: 'CA' },
-  { code: 'ar-SA', name: 'Arabic', flag: 'SA' },
-  { code: 'ur-PK', name: 'Urdu', flag: 'PK' },
-  { code: 'tr-TR', name: 'Turkish', flag: 'TR' },
+  { code: 'en-CA', name: 'English (CA)', country_code: 'CA' },
+  { code: 'fr-CA', name: 'Francais (CA)', country_code: 'CA' },
+  { code: 'ar-SA', name: 'Arabic', country_code: 'SA' },
+  { code: 'ur-PK', name: 'Urdu', country_code: 'PK' },
+  { code: 'tr-TR', name: 'Turkish', country_code: 'TR' },
 ]
+
+// Flag Icon Component using SVG
+const FlagIcon = ({ countryCode, size = 18 }: { countryCode: string; size?: number }) => {
+  const code = countryCode.toLowerCase();
+  return (
+    <Box
+      component="img"
+      src={`https://flagcdn.com/${code}.svg`}
+      alt={countryCode}
+      sx={{
+        width: size,
+        height: 'auto',
+        borderRadius: '2px',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+        display: 'block',
+        objectFit: 'cover'
+      }}
+    />
+  );
+};
 
 export default function LanguageSelector() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -39,7 +59,7 @@ export default function LanguageSelector() {
 
         const { data, error } = await supabase
           .from('languages')
-          .select('code,name,is_active')
+          .select('code, name, country_code, is_active')
           .eq('is_active', true)
           .order('code')
 
@@ -49,7 +69,7 @@ export default function LanguageSelector() {
           data.map((item: any) => ({
             code: item.code,
             name: item.name,
-            flag: item.code.split('-')[1] || 'GL',
+            country_code: item.country_code || item.code.split('-')[1] || 'CA',
           }))
         )
       } catch (error) {
@@ -94,27 +114,31 @@ export default function LanguageSelector() {
     router.push(newPath)
   }
 
-  if (!mounted) {
+if (!mounted) {
     return (
       <div className="relative">
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1.5 rounded-[5px] px-3 hover:bg-white/10 hover:text-white"
           aria-label="Language"
           sx={{
-            color: 'white',
+            color: '#106A5A',
             fontWeight: 700,
-            opacity: 0.8,
-            '&:hover': { opacity: 1 },
+            opacity: 1,
+            border: '1px solid rgba(16, 106, 90, 0.3)',
             textTransform: 'uppercase',
             fontSize: '0.85rem',
             letterSpacing: 1.5,
+            bgcolor: 'rgba(255,255,255,0.95)',
+            '&:hover': { 
+              bgcolor: 'rgba(255,255,255,1)',
+              borderColor: 'rgba(16, 106, 90, 0.6)'
+            }
           }}
+          startIcon={<FlagIcon countryCode={currentLang.country_code} />}
           endIcon={<ChevronDown className="h-4 w-4 transition-transform" />}
         >
-          <Globe className="h-4 w-4" />
-          <span>{currentLang.name}</span>
+          <span style={{ color: '#106A5A' }}>{currentLang.name.split(' ')[0]}</span>
         </Button>
       </div>
     )
@@ -130,20 +154,25 @@ export default function LanguageSelector() {
         aria-haspopup="true"
         aria-expanded={isOpen ? 'true' : undefined}
         onClick={handleClick}
-        className="flex items-center gap-1.5 rounded-[5px] px-3 hover:bg-white/10 hover:text-white"
         sx={{
-          color: 'white',
+          color: '#106A5A',
           fontWeight: 700,
-          opacity: 0.8,
-          '&:hover': { opacity: 1 },
+          opacity: 1,
+          border: '1px solid rgba(16, 106, 90, 0.3)',
           textTransform: 'uppercase',
           fontSize: '0.85rem',
           letterSpacing: 1.5,
+          minWidth: 100,
+          bgcolor: 'rgba(255,255,255,0.95)',
+          '&:hover': { 
+            bgcolor: 'rgba(255,255,255,1)',
+            borderColor: 'rgba(16, 106, 90, 0.6)'
+          }
         }}
+        startIcon={<FlagIcon countryCode={currentLang.country_code} />}
         endIcon={<ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
       >
-        <Globe className="h-4 w-4" />
-        <span>{currentLang.name}</span>
+        <span style={{ color: '#106A5A' }}>{currentLang.name.split(' ')[0]}</span>
       </Button>
 
       <MuiMenu
@@ -161,10 +190,12 @@ export default function LanguageSelector() {
               boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
               border: '1px solid',
               borderColor: 'divider',
+              overflow: 'hidden'
             },
           },
           list: {
             'aria-labelledby': 'language-button',
+            sx: { py: 0 }
           },
         }}
         anchorOrigin={{
@@ -183,16 +214,18 @@ export default function LanguageSelector() {
             selected={currentLang.code === lang.code}
             sx={{
               display: 'flex',
-              gap: 1.5,
-              py: 1,
+              gap: 2,
+              py: 1.5,
               px: 2,
               fontSize: '0.875rem',
               '&.Mui-selected': {
+                bgcolor: 'rgba(16, 106, 90, 0.08)',
                 fontWeight: 600,
+                '&:hover': { bgcolor: 'rgba(16, 106, 90, 0.12)' }
               },
             }}
           >
-            <Globe className="h-4 w-4" />
+            <FlagIcon countryCode={lang.country_code} size={20} />
             <span>{lang.name}</span>
           </MenuItem>
         ))}
@@ -200,3 +233,4 @@ export default function LanguageSelector() {
     </div>
   )
 }
+

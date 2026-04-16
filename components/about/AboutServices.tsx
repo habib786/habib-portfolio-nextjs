@@ -60,6 +60,7 @@ const cardVariants = {
 }
 
 import SectionHeading from '../ui/SectionHeading'
+import ServiceCard from '@/components/services/ServiceCard'
 
 export default function AboutServices() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -153,54 +154,13 @@ export default function AboutServices() {
                   viewport={{ once: true, margin: '-60px' }}
                   whileHover={{ y: -8, transition: { duration: 0.25 } }}
                 >
-                  <Card
-                    sx={{
-                      p: 4,
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      borderRadius: 2,
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                      border: '1px solid transparent',
-                      transition: 'border-color 0.3s, box-shadow 0.3s',
-                      '&:hover': {
-                        borderColor: '#106A5A',
-                        boxShadow: '0 12px 40px rgba(16,106,90,0.12)'
-                      }
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-                      <Typography variant="h2" sx={{ fontSize: '3rem', fontWeight: 900, color: 'rgba(0,0,0,0.05)', lineHeight: 1 }}>
-                        {service.id}
-                      </Typography>
-                      {/* Icon with bounce-in */}
-                      <motion.div
-                        initial={{ scale: 0, rotate: -20 }}
-                        whileInView={{ scale: 1, rotate: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: i * 0.09 + 0.2, type: 'spring', stiffness: 200 }}
-                      >
-                        <Box sx={{ fontSize: '2.5rem' }}>{service.icon}</Box>
-                      </motion.div>
-                    </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, lineHeight: 1.2 }}>
-                      {service.title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                      {service.description}
-                    </Typography>
-
-                    {/* Bottom accent line that expands on hover */}
-                    <Box sx={{ mt: 'auto', pt: 3 }}>
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: 40 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
-                        style={{ height: 3, background: '#106A5A', borderRadius: 2 }}
-                      />
-                    </Box>
-                  </Card>
+                  <ServiceCard
+                    id={service.id}
+                    title={service.title}
+                    description={service.description}
+                    icon={service.icon}
+                    index={i}
+                  />
                 </motion.div>
               </Grid>
             ))}

@@ -26,11 +26,14 @@ async function getMenuFromSupabase(supabase: any, language?: string) {
     }
 
     const { data, error } = await query;
-    if (error) throw error;
-    return data;
+    if (error) {
+      console.error('Database query error:', error);
+      return [];
+    }
+    return data || [];
   } catch (e) {
-    console.error('Supabase menu fetch error:', e);
-    return null;
+    console.error('Supabase catch error:', e);
+    return [];
   }
 }
 
@@ -48,29 +51,44 @@ export default function Navbar() {
   useEffect(() => {
     async function fetchMenu() {
       try {
-        const segments = pathname.split('/').filter(Boolean);
-        const currentLanguage = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR'].includes(segments[0]) 
-          ? segments[0] 
-          : 'en-CA';
+        setLoading(true);
+        // Robust locale detection: match strings like /ar-SA/ or /en-CA at start
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
         
-        if (!supabase) return;
+        if (!supabase) {
+          console.warn('Supabase client missing');
+          return;
+        }
 
-        // 1. Try to fetch requested language
+        // 1. Try language
         let menuData = await getMenuFromSupabase(supabase, currentLanguage);
         
-        // 2. If empty and not English, try fetching English as fallback from DB
+        // 2. Try English if empty
         if ((!menuData || menuData.length === 0) && currentLanguage !== 'en-CA') {
-          console.warn(`No menu found for ${currentLanguage}, falling back to English DB data`);
           menuData = await getMenuFromSupabase(supabase, 'en-CA');
         }
         
-        if (menuData && menuData.length > 0) {
-          setNavItems(flattenMenu(menuData));
+        // 3. Final safety: If STILL empty, use absolute minimal internal items
+        if (!menuData || menuData.length === 0) {
+          const minimalItems = ['Home', 'Projects', 'Contact'].map((title, i) => ({
+            id: `minimal-${i}`,
+            title,
+            url: title === 'Home' ? '/' : `/${title.toLowerCase()}`,
+            order: i,
+            language: 'en-CA',
+            created_at: '',
+            updated_at: '',
+            icon: null,
+            parent_id: null,
+            is_external: false
+          }));
+          setNavItems(minimalItems);
         } else {
-          setNavItems([]);
+          setNavItems(flattenMenu(menuData));
         }
       } catch (error) {
-        console.error('Error in fetchMenu:', error);
+        console.error('Critical Navbar Error:', error);
       } finally {
         setLoading(false);
       }
@@ -82,21 +100,12 @@ export default function Navbar() {
   // Helper function to flatten hierarchical menu
   const flattenMenu = (items: any[]): MenuItem[] => {
     const result: MenuItem[] = [];
-    
-    const flatten = (items: any[], depth = 0) => {
-      items.forEach(item => {
-        result.push({
-          ...item,
-          // Add any necessary transformations here
-        });
-        
-        if (item.children && item.children.length > 0) {
-          flatten(item.children, depth + 1);
-        }
-      });
-    };
-    
-    flatten(items);
+    items.forEach(item => {
+      result.push({ ...item });
+      if (item.children && Array.isArray(item.children)) {
+        result.push(...flattenMenu(item.children));
+      }
+    });
     return result;
   };
 
