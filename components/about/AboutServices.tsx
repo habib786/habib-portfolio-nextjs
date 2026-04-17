@@ -59,10 +59,12 @@ const cardVariants = {
   })
 }
 
+import { usePathname } from 'next/navigation'
 import SectionHeading from '../ui/SectionHeading'
 import ServiceCard from '@/components/services/ServiceCard'
 
 export default function AboutServices() {
+  const pathname = usePathname()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [services, setServices] = useState(defaultServices)
 
@@ -75,31 +77,47 @@ export default function AboutServices() {
   const decorScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6])
 
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+      const { data, error } = await supabase
+        .from('portfolio_services')
+        .select('*')
+        .eq('language', lang)
+        .order('order_index', { ascending: true })
+      if (error) throw error
+      return data || []
+    }
+
     async function loadServices() {
       try {
-        const supabase = createClient()
-        if (!supabase) return
-        const { data, error } = await supabase
-          .from('portfolio_services')
-          .select('*')
-          .order('order_index', { ascending: true })
-        if (error || !data || data.length === 0) return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
 
-        setServices(
-          data.map((item: any, index: number) => ({
-            id: item.number_id || String(item.order_index) || String(index + 1).padStart(2, '0'),
-            title: item.title,
-            description: item.description,
-            icon: item.icon_emoji || '💻',
-          }))
-        )
+        let data = await fetchData(currentLanguage)
+
+        // Fallback to en-CA
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
+        if (data && data.length > 0) {
+          setServices(
+            data.map((item: any, index: number) => ({
+              id: item.number_id || String(item.order_index) || String(index + 1).padStart(2, '0'),
+              title: item.title,
+              description: item.description,
+              icon: item.icon_emoji || '💻',
+            }))
+          )
+        }
       } catch (error) {
         console.error('Failed to load about services:', error)
       }
     }
 
     loadServices()
-  }, [])
+  }, [pathname])
 
   return (
     <Box

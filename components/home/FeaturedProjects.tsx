@@ -174,8 +174,8 @@ export default function FeaturedProjects() {
                 <Box sx={{ 
                   position: 'absolute', 
                   bottom: 0, 
-                  left: 0, 
-                  right: 0, 
+                  insetInlineStart: 0, 
+                  insetInlineEnd: 0, 
                   p: 2, 
                   display: 'flex', 
                   justifyContent: 'space-between', 
@@ -262,7 +262,7 @@ export default function FeaturedProjects() {
                   {project.github_url && (
                     <a href={project.github_url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                       <Button variant="outline" size="sm">
-                        <Code size={16} style={{ marginRight: 8 }} />
+                        <Code size={16} style={{ marginInlineEnd: 8 }} />
                         Code
                       </Button>
                     </a>
@@ -270,7 +270,7 @@ export default function FeaturedProjects() {
                   {project.live_url && (
                     <a href={project.live_url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                       <Button size="sm">
-                        <ExternalLink size={16} style={{ marginRight: 8 }} />
+                        <ExternalLink size={16} style={{ marginInlineEnd: 8 }} />
                         Live
                       </Button>
                     </a>
@@ -286,7 +286,7 @@ export default function FeaturedProjects() {
       <Box sx={{ mt: 8, textAlign: 'center' }}>
         <Button variant="outline" size="lg" component={Link} href="/projects">
           View All Projects
-          <ExternalLink size={20} style={{ marginLeft: 12 }} />
+          <ExternalLink size={20} style={{ marginInlineStart: 12 }} />
         </Button>
       </Box>
     </Box>

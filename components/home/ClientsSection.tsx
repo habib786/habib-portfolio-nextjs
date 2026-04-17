@@ -2,13 +2,28 @@ import React from 'react'
 import { createClient } from '@/lib/supabase/server'
 import ClientsMarquee from './ClientsMarquee'
 
-export default async function ClientsSection() {
+export default async function ClientsSection({ lang }: { lang?: string }) {
   const supabase = await createClient()
 
   let dbClients = []
   try {
     if (supabase) {
-      const { data } = await supabase.from('portfolio_clients').select('*').order('order_index', { ascending: true })
+      let query = supabase.from('portfolio_clients').select('*').order('order_index', { ascending: true })
+      if (lang) {
+        query = query.eq('language', lang)
+      }
+      let { data } = await query
+
+      // Fallback to en-CA
+      if ((!data || data.length === 0) && lang && lang !== 'en-CA') {
+        const { data: fallbackData } = await supabase
+          .from('portfolio_clients')
+          .select('*')
+          .eq('language', 'en-CA')
+          .order('order_index', { ascending: true })
+        data = fallbackData
+      }
+
       if (data && data.length > 0) dbClients = data
     }
   } catch (error) {

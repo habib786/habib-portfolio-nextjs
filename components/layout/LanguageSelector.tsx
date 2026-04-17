@@ -129,6 +129,9 @@ if (!mounted) {
             textTransform: 'uppercase',
             fontSize: '0.85rem',
             letterSpacing: 1.5,
+            minWidth: 130,
+            gap: 1.5,
+            px: 2,
             bgcolor: 'rgba(255,255,255,0.95)',
             '&:hover': { 
               bgcolor: 'rgba(255,255,255,1)',
@@ -138,7 +141,7 @@ if (!mounted) {
           startIcon={<FlagIcon countryCode={currentLang.country_code} />}
           endIcon={<ChevronDown className="h-4 w-4 transition-transform" />}
         >
-          <span style={{ color: '#106A5A' }}>{currentLang.name.split(' ')[0]}</span>
+          <span style={{ color: '#106A5A', display: 'inline-block' }}>{currentLang.name.split(' ')[0]}</span>
         </Button>
       </div>
     )
@@ -162,7 +165,9 @@ if (!mounted) {
           textTransform: 'uppercase',
           fontSize: '0.85rem',
           letterSpacing: 1.5,
-          minWidth: 100,
+          minWidth: 130,
+          gap: 1.5,
+          px: 2,
           bgcolor: 'rgba(255,255,255,0.95)',
           '&:hover': { 
             bgcolor: 'rgba(255,255,255,1)',
@@ -172,7 +177,7 @@ if (!mounted) {
         startIcon={<FlagIcon countryCode={currentLang.country_code} />}
         endIcon={<ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
       >
-        <span style={{ color: '#106A5A' }}>{currentLang.name.split(' ')[0]}</span>
+        <span style={{ color: '#106A5A', display: 'inline-block' }}>{currentLang.name.split(' ')[0]}</span>
       </Button>
 
       <MuiMenu

@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
+import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 interface SectionHeadingProps {
@@ -25,6 +26,9 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   const isCenter = align === 'center'
   const isRight = align === 'right'
+  const params = useParams()
+  const lang = params?.lang as string || 'en-CA'
+  const isRtl = lang === 'ar-SA' || lang === 'ur-PK'
 
   return (
     <Box sx={{ 
@@ -59,10 +63,13 @@ export default function SectionHeading({
           position: 'absolute', 
           bottom: -12, 
           left: 0, 
+          right: 0,
           width: '100%', 
           height: 24,
           overflow: 'visible',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          direction: 'ltr',
+          zIndex: -1
         }}>
           <svg width="100%" height="100%" viewBox="0 0 100 24" fill="none" preserveAspectRatio="none">
             <motion.path

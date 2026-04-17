@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
 
 interface AnimatedWaveSeparatorProps {
@@ -22,15 +22,28 @@ export default function AnimatedWaveSeparator({
         position: 'absolute',
         bottom: -1,
         left: 0,
+        right: 0,
         width: '100%',
         height: height,
         overflow: 'hidden',
         lineHeight: 0,
         zIndex: 2,
-        bgcolor: backgroundColor
+        bgcolor: backgroundColor,
+        direction: 'ltr !important'
       }}
     >
-      <Box sx={{ position: 'relative', width: '200%', height: '100%' }}>
+      <Box 
+        sx={{ 
+          position: 'relative', 
+          width: '200%', 
+          height: '100%',
+          left: 0,
+          right: 'auto',
+          display: 'flex',
+          flexDirection: 'row',
+          direction: 'ltr'
+        }}
+      >
         {/* Wave Layer 1 (Back) */}
         <motion.div
           style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%', opacity: 0.3, display: 'flex' }}
@@ -47,7 +60,7 @@ export default function AnimatedWaveSeparator({
 
         {/* Wave Layer 2 (Middle) */}
         <motion.div
-          style={{ position: 'absolute', bottom: 0, left: -100, width: '100%', height: '90%', opacity: 0.5, display: 'flex' }}
+          style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '90%', opacity: 0.5, display: 'flex' }}
           animate={{ x: ['-50%', '0%'] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         >

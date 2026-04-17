@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
 import Counter from '@/components/animations/Counter'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
@@ -11,6 +12,10 @@ import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 const MotionBox = motion(Box)
 
 export default function HeroSection({ dict }: { dict?: any }) {
+  const params = useParams()
+  const lang = params?.lang as string || 'en-CA'
+  const isRtl = lang === 'ar-SA' || lang === 'ur-PK'
+
   const [profile, setProfile] = useState({
     name: 'HABIB',
     role: 'Full Stack Web Developer',
@@ -86,17 +91,23 @@ export default function HeroSection({ dict }: { dict?: any }) {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center', 
-        minHeight: 'calc(100vh - 64px)' 
+        minHeight: 'calc(100vh - 64px)',
+        isolation: 'isolate' 
       }}
     >
       {/* Decorative Blur Elements */}
-      <Box sx={{ position: 'absolute', top: '10%', right: '5%', width: 300, height: 300, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.15, borderRadius: '50%', zIndex: 0 }} />
-      <Box sx={{ position: 'absolute', bottom: '10%', left: '5%', width: 400, height: 400, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.1, borderRadius: '50%', zIndex: 0 }} />
+      <Box sx={{ position: 'absolute', top: '10%', insetInlineEnd: '5%', width: 300, height: 300, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.15, borderRadius: '50%', zIndex: 0 }} />
+      <Box sx={{ position: 'absolute', bottom: '10%', insetInlineStart: '5%', width: 400, height: 400, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.1, borderRadius: '50%', zIndex: 0 }} />
 
-      {/* Wavy background lines with parallax */}
       <motion.div 
-        style={{ y: useTransform(scrollYProgress, [0, 1], [0, 200]) }}
-        className="absolute inset-0 z-0 opacity-10 pointer-events-none w-full h-full"
+        style={{ 
+          y: useTransform(scrollYProgress, [0, 1], [0, 200]),
+          zIndex: 0,
+          left: 0,
+          right: 0,
+          direction: 'ltr'
+        }}
+        className="absolute inset-0 opacity-10 pointer-events-none w-full h-full"
       >
         <svg viewBox="0 0 1440 400" className="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <path fill="none" stroke="white" strokeWidth="1" d="M0,150 C200,200 400,100 600,150 C800,200 1000,100 1200,150 C1400,200 1440,150 1440,150" />
@@ -105,7 +116,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
         </svg>
       </motion.div>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, width: '100%' }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10, width: '100%' }}>
         <Grid container spacing={4} sx={{ alignItems: 'center' }}>
           
           {/* Left Text */}
@@ -134,12 +145,13 @@ export default function HeroSection({ dict }: { dict?: any }) {
                       lineHeight: 1,
                       textTransform: 'uppercase',
                       mb: 2,
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                      zIndex: 2
                     }}
                   >
                     {profile.name}
                   </Typography>
-                  <div style={{ height: 24, position: 'absolute', bottom: -16, left: 0, width: '100.5%' }}>
+                  <div style={{ height: 24, position: 'absolute', bottom: -16, left: 0, right: 0, width: '100.5%', zIndex: 1, direction: 'ltr' }}>
                     <svg width="100%" height="100%" viewBox="0 0 120 30" fill="none" preserveAspectRatio="none">
                       <motion.path 
                         d="M2 20 L10 10 L18 24 L28 14 Q60 32 118 16" 
@@ -236,27 +248,31 @@ export default function HeroSection({ dict }: { dict?: any }) {
 
               <motion.div 
                 style={{ y: yImage, scale }}
-                animate={{ 
-                  y: [0, -15, 0],
-                  rotateX: [0, 5, 0],
-                  rotateY: [0, -5, 0]
-                }}
-                transition={{ 
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  rotateX: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                  rotateY: { duration: 7, repeat: Infinity, ease: "easeInOut" }
-                }}
-                className="relative w-full h-full rounded-[5px] bg-gradient-to-b from-yellow-400 to-yellow-500 overflow-hidden flex items-end justify-center z-10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border-[8px] border-white/20"
+                className="relative w-full h-full z-10"
               >
-                 <motion.img 
-                   initial={{ scale: 1.2, opacity: 0 }}
-                   animate={{ scale: 1, opacity: 1 }}
-                   transition={{ duration: 1.2, ease: "easeOut" }}
-                   src={profile.image} 
-                   alt={profile.name}
-                   className="w-full h-[95%] object-cover object-top"
-                 />
-                 <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(16, 106, 90, 0.6), transparent)' }} />
+                <motion.div
+                  animate={{ 
+                    y: [0, -15, 0],
+                    rotateX: [0, 5, 0],
+                    rotateY: [0, -5, 0]
+                  }}
+                  transition={{ 
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    rotateX: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                    rotateY: { duration: 7, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                  className="w-full h-full rounded-[5px] bg-gradient-to-b from-yellow-400 to-yellow-500 overflow-hidden flex items-end justify-center shadow-[0_30px_60px_rgba(0,0,0,0.5)] border-[8px] border-white/20"
+                >
+                   <motion.img 
+                     initial={{ scale: 1.2, opacity: 0 }}
+                     animate={{ scale: 1, opacity: 1 }}
+                     transition={{ duration: 1.2, ease: "easeOut" }}
+                     src={profile.image} 
+                     alt={profile.name}
+                     className="w-full h-[95%] object-cover object-top"
+                   />
+                   <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(16, 106, 90, 0.6), transparent)' }} />
+                </motion.div>
               </motion.div>
 
               {/* Decorative Frame - Animating */}

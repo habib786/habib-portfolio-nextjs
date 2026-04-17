@@ -40,7 +40,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </ScrollReveal>
 
       <ScrollReveal direction="left">
-        <ClientsSection />
+        <ClientsSection lang={lang} />
       </ScrollReveal>
     </div>
   )

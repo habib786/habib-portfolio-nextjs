@@ -51,26 +51,43 @@ const popularTags = [
   'Performance', 'Security', 'Database', 'Cloud', 'DevOps', 'Tutorial'
 ]
 
+import { usePathname } from 'next/navigation'
 import { Chip, Box, TextField, Stack, Typography } from '@mui/material'
 
 export default function BlogPreview() {
+  const pathname = usePathname()
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [blogPosts, setBlogPosts] = useState<any[]>(defaultBlogPosts)
 
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('is_published', true)
+        .eq('language', lang)
+        .order('published_at', { ascending: false })
+        .limit(4)
+
+      if (error) throw error
+      return data || []
+    }
+
     async function fetchPosts() {
       try {
-        const supabase = createClient()
-        if (!supabase) return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
 
-        const { data, error } = await supabase
-          .from('blog_posts')
-          .select('*')
-          .eq('is_published', true)
-          .order('published_at', { ascending: false })
-          .limit(4)
+        let data = await fetchData(currentLanguage)
 
-        if (error) throw error
+        // Fallback to en-CA
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
         if (data && data.length > 0) {
           setBlogPosts(data)
         }
@@ -79,7 +96,7 @@ export default function BlogPreview() {
       }
     }
     fetchPosts()
-  }, [])
+  }, [pathname])
 
   const filteredPosts = selectedTag
     ? blogPosts.filter(post => (post.tags || []).includes(selectedTag))

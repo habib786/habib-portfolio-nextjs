@@ -7,18 +7,19 @@ import SectionHeading from '@/components/ui/SectionHeading'
 
 export default async function ServicesSection({ lang }: { lang?: string }) {
   const supabase = await createClient()
+  const activeLang = lang || 'en-CA'
 
   let dbServices = []
   if (supabase) {
-    let query = supabase.from('portfolio_services').select('*').order('order_index', { ascending: true })
-    if (lang) {
-      query = query.eq('language', lang)
-    }
-    const { data } = await query
+    const { data } = await supabase
+      .from('portfolio_services')
+      .select('*')
+      .eq('language', activeLang)
+      .order('order_index', { ascending: true })
     
     if (data && data.length > 0) {
       dbServices = data
-    } else if (lang !== 'en-CA') {
+    } else if (activeLang !== 'en-CA') {
       // Fallback to English if current language is empty
       const { data: fallbackData } = await supabase
         .from('portfolio_services')
@@ -110,7 +111,7 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
                   sx={{ 
                     position: 'absolute', 
                     top: 20, 
-                    right: 20, 
+                    insetInlineEnd: 20, 
                     color: 'divider', 
                     fontWeight: 900, 
                     fontSize: 80, 
@@ -146,14 +147,14 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
                     SERVICE {service.id}
                   </Typography>
 
-                  <Typography variant="h5" component="h3" sx={{ fontWeight: 900, mb: 3, pr: 2, lineHeight: 1.2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  <Typography variant="h5" component="h3" sx={{ fontWeight: 900, mb: 3, pe: 2, lineHeight: 1.2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     {service.title}
                   </Typography>
                   
                   <Typography variant="body1" color="text.secondary" sx={{ 
-                    borderLeft: '3px solid', 
+                    borderInlineStart: '3px solid', 
                     borderColor: 'secondary.main', 
-                    pl: 3,
+                    ps: 3,
                     lineHeight: 1.8,
                     fontSize: '0.95rem'
                   }}>

@@ -188,42 +188,46 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
                 inset: 0,
                 zIndex: 2,
               } as any}
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
             >
-              <Box
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '14px',
-                  overflow: 'hidden',
-                  boxShadow: '0 28px 70px rgba(0,0,0,0.42)',
-                  border: '3px solid rgba(255,255,255,0.14)',
-                  cursor: 'pointer',
-                  transition: 'box-shadow 0.3s ease',
-                  '&:hover': {
-                    boxShadow: '0 32px 80px rgba(0,0,0,0.55)',
-                  }
-                }}
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full h-full"
               >
-                <Image
-                  src={profileImage}
-                  alt="Habib"
-                  fill
-                  style={{ objectFit: 'cover', objectPosition: 'top center' }}
-                  sizes="(max-width: 768px) 270px, 320px"
-                  priority
-                />
-                <Box sx={{
-                  position: 'absolute', bottom: 0, left: 0, right: 0,
-                  height: '30%',
-                  background: 'linear-gradient(to top, rgba(16,106,90,0.28), transparent)',
-                  zIndex: 1,
-                }} />
-              </Box>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '14px',
+                    overflow: 'hidden',
+                    boxShadow: '0 28px 70px rgba(0,0,0,0.42)',
+                    border: '3px solid rgba(255,255,255,0.14)',
+                    cursor: 'pointer',
+                    transition: 'box-shadow 0.3s ease',
+                    '&:hover': {
+                      boxShadow: '0 32px 80px rgba(0,0,0,0.55)',
+                    }
+                  }}
+                >
+                  <Image
+                    src={profileImage}
+                    alt="Habib"
+                    fill
+                    style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                    sizes="(max-width: 768px) 270px, 320px"
+                    priority
+                  />
+                  <Box sx={{
+                    position: 'absolute', bottom: 0, left: 0, right: 0,
+                    height: '30%',
+                    background: 'linear-gradient(to top, rgba(16,106,90,0.28), transparent)',
+                    zIndex: 1,
+                  }} />
+                </Box>
+              </motion.div>
             </motion.div>
           </Box>
 

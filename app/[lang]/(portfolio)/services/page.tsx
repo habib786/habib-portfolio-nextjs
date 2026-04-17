@@ -20,9 +20,22 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
 
   let services = []
   if (supabase) {
-    const { data } = await supabase.from('portfolio_services').select('*').order('order_index', { ascending: true })
+    const { data } = await supabase
+      .from('portfolio_services')
+      .select('*')
+      .eq('language', lang)
+      .order('order_index', { ascending: true })
+    
     if (data && data.length > 0) {
       services = data
+    } else {
+      // Fallback to en-CA
+      const { data: fallbackData } = await supabase
+        .from('portfolio_services')
+        .select('*')
+        .eq('language', 'en-CA')
+        .order('order_index', { ascending: true })
+      if (fallbackData) services = fallbackData
     }
     
     // Get profile image from settings

@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { Box, Container, Typography, Card, CardContent, Avatar, Tooltip } from '@mui/material'
+import { usePathname } from 'next/navigation'
 import SectionHeading from '@/components/ui/SectionHeading'
 
 const defaultTechStack = [
@@ -17,6 +18,7 @@ const defaultTechStack = [
 
 
 export default function TechStackSection() {
+  const pathname = usePathname()
   const [techStack, setTechStack] = useState<any[]>(defaultTechStack)
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -25,17 +27,32 @@ export default function TechStackSection() {
   })
 
   useEffect(() => {
+    async function fetchData(lang: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+      
+      const { data, error } = await supabase
+        .from('portfolio_tech_stack')
+        .select('*')
+        .eq('language', lang)
+        .order('order_index', { ascending: true })
+
+      if (error) throw error
+      return data || []
+    }
+
     async function fetchTechStack() {
       try {
-        const supabase = createClient()
-        if (!supabase) return
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
 
-        const { data, error } = await supabase
-          .from('portfolio_tech_stack')
-          .select('*')
-          .order('order_index', { ascending: true })
+        let data = await fetchData(currentLanguage)
 
-        if (error) throw error
+        // Fallback to en-CA if no data for current language
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
         if (data && data.length > 0) {
           setTechStack(data.map(item => ({
             name: item.name,
@@ -48,7 +65,7 @@ export default function TechStackSection() {
       }
     }
     fetchTechStack()
-  }, [])
+  }, [pathname])
 
   return (
     <Box component="section" ref={containerRef} sx={{ position: 'relative', bgcolor: 'background.default', pt: { xs: 8, md: 12 }, pb: 8, mt: 4, overflow: 'hidden' }}>
