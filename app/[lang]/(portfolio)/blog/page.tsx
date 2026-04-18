@@ -12,8 +12,13 @@ import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60'
+
 export default function BlogPage() {
   const profileImage = useProfileImage()
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = FALLBACK_IMAGE
+  }
 
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -133,6 +138,7 @@ export default function BlogPage() {
                       <img 
                         src={profileImage}
                         alt="Habib"
+                        onError={handleImgError}
                         style={{ 
                           width: '100%',
                           height: '100%',
@@ -208,7 +214,7 @@ export default function BlogPage() {
 
       {/* ── CTA Section ── */}
       <Box sx={{ mt: { xs: 15, md: 25 }, mb: 10 }}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ overflow: 'visible' }}>
           <Box
             sx={{
               display: 'flex',
@@ -216,6 +222,8 @@ export default function BlogPage() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: { xs: 10, md: 0 },
+              overflow: 'visible',
+              pr: { md: 12 }, /* room for rotated diamond corners */
             }}
           >
             {/* Text Oval */}
@@ -261,7 +269,7 @@ export default function BlogPage() {
                   >
                     LET'S TALK<br />ABOUT YOUR<br />PROJECT
                   </Typography>
-                  <Link href="/contact" style={{ textDecoration: 'none' }}>
+                  <Link href="/contact#contact-form" style={{ textDecoration: 'none' }}>
                     <Box
                       sx={{
                         bgcolor: 'var(--primary)',
@@ -294,45 +302,43 @@ export default function BlogPage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.1, type: 'spring' }}
-              style={{ zIndex: 1, position: 'relative', width: 340, height: 340, marginLeft: '-40px' }}
+              style={{ zIndex: 1, position: 'relative', width: 340, height: 340, marginLeft: '-40px', flexShrink: 0 }}
             >
               <motion.div
                 animate={{ filter: ['drop-shadow(0 0 0px rgba(250,204,21,0))', 'drop-shadow(0 0 40px rgba(250,204,21,0.6))', 'drop-shadow(0 0 0px rgba(250,204,21,0))'] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', position: 'relative' }}
               >
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                  transform: 'rotate(45deg)',
-                  borderRadius: '60px',
-                  backgroundColor: '#FACC15',
-                  padding: '8px'
+                {/* Yellow back layer — slightly larger, offset down */}
+                <Box sx={{
+                  position: 'absolute',
+                  inset: '-8px',
+                  clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+                  bgcolor: '#FACC15',
+                  zIndex: 0,
+                  transform: 'translateY(10px)',
+                }} />
+                {/* Image diamond — clip-path keeps it in its layout box, no overflow clipping */}
+                <Box sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+                  overflow: 'hidden',
+                  zIndex: 1,
                 }}>
-                  <div style={{
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'hidden',
-                    borderRadius: '52px',
-                    position: 'relative',
-                  }}>
-                    <img 
-                      src={profileImage}
-                      alt="Habib"
-                      style={{ 
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: '142%',
-                        height: '142%',
-                        objectFit: 'cover',
-                        objectPosition: 'center top',
-                        transform: 'translate(-50%, -50%) rotate(-45deg)'
-                      }}
-                    />
-                  </div>
-                </div>
+                  <img 
+                    src={profileImage}
+                    alt="Habib"
+                    onError={handleImgError}
+                    style={{ 
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
+                    }}
+                  />
+                </Box>
               </motion.div>
             </motion.div>
           </Box>

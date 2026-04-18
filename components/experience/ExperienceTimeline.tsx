@@ -17,7 +17,7 @@ export interface TimelineEvent {
   icon?: any
 }
 
-const timelineData: TimelineEvent[] = [
+export const timelineData: TimelineEvent[] = [
   {
     id: 1,
     type: 'education',
@@ -62,12 +62,16 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
   // Parallax effect: items move vertically at slightly different speeds
   const yOffset = useTransform(scrollYProgress, [0, 1], [index * 30, index * -30])
 
+  const isEdu = event.type === 'education'
+  const themeColor = isEdu ? '#FACC15' : '#106A5A'
+  const themeBg = isEdu ? 'rgba(250, 204, 21, 0.1)' : 'rgba(16, 106, 90, 0.1)'
+
   return (
     <Box 
       sx={{ 
         display: 'flex', 
         justifyContent: isEven ? 'flex-start' : 'flex-end',
-        mb: { xs: 8, md: 12 },
+        mb: { xs: 4, md: 6 },
         position: 'relative',
         width: '100%'
       }}
@@ -105,7 +109,7 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
                 left: 0,
                 width: '4px',
                 height: '100%',
-                bgcolor: isEven ? '#FACC15' : '#106A5A',
+                bgcolor: themeColor,
               },
               transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
               '&:hover': {
@@ -116,10 +120,10 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1.5 }}>
-              <Box sx={{ p: 1, borderRadius: 1.5, bgcolor: 'rgba(250, 204, 21, 0.1)', display: 'flex' }}>
-                <FontAwesomeIcon icon={faCalendar} style={{ color: '#FACC15', fontSize: '0.8rem' }} />
+              <Box sx={{ p: 1, borderRadius: 1.5, bgcolor: themeBg, display: 'flex' }}>
+                <FontAwesomeIcon icon={faCalendar} style={{ color: themeColor, fontSize: '0.8rem' }} />
               </Box>
-              <Typography variant="caption" sx={{ color: '#FACC15', fontWeight: 800, letterSpacing: 1.5, textTransform: 'uppercase' }}>
+              <Typography variant="caption" sx={{ color: themeColor, fontWeight: 800, letterSpacing: 1.5, textTransform: 'uppercase' }}>
                 {event.date}
               </Typography>
             </Box>
@@ -189,8 +193,8 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
               alignItems: 'center', 
               justifyContent: 'center',
               border: '3px solid',
-              borderColor: isEven ? '#FACC15' : '#106A5A',
-              color: isEven ? '#FACC15' : '#106A5A',
+              borderColor: themeColor,
+              color: themeColor,
               boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
               zIndex: 2,
               position: 'relative'
@@ -207,10 +211,10 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
             height: 12, 
             borderRadius: '50%', 
             border: '3px solid', 
-            borderColor: isEven ? '#FACC15' : '#106A5A',
+            borderColor: themeColor,
             bgcolor: 'white',
             position: 'absolute',
-            bottom: -60,
+            bottom: -30,
             left: '50%',
             transform: 'translateX(-50%)'
           }} 
@@ -307,7 +311,7 @@ export default function ExperienceTimeline({ data }: { data?: TimelineEvent[] })
 
 
         {/* Timeline Line */}
-        <Box sx={{ position: 'relative', minHeight: '800px' }}>
+        <Box sx={{ position: 'relative', minHeight: '400px' }}>
           {/* Vertical Center Line */}
           <Box 
             sx={{ 

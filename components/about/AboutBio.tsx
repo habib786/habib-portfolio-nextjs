@@ -166,22 +166,37 @@ export default function AboutBio() {
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
         >
-          <Grid container spacing={4} sx={{ mt: 2 }}>
+          <Grid container spacing={3} sx={{ mt: 6 }}>
             {infoItems.map((item, i) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={item.label}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.label}>
                 <motion.div variants={itemVariants} custom={i}>
                   <Box sx={{
-                    borderBottom: '1px solid rgba(0,0,0,0.1)', pb: 1,
-                    transition: 'border-color 0.3s',
-                    '&:hover': { borderColor: '#106A5A' }
+                    bgcolor: '#fafafa',
+                    borderRadius: 2,
+                    p: 3,
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': { 
+                      bgcolor: 'white',
+                      borderColor: '#106A5A',
+                      boxShadow: '0 8px 24px rgba(16,106,90,0.12)',
+                      transform: 'translateY(-2px)'
+                    }
                   }}>
                     <Typography
                       variant="caption"
-                      sx={{ fontWeight: 700, color: 'black', letterSpacing: 1.5, display: 'block', mb: 0.5 }}
+                      sx={{ 
+                        fontWeight: 700, 
+                        color: '#106A5A', 
+                        letterSpacing: 1.5, 
+                        display: 'block', 
+                        mb: 1.5,
+                        fontSize: '0.7rem'
+                      }}
                     >
                       {item.label}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'rgba(0,0,0,0.6)', fontWeight: 500 }}>
+                    <Typography variant="body1" sx={{ color: 'rgba(0,0,0,0.85)', fontWeight: 600, fontSize: '1rem' }}>
                       {item.label === 'AGE' ? <Counter value={item.value} /> : item.value}
                     </Typography>
                   </Box>

@@ -2,9 +2,12 @@
 
 import React, { useRef } from 'react'
 import { useEffect, useState } from 'react'
-import { Box, Container, Typography, Grid, Card } from '@mui/material'
+import { Box, Container, Typography, Grid, Card, Button } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
+import NextLink from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const defaultServices = [
   {
@@ -183,6 +186,34 @@ export default function AboutServices() {
               </Grid>
             ))}
           </Grid>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
+            <NextLink 
+              href={pathname.startsWith('/fr') || pathname.startsWith('/en') ? `/${pathname.split('/')[1]}/services` : '/services'} 
+              style={{ textDecoration: 'none' }}
+            >
+              <Button
+                variant="contained"
+                size="large"
+                endIcon={<FontAwesomeIcon icon={faArrowRight} />}
+                sx={{
+                  px: 4,
+                  py: 1.5,
+                  fontWeight: 700,
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  borderRadius: 2,
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    transform: 'translateX(8px)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                View All Services
+              </Button>
+            </NextLink>
+          </Box>
         </motion.div>
       </Container>
     </Box>

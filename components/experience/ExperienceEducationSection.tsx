@@ -2,10 +2,20 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import ExperienceTimeline, { TimelineEvent } from '@/components/experience/ExperienceTimeline'
+import ExperienceTimeline, { TimelineEvent, timelineData as fallbackTimelineData } from '@/components/experience/ExperienceTimeline'
 import { createClient } from '@/lib/supabase/client'
 import { Container } from '@mui/material'
 import ElevatedContentCard from '@/components/shared/ElevatedContentCard'
+import { faGraduationCap, faBriefcase, faLaptopCode, faAward, faCertificate, faBuilding } from '@fortawesome/free-solid-svg-icons'
+
+const iconMap: Record<string, any> = {
+  faGraduationCap,
+  faBriefcase,
+  faLaptopCode,
+  faAward,
+  faCertificate,
+  faBuilding
+}
 
 export default function ExperienceEducationSection() {
   const pathname = usePathname()
@@ -41,26 +51,38 @@ export default function ExperienceEducationSection() {
 
         let { edu: eduData, exp: expData } = await fetchData(currentLanguage)
 
-        // Fallback to en-CA if current language is empty
-        if (eduData.length === 0 && expData.length === 0 && currentLanguage !== 'en-CA') {
+        // Fallback to en-CA if current language is empty per entity
+        if (eduData.length === 0 && currentLanguage !== 'en-CA') {
           const fallback = await fetchData('en-CA')
           eduData = fallback.edu
+        }
+        if (expData.length === 0 && currentLanguage !== 'en-CA') {
+          const fallback = await fetchData('en-CA')
           expData = fallback.exp
         }
 
         if (!active) return
 
-        if (eduData.length > 0 || expData.length > 0) {
-          const mappedEdu: TimelineEvent[] = eduData.map((e: any) => ({
+        let mappedEdu: TimelineEvent[] = []
+        let mappedExp: TimelineEvent[] = []
+
+        if (eduData.length > 0) {
+          mappedEdu = eduData.map((e: any) => ({
             id: `edu-${e.id}`,
             type: 'education',
             title: e.title,
             subtitle: e.subtitle,
             organization: e.subtitle,
             date: e.year_range,
+            icon: e.icon ? iconMap[e.icon] : undefined
           }))
+        } else {
+          // Hardcoded fallback if nothing in DB
+          mappedEdu = fallbackTimelineData.filter(e => e.type === 'education')
+        }
 
-          const mappedExp: TimelineEvent[] = expData.map((e: any) => ({
+        if (expData.length > 0) {
+          mappedExp = expData.map((e: any) => ({
             id: `exp-${e.id}`,
             type: 'experience',
             title: e.title,
@@ -68,10 +90,14 @@ export default function ExperienceEducationSection() {
             organization: e.company || '',
             date: e.year_range,
             description: e.description,
+            icon: e.icon ? iconMap[e.icon] : undefined
           }))
-
-          setTimelineData([...mappedEdu, ...mappedExp])
+        } else {
+          // Hardcoded fallback if nothing in DB
+          mappedExp = fallbackTimelineData.filter(e => e.type === 'experience')
         }
+
+        setTimelineData([...mappedEdu, ...mappedExp])
       } catch (err) {
         console.error('Error loading timeline data:', err)
       }

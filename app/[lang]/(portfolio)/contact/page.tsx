@@ -23,7 +23,7 @@ export default async function ContactPage() {
     if (settingsData) {
       const profileImg = settingsData.find((s: any) => s.key === 'profile_image')?.value
       if (profileImg) {
-        profileImage = profileImg
+        profileImage = profileImg.replace(/^["']+|["']+$/g, '').trim()
       }
     }
   }

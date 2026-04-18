@@ -32,6 +32,8 @@ export default function ServiceCard({
     <Card sx={{ 
       p: 5, 
       height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
       borderRadius: 2,
       bgcolor: 'background.paper',
       border: '1px solid',
@@ -46,7 +48,7 @@ export default function ServiceCard({
         boxShadow: '0 20px 60px rgba(16,106,90,0.1)'
       }
     }}>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ height: '100%', flexDirection: 'column' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Typography variant="h2" sx={{ fontSize: '3.5rem', fontWeight: 900, color: 'primary.main', opacity: 0.1, lineHeight: 1 }}>
             {id}
@@ -60,7 +62,7 @@ export default function ServiceCard({
           {title}
         </Typography>
         
-        <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.1rem', lineHeight: 1.7, flexGrow: 1 }}>
           {description}
         </Typography>
         

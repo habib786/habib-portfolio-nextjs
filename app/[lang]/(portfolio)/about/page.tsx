@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 import { getDictionary, hasLocale } from '../../dictionaries'
 import AboutHero from '@/components/about/AboutHero'
 import AboutBio from '@/components/about/AboutBio'
-import AboutServices from '@/components/about/AboutServices'
+import ServicesSection from '@/components/home/ServicesSection'
 import AboutBanner from '@/components/about/AboutBanner'
 import AboutTestimonials from '@/components/about/AboutTestimonials'
 import { createClient } from '@/lib/supabase/server'
@@ -53,7 +53,7 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.2}>
-        <AboutServices />
+        <ServicesSection lang={lang} />
       </ScrollReveal>
 
       <ScrollReveal>

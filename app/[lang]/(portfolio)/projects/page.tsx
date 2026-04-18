@@ -406,7 +406,7 @@ export default function ProjectsPage() {
                      }}>
                        LET'S TALK<br />ABOUT YOUR<br />PROJECT
                      </Typography>
-                     <Link href="/contact" style={{ textDecoration: 'none' }}>
+                     <Link href="/contact#contact-form" style={{ textDecoration: 'none' }}>
                         <Box sx={{ 
                           bgcolor: 'var(--primary)', 
                           color: 'white', 
