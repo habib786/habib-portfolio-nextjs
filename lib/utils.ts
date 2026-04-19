@@ -5,22 +5,29 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date) {
-  return new Date(date).toLocaleDateString('en-US', {
+export function formatDate(date: string | Date, locale?: string) {
+  const currentLocale = locale ?? getDefaultLocale()
+  return new Date(date).toLocaleDateString(currentLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 }
 
-export function formatDateTime(date: string | Date) {
-  return new Date(date).toLocaleDateString('en-US', {
+export function formatDateTime(date: string | Date, locale?: string) {
+  const currentLocale = locale ?? getDefaultLocale()
+  return new Date(date).toLocaleDateString(currentLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   })
+}
+
+function getDefaultLocale() {
+  if (typeof navigator !== 'undefined') return navigator.language || 'en-US'
+  return 'en-US'
 }
 
 export function truncateText(text: string, maxLength: number) {
@@ -88,4 +95,11 @@ export function getLocalizedHref(href: string, pathname: string): string {
     return `/${currentLocale}${href === '/' ? '' : href}`
   }
   return href
+}
+
+export function cleanValue(val: any): any {
+  if (typeof val === 'string') {
+    return val.replace(/^["']+|["']+$/g, '').trim()
+  }
+  return val
 }

@@ -1,34 +1,47 @@
-import React from 'react'
-import { createClient } from '@/lib/supabase/server'
-import { Box, Container, Typography, Card, CardContent, Avatar, Grid, Button } from '@mui/material'
+'use client'
+
+import React, { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { Box, Container, Typography, Card, CardContent, Avatar, Grid, Button, Skeleton } from '@mui/material'
 import NextLink from 'next/link'
 import SectionHeading from '@/components/ui/SectionHeading'
 
 
-export default async function ServicesSection({ lang }: { lang?: string }) {
-  const supabase = await createClient()
-  const activeLang = lang || 'en-CA'
+export default function ServicesSection({ lang }: { lang?: string }) {
+  const [services, setServices] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-  let dbServices = []
-  if (supabase) {
-    const { data } = await supabase
-      .from('portfolio_services')
-      .select('*')
-      .eq('language', activeLang)
-      .order('order_index', { ascending: true })
-    
-    if (data && data.length > 0) {
-      dbServices = data
-    } else if (activeLang !== 'en-CA') {
-      // Fallback to English if current language is empty
-      const { data: fallbackData } = await supabase
+  useEffect(() => {
+    async function fetchServices() {
+      const supabase = createClient()
+      const activeLang = lang || 'en-CA'
+
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
+
+      const { data } = await supabase
         .from('portfolio_services')
         .select('*')
-        .eq('language', 'en-CA')
+        .eq('language', activeLang)
         .order('order_index', { ascending: true })
-      if (fallbackData) dbServices = fallbackData
+      
+      if (data && data.length > 0) {
+        setServices(data)
+      } else if (activeLang !== 'en-CA') {
+        const { data: fallbackData } = await supabase
+          .from('portfolio_services')
+          .select('*')
+          .eq('language', 'en-CA')
+          .order('order_index', { ascending: true })
+        if (fallbackData) setServices(fallbackData)
+      }
+      setLoading(false)
     }
-  }
+
+    fetchServices()
+  }, [lang])
 
   const defaultServices = [
     {
@@ -51,12 +64,35 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
     }
   ]
 
-  const displayServices = dbServices.length > 0 ? dbServices.map(s => ({
+  const displayServices = services.length > 0 ? services.map((s: any) => ({
     id: s.number_id,
     icon: s.icon_url,
     title: s.title,
     description: s.description
   })) : defaultServices
+
+  if (loading) {
+    return (
+      <Box component="section" sx={{ py: 15, bgcolor: 'background.default', position: 'relative' }}>
+        <Container maxWidth="lg">
+          <SectionHeading title="My Expert Services" align="center" variant="h3" />
+          <Grid container spacing={5}>
+            {[1, 2, 3].map((i) => (
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
+                <Card sx={{ height: '100%', p: 5, borderRadius: 1, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
+                  <Skeleton variant="rectangular" width={72} height={72} sx={{ borderRadius: 1, mb: 4 }} />
+                  <Skeleton variant="text" width="30%" height={20} />
+                  <Skeleton variant="text" width="80%" height={36} />
+                  <Skeleton variant="text" width="100%" />
+                  <Skeleton variant="text" width="90%" />
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+    )
+  }
 
   return (
     <Box component="section" sx={{ py: 15, bgcolor: 'background.default', position: 'relative' }}>

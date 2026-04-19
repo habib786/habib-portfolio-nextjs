@@ -8,6 +8,16 @@
       "contact": "رابطہ کریں"
     }
   },
+  "hero": {
+    "greeting": "میرا نام ہے",
+    "viewProjects": "پروجیکٹس دیکھیں",
+    "letsTalk": "بات کریں",
+    "stats": {
+      "experience": "تجربہ",
+      "projects": "پروجیکٹس",
+      "clients": "کلائنٹس"
+    }
+  },
   "blog": {
     "cta": {
       "haveProject": "کیا آپ کے پاس کوئی پروجیکٹ ہے؟",

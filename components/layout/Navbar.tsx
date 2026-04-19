@@ -38,10 +38,38 @@ async function getMenuFromSupabase(supabase: any, language?: string) {
   }
 }
 
+async function getSocialLinks(supabase: any) {
+  try {
+    const { data, error } = await supabase
+      .from('settings')
+      .select('key, value')
+      .in('key', ['social_linkedin', 'social_github']);
+    
+    if (error) {
+      console.error('Error fetching social links:', error);
+      return { linkedin: 'https://linkedin.com', github: 'https://github.com' };
+    }
+    
+    const links: Record<string, string> = {};
+    data?.forEach((item: any) => {
+      links[item.key] = item.value;
+    });
+    
+    return {
+      linkedin: links['social_linkedin'] || 'https://linkedin.com',
+      github: links['social_github'] || 'https://github.com'
+    };
+  } catch (e) {
+    console.error('Social links fetch error:', e);
+    return { linkedin: 'https://linkedin.com', github: 'https://github.com' };
+  }
+}
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [navItems, setNavItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [socialLinks, setSocialLinks] = useState({ linkedin: 'https://linkedin.com', github: 'https://github.com' })
   const pathname = usePathname()
 
   const supabase = useMemo(() => createClient(), [])
@@ -53,7 +81,6 @@ export default function Navbar() {
     async function fetchMenu() {
       try {
         setLoading(true);
-        // Robust locale detection: match strings like /ar-SA/ or /en-CA at start
         const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
         const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
         
@@ -62,22 +89,44 @@ export default function Navbar() {
           return;
         }
 
-        // 1. Try language
-        let menuData = await getMenuFromSupabase(supabase, currentLanguage);
+        const [menuData, social] = await Promise.all([
+          getMenuFromSupabase(supabase, currentLanguage),
+          getSocialLinks(supabase)
+        ]);
         
-        // 2. Try English if empty
-        if ((!menuData || menuData.length === 0) && currentLanguage !== 'en-CA') {
-          menuData = await getMenuFromSupabase(supabase, 'en-CA');
+        setSocialLinks(social);
+        
+        let finalMenuData = menuData;
+        
+        if ((!finalMenuData || finalMenuData.length === 0) && currentLanguage !== 'en-CA') {
+          finalMenuData = await getMenuFromSupabase(supabase, 'en-CA');
         }
         
-        // 3. Final safety: If STILL empty, use absolute minimal internal items
-        if (!menuData || menuData.length === 0) {
-          const minimalItems = ['Home', 'Projects', 'Contact'].map((title, i) => ({
+        if (!finalMenuData || finalMenuData.length === 0) {
+          const fallbackLabels: Record<string, { title: string; url: string }[]> = {
+            'en-CA': [
+              { title: 'Home', url: '/' },
+              { title: 'Projects', url: '/projects' },
+              { title: 'Contact', url: '/contact#contact-form' }
+            ],
+            'fr-CA': [
+              { title: 'Accueil', url: '/' },
+              { title: 'Projets', url: '/projects' },
+              { title: 'Contact', url: '/contact#contact-form' }
+            ],
+            'ar-SA': [
+              { title: 'الرئيسية', url: '/' },
+              { title: 'المشاريع', url: '/projects' },
+              { title: 'اتصال', url: '/contact#contact-form' }
+            ]
+          };
+          const labels = fallbackLabels[currentLanguage] || fallbackLabels['en-CA'];
+          const minimalItems = labels.map((item, i) => ({
             id: `minimal-${i}`,
-            title,
-            url: title === 'Home' ? '/' : (title === 'Contact' ? '/contact#contact-form' : `/${title.toLowerCase()}`),
+            title: item.title,
+            url: item.url,
             order: i,
-            language: 'en-CA',
+            language: currentLanguage,
             created_at: '',
             updated_at: '',
             icon: null,
@@ -86,7 +135,7 @@ export default function Navbar() {
           }));
           setNavItems(minimalItems);
         } else {
-          setNavItems(flattenMenu(menuData));
+          setNavItems(flattenMenu(finalMenuData));
         }
       } catch (error) {
         console.error('Critical Navbar Error:', error);
@@ -181,7 +230,7 @@ export default function Navbar() {
             </Box>
             <IconButton 
               component={Link} 
-              href="https://linkedin.com" 
+              href={socialLinks.linkedin} 
               target="_blank" 
               sx={{ 
                 color: 'white', 
@@ -197,7 +246,7 @@ export default function Navbar() {
             
             <IconButton 
               component={Link} 
-              href="https://github.com" 
+              href={socialLinks.github} 
               target="_blank" 
               sx={{ 
                 color: 'white', 

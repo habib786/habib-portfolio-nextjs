@@ -5,10 +5,17 @@ import ContactInfo from '@/components/contact/ContactInfo'
 import ExperienceEducationSection from '@/components/experience/ExperienceEducationSection'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
 import { createClient } from '@/lib/supabase/server'
+import { getSettings } from '@/lib/supabase/queries'
+import { cleanValue } from '@/lib/utils'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Get in touch with Habib Farooq for project inquiries, collaborations, or just to say hello.',
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings()
+  const contactMetaTitle = settings?.contact_meta_title ?? null
+  const contactMetaDesc = settings?.contact_meta_description ?? null
+  return {
+    title: typeof contactMetaTitle === 'string' ? contactMetaTitle : 'Contact',
+    description: typeof contactMetaDesc === 'string' ? contactMetaDesc : 'Get in touch with Habib Farooq for project inquiries, collaborations, or just to say hello.',
+  }
 }
 
 import ContactHero from '@/components/contact/ContactHero'
@@ -23,7 +30,7 @@ export default async function ContactPage() {
     if (settingsData) {
       const profileImg = settingsData.find((s: any) => s.key === 'profile_image')?.value
       if (profileImg) {
-        profileImage = profileImg.replace(/^["']+|["']+$/g, '').trim()
+        profileImage = cleanValue(profileImg)
       }
     }
   }

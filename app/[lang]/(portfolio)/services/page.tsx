@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Box, Container, Typography, Grid, Button, Stack, Card } from '@mui/material'
 import { createClient } from '@/lib/supabase/server'
+import { cleanValue } from '@/lib/utils'
 import SectionHeading from '@/components/ui/SectionHeading'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -48,7 +49,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
         }
       })
       if (settings.profile_image && typeof settings.profile_image === 'string' && settings.profile_image.trim()) {
-        profileImage = settings.profile_image.replace(/^["']+|["']+$/g, '').trim()
+        profileImage = cleanValue(settings.profile_image)
       }
     }
   }

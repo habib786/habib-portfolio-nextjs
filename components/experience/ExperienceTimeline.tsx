@@ -5,6 +5,9 @@ import { Box, Typography, Paper, useTheme, useMediaQuery } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGraduationCap, faBriefcase, faCalendar } from '@fortawesome/free-solid-svg-icons'
+import { useParams } from 'next/navigation'
+
+const isRtlLang = (lang: string) => lang === 'ar-SA' || lang === 'ur-PK'
 
 export interface TimelineEvent {
   id: number | string
@@ -58,7 +61,7 @@ export const timelineData: TimelineEvent[] = [
   }
 ]
 
-function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { event: TimelineEvent, index: number, isEven: boolean, isMobile: boolean, scrollYProgress: any }) {
+function TimelineItem({ event, index, isEven, isMobile, scrollYProgress, isRtl }: { event: TimelineEvent, index: number, isEven: boolean, isMobile: boolean, scrollYProgress: any, isRtl: boolean }) {
   // Parallax effect: items move vertically at slightly different speeds
   const yOffset = useTransform(scrollYProgress, [0, 1], [index * 30, index * -30])
 
@@ -66,11 +69,13 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
   const themeColor = isEdu ? '#FACC15' : '#106A5A'
   const themeBg = isEdu ? 'rgba(250, 204, 21, 0.1)' : 'rgba(16, 106, 90, 0.1)'
 
+  const isAlternate = isRtl ? !isEven : isEven
+  
   return (
     <Box 
       sx={{ 
         display: 'flex', 
-        justifyContent: isEven ? 'flex-start' : 'flex-end',
+        justifyContent: isAlternate ? 'flex-start' : 'flex-end',
         mb: { xs: 4, md: 6 },
         position: 'relative',
         width: '100%'
@@ -80,13 +85,13 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
       <Box 
         sx={{ 
           width: { xs: 'calc(100% - 70px)', md: '42%' },
-          ml: { xs: '70px', md: isEven ? 0 : 'auto' },
-          mr: { xs: 0, md: isEven ? 'auto' : 0 }
+          ml: { xs: '70px', md: isAlternate ? 0 : 'auto' },
+          mr: { xs: 0, md: isAlternate ? 'auto' : 0 }
         }}
       >
         <motion.div
           style={{ y: 0 }}
-          initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+          initial={{ opacity: 0, x: isAlternate ? -100 : 100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, type: 'spring', damping: 20 }}
@@ -171,7 +176,8 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
       <Box 
         sx={{ 
           position: 'absolute', 
-          left: { xs: '20px', md: '50%' },
+          left: { xs: isRtl ? 'auto' : '20px', md: '50%' },
+          right: { xs: isRtl ? '20px' : 'auto', md: 'auto' },
           transform: 'translateX(-50%)',
           zIndex: 1,
           top: 40
@@ -224,7 +230,10 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress }: { eve
   )
 }
 
-export default function ExperienceTimeline({ data }: { data?: TimelineEvent[] }) {
+export default function ExperienceTimeline({ data, lang: propLang }: { data?: TimelineEvent[], lang?: string }) {
+  const params = useParams()
+  const lang = propLang || (params?.lang as string) || 'en-CA'
+  const isRtl = isRtlLang(lang)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const containerRef = useRef<HTMLDivElement>(null)
@@ -287,7 +296,7 @@ export default function ExperienceTimeline({ data }: { data?: TimelineEvent[] })
                   color: 'text.primary', 
                   fontSize: { xs: '1.2rem', md: '2.5rem' },
                   letterSpacing: 2,
-                  textAlign: 'right',
+                  textAlign: isRtl ? 'left' : 'right',
                   mb: 1
                 }}
               >
@@ -340,7 +349,7 @@ export default function ExperienceTimeline({ data }: { data?: TimelineEvent[] })
             // Assign icons based on type if missing
             const icon = event.icon || (event.type === 'education' ? faGraduationCap : faBriefcase)
             const eventWithIcon = { ...event, icon }
-            return <TimelineItem key={event.id} event={eventWithIcon} index={index} isEven={isEven} isMobile={isMobile} scrollYProgress={scrollYProgress} />
+            return <TimelineItem key={event.id} event={eventWithIcon} index={index} isEven={isEven} isMobile={isMobile} scrollYProgress={scrollYProgress} isRtl={isRtl} />
           })}
         </Box>
       </Box>

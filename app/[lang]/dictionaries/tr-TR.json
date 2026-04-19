@@ -8,6 +8,16 @@
       "contact": "İletişim"
     }
   },
+  "hero": {
+    "greeting": "Adım",
+    "viewProjects": "PROJELERİ GÖR",
+    "letsTalk": "KONUŞALIM",
+    "stats": {
+      "experience": "Deneyim",
+      "projects": "Projeler",
+      "clients": "Müşteriler"
+    }
+  },
   "blog": {
     "cta": {
       "haveProject": "Aklınızda bir proje mi var?",

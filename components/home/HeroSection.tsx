@@ -4,11 +4,12 @@ import React, { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
 import Counter from '@/components/animations/Counter'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
-import { getLocalizedHref } from '@/lib/utils'
+import { getLocalizedHref, cleanValue } from '@/lib/utils'
 
 const MotionBox = motion.create(Box)
 
@@ -25,14 +26,6 @@ export default function HeroSection({ dict }: { dict?: any }) {
     clients: '30+',
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60'
   })
-
-  // Helper to clean JSONB strings that might come with extra quotes
-  const cleanValue = (val: any) => {
-    if (typeof val === 'string' && val.startsWith('"') && val.endsWith('"')) {
-      return val.slice(1, -1);
-    }
-    return val;
-  }
 
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -134,7 +127,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                   textTransform: 'uppercase'
                 }}
               >
-                Hey, my name is
+                {dict?.hero?.greeting || 'Hey, my name is'}
               </Typography>
                 <Box sx={{ position: 'relative', width: 'fit-content' }}>
                   <Typography 
@@ -206,7 +199,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                   href={`/${lang}/projects`}
                   sx={{ bgcolor: 'secondary.main', color: 'black', '&:hover': { bgcolor: 'secondary.light' }, px: 4, py: 1.5, fontSize: '1rem' }}
                 >
-                  VIEW PROJECTS
+                  {dict?.hero?.viewProjects || 'VIEW PROJECTS'}
                 </Button>
                 <Button 
                   variant="outlined" 
@@ -214,7 +207,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                   href={`/${lang}/contact#contact-form`}
                   sx={{ borderColor: 'white', color: 'white', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }, px: 4 }}
                 >
-                  LET'S TALK
+                  {dict?.hero?.letsTalk || "LET'S TALK"}
                 </Button>
               </Box>
             </motion.div>
@@ -264,14 +257,12 @@ export default function HeroSection({ dict }: { dict?: any }) {
                   }}
                   className="w-full h-full rounded-[5px] bg-gradient-to-b from-yellow-400 to-yellow-500 overflow-hidden flex items-end justify-center shadow-[0_30px_60px_rgba(0,0,0,0.5)] border-[8px] border-white/20"
                 >
-                   <motion.img 
-                     initial={{ scale: 1.2, opacity: 0 }}
-                     animate={{ scale: 1, opacity: 1 }}
-                     transition={{ duration: 1.2, ease: "easeOut" }}
-                     src={profile.image} 
-                     alt={profile.name}
-                     className="w-full h-[95%] object-cover object-top"
-                   />
+<Image 
+                      src={profile.image} 
+                      alt={profile.name}
+                      fill
+                      className="object-cover object-top"
+                    />
                    <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(16, 106, 90, 0.6), transparent)' }} />
                 </motion.div>
               </motion.div>
@@ -315,9 +306,9 @@ export default function HeroSection({ dict }: { dict?: any }) {
                 }}
               >
                 {[
-                  { label: 'Experience', value: profile.experience },
-                  { label: 'Projects', value: profile.projects },
-                  { label: 'Clients', value: profile.clients }
+                  { label: dict?.hero?.stats?.experience || 'Experience', value: profile.experience },
+                  { label: dict?.hero?.stats?.projects || 'Projects', value: profile.projects },
+                  { label: dict?.hero?.stats?.clients || 'Clients', value: profile.clients }
                 ].map((stat, i) => (
                   <Box key={stat.label} sx={{ textAlign: { xs: 'center', md: 'right' }, color: 'white' }}>
                     <Typography variant="caption" sx={{ color: 'secondary.main', fontWeight: 600, display: 'block', mb: 0.5, textTransform: 'uppercase', letterSpacing: 2, fontSize: '0.7rem' }}>

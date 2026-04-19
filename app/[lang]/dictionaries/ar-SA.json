@@ -8,6 +8,16 @@
       "contact": "اتصل بنا"
     }
   },
+  "hero": {
+    "greeting": "اسمي",
+    "viewProjects": "عرض المشاريع",
+    "letsTalk": "لنتحدث",
+    "stats": {
+      "experience": "الخبرة",
+      "projects": "المشاريع",
+      "clients": "العملاء"
+    }
+  },
   "blog": {
     "cta": {
       "haveProject": "هل لديك مشروع في ذهنك؟",

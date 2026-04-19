@@ -8,6 +8,7 @@ import ServicesSection from '@/components/home/ServicesSection'
 import AboutBanner from '@/components/about/AboutBanner'
 import AboutTestimonials from '@/components/about/AboutTestimonials'
 import { createClient } from '@/lib/supabase/server'
+import { cleanValue } from '@/lib/utils'
 import { Pacifico } from 'next/font/google'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
 
@@ -39,7 +40,7 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
         }
       })
       if (settings.profile_image && typeof settings.profile_image === 'string' && settings.profile_image.trim()) {
-        profileImage = settings.profile_image.replace(/^["']+|["']+$/g, '').trim()
+        profileImage = cleanValue(settings.profile_image)
       }
     }
   }

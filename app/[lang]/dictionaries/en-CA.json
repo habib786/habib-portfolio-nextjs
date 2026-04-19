@@ -8,6 +8,16 @@
       "contact": "Contact"
     }
   },
+  "hero": {
+    "greeting": "Hey, my name is",
+    "viewProjects": "VIEW PROJECTS",
+    "letsTalk": "LET'S TALK",
+    "stats": {
+      "experience": "Experience",
+      "projects": "Projects",
+      "clients": "Clients"
+    }
+  },
   "blog": {
     "cta": {
       "haveProject": "Have a project in mind?",

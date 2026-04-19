@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Box, Container, Typography, Card, CardContent, Chip, Stack, Grid } from '@mui/material'
+import { Box, Container, Typography, Card, CardContent, Chip, Stack, Grid, Skeleton } from '@mui/material'
 import { Button } from '@/components/ui/Button'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getLocalizedHref } from '@/lib/utils'
@@ -107,6 +107,28 @@ export default function ProjectsSection() {
   ]
 
   const displayProjects = projects.length > 0 ? projects : defaultProjects
+
+  if (loading) {
+    return (
+      <Box component="section" sx={{ py: 12, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
+        <Container maxWidth="lg">
+          <SectionHeading title="MY LATEST PROJECTS" subtitle="" />
+          <Grid container spacing={4}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Stack spacing={4}>
+                <SkeletonCard /><SkeletonCard />
+              </Stack>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Stack spacing={4} sx={{ mt: { md: 12 } }}>
+                <SkeletonCard /><SkeletonCard />
+              </Stack>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    )
+  }
 
   return (
     <Box component="section" ref={containerRef} sx={{ py: 12, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
@@ -247,6 +269,20 @@ function ProjectCard({ project, index, pathname }: { project: any, index: number
         </Box>
       </Card>
     </motion.div>
+  )
+}
+
+function SkeletonCard() {
+  return (
+    <Card sx={{ 
+      borderRadius: 1, 
+      overflow: 'hidden', 
+      bgcolor: 'background.paper',
+      border: '1px solid',
+      borderColor: 'divider'
+    }}>
+      <Skeleton variant="rectangular" sx={{ aspectRatio: '4/3', width: '100%' }} />
+    </Card>
   )
 }
 
