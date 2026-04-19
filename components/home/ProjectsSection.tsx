@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Box, Container, Typography, Card, CardContent, Chip, Stack, Grid } from '@mui/material'
 import { Button } from '@/components/ui/Button'
 import SectionHeading from '@/components/ui/SectionHeading'
+import { getLocalizedHref } from '@/lib/utils'
 
 
 export default function ProjectsSection() {
@@ -21,6 +22,7 @@ export default function ProjectsSection() {
   const xBg = useTransform(scrollYProgress, [0, 1], [-100, 100])
 
   const pathname = usePathname()
+  
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -126,14 +128,14 @@ export default function ProjectsSection() {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={4}>
-               {displayProjects[0] && <ProjectCard project={displayProjects[0]} index={0} />}
-               {displayProjects[2] && <ProjectCard project={displayProjects[2]} index={2} />}
+               {displayProjects[0] && <ProjectCard project={displayProjects[0]} index={0} pathname={pathname} />}
+               {displayProjects[2] && <ProjectCard project={displayProjects[2]} index={2} pathname={pathname} />}
             </Stack>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={4} sx={{ mt: { md: 12 } }}>
-               {displayProjects[1] && <ProjectCard project={displayProjects[1]} index={1} />}
-               {displayProjects[3] && <ProjectCard project={displayProjects[3]} index={3} />}
+               {displayProjects[1] && <ProjectCard project={displayProjects[1]} index={1} pathname={pathname} />}
+               {displayProjects[3] && <ProjectCard project={displayProjects[3]} index={3} pathname={pathname} />}
             </Stack>
           </Grid>
         </Grid>
@@ -142,7 +144,7 @@ export default function ProjectsSection() {
   )
 }
 
-function ProjectCard({ project, index }: { project: any, index: number }) {
+function ProjectCard({ project, index, pathname }: { project: any, index: number, pathname: string }) {
   const cardRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -155,6 +157,7 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
   return (
     <motion.div 
       ref={cardRef}
+      style={{ position: 'relative' }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -220,7 +223,7 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
             <Button 
               variant="default" 
               component={Link}
-              href="/projects"
+              href={getLocalizedHref('/projects', pathname)}
               sx={{ 
                 bgcolor: 'white', 
                 color: 'primary.main', 

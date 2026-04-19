@@ -44,6 +44,11 @@ export async function generateMetadata(): Promise<Metadata> {
       authors: [{ name: 'Habib Farooq' }],
       creator: 'Habib Farooq',
       publisher: 'Habib Farooq',
+      icons: {
+        icon: '/favicon.svg',
+        apple: '/favicon.svg',
+        shortcut: '/favicon.svg',
+      },
       robots: {
         index: true,
         follow: true,
@@ -61,13 +66,13 @@ export async function generateMetadata(): Promise<Metadata> {
         url: finalOgUrl,
         title: siteMetadata.title,
         description: siteMetadata.description,
-        siteName: 'Habib Farooq Portfolio',
+        siteName: 'Habib',
         images: [
           {
             url: '/og-image.png',
             width: 1200,
             height: 630,
-            alt: 'Habib Farooq Portfolio',
+            alt: 'Habib',
           },
         ],
       },
@@ -107,13 +112,13 @@ export async function generateMetadata(): Promise<Metadata> {
         url: 'https://habibfarooq.com',
         title: 'Habib Farooq - Full Stack Developer & AI Engineer',
         description: 'Portfolio of Habib Farooq, a Full Stack Developer and AI Engineer',
-        siteName: 'Habib Farooq Portfolio',
+        siteName: 'Habib',
         images: [
           {
             url: '/og-image.png',
             width: 1200,
             height: 630,
-            alt: 'Habib Farooq Portfolio',
+            alt: 'Habib',
           },
         ],
       },

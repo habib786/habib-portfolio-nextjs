@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Share2, Bookmark, Heart, MessageCircle } from 'lucide-react'
 import { Box, Typography, Chip, Stack, IconButton, Button } from '@mui/material'
 import { motion } from 'framer-motion'
@@ -9,6 +10,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { getLocalizedHref } from '@/lib/utils'
 
 interface BlogPostContentProps {
   post: {
@@ -31,6 +33,7 @@ interface BlogPostContentProps {
 }
 
 export default function BlogPostContent({ post }: BlogPostContentProps) {
+  const pathname = usePathname()
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(42)
@@ -300,7 +303,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               </Button>
               <Button
                 component={Link}
-                href="/contact"
+                href={getLocalizedHref('/contact', pathname)}
                 variant="text"
                 size="small"
                 sx={{ borderRadius: '5px', fontWeight: 700, color: 'var(--primary)' }}
@@ -388,7 +391,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
           <Box
             component={Link}
-            href="/blog"
+            href={getLocalizedHref('/blog', pathname)}
             sx={{
               flex: 1,
               p: 3,
@@ -411,7 +414,7 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
           </Box>
           <Box
             component={Link}
-            href="/blog/future-of-ai-in-web-development"
+            href={getLocalizedHref('/blog', pathname)}
             sx={{
               flex: 1,
               p: 3,

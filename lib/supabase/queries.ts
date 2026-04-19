@@ -387,7 +387,7 @@ export async function getSiteMetadata() {
     const contactEmail = (settings?.contact_email || 'contact@habibfarooq.com').trim()
 
     return {
-      title: settings?.site_title || 'Habib Farooq Portfolio',
+      title: settings?.site_title || 'Habib',
       description: settings?.site_description || 'Personal portfolio and blog',
       url: siteUrl,
       contactEmail: contactEmail,
@@ -397,7 +397,7 @@ export async function getSiteMetadata() {
   } catch (error) {
     console.error('Error fetching site metadata:', error);
     return {
-      title: 'Habib Farooq Portfolio',
+      title: 'Habib',
       description: 'Personal portfolio and blog',
       url: 'https://habibfarooq.com',
       contactEmail: 'contact@habibfarooq.com',

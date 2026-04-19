@@ -7,5 +7,12 @@
       "blog": "Blogue",
       "contact": "Contact"
     }
+  },
+  "blog": {
+    "cta": {
+      "haveProject": "Vous avez un projet en tête?",
+      "letsTalk": "DISCUTONS",
+      "aboutProject": "DE VOTRE PROJET"
+    }
   }
 }

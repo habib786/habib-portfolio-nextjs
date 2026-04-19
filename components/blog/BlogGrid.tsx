@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Calendar, Clock, Eye, Search as SearchIcon, Filter } from 'lucide-react'
 import { Box, Typography, Button, TextField, Select, MenuItem, InputAdornment, Pagination, Card, CardContent, CardMedia, Chip, Stack, Grid, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
-import { formatDate } from '@/lib/utils'
+import { formatDate, getLocalizedHref } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 
 // Mock data - will be replaced with Supabase data
@@ -106,6 +107,7 @@ const sortOptions = ['Newest', 'Popular', 'Trending']
 
 export default function BlogGrid() {
   const theme = useTheme()
+  const pathname = usePathname()
   const [blogPosts, setBlogPosts] = useState(defaultBlogPosts)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -398,7 +400,7 @@ export default function BlogGrid() {
                   <Typography 
                     variant="h5" 
                     component={Link} 
-                    href={`/blog/${post.slug}`}
+                    href={getLocalizedHref(`/blog/${post.slug}`, pathname)}
                     sx={{ 
                       fontWeight: 900, 
                       mb: 2, 
@@ -464,7 +466,7 @@ export default function BlogGrid() {
 
                   <Button 
                     component={Link} 
-                    href={`/blog/${post.slug}`}
+                    href={getLocalizedHref(`/blog/${post.slug}`, pathname)}
                     variant="contained" 
                     color="primary"
                     fullWidth

@@ -7,5 +7,12 @@
       "blog": "المدونة",
       "contact": "اتصل بنا"
     }
+  },
+  "blog": {
+    "cta": {
+      "haveProject": "هل لديك مشروع في ذهنك؟",
+      "letsTalk": "لنتحدث",
+      "aboutProject": "عن مشروعك"
+    }
   }
 }

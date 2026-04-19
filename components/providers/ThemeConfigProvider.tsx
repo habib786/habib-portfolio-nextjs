@@ -89,7 +89,7 @@ const defaultTheme: ThemeConfig = {
 }
 
 const defaultSiteSettings: SiteSettings = {
-  siteName: 'Habib Farooq',
+  siteName: 'Habib',
   siteDescription: 'Portfolio website',
   siteUrl: 'https://habibfarooq.com',
   logo: '',

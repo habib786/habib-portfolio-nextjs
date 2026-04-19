@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ExternalLink, Code, Star, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { getLocalizedHref } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { 
   Box, 
@@ -284,7 +285,7 @@ export default function FeaturedProjects() {
 
       {/* View All Button */}
       <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <Button variant="outline" size="lg" component={Link} href="/projects">
+        <Button variant="outline" size="lg" component={Link} href={getLocalizedHref('/projects', pathname)}>
           View All Projects
           <ExternalLink size={20} style={{ marginInlineStart: 12 }} />
         </Button>

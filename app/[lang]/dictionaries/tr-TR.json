@@ -7,5 +7,12 @@
       "blog": "Blog",
       "contact": "İletişim"
     }
+  },
+  "blog": {
+    "cta": {
+      "haveProject": "Aklınızda bir proje mi var?",
+      "letsTalk": "KONUŞALIM",
+      "aboutProject": "PROJENİZİ"
+    }
   }
 }

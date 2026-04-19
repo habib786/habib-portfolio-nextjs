@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   const post = mapPost(rawPost)
 
-  return {
-    title: `${post.title} - Habib Farooq`,
+return {
+    title: post.title,
     description: post.excerpt,
     keywords: post.tags,
     authors: [{ name: post.author }],

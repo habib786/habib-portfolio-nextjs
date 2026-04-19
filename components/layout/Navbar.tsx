@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from '@/components/ui/Button'
 import { IconButton, Box, Toolbar, AppBar, Container, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
 import { createClient } from '@/lib/supabase/client'
+import { getLocalizedHref } from '@/lib/utils'
 import type { MenuItem } from '@/lib/types'
 import LanguageSelector from './LanguageSelector'
 
@@ -112,26 +113,13 @@ export default function Navbar() {
   // Filter out only root-level menu items for main navigation
   const rootNavItems = navItems.filter(item => !item.parent_id);
 
-  // Helper to get localized href
-  const getLocalizedHref = (href: string) => {
-    if (href.startsWith('http')) return href;
-    const segments = pathname.split('/');
-    const currentLocale = segments[1];
-    const isLocale = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR'].includes(currentLocale);
-    
-    if (isLocale) {
-      return `/${currentLocale}${href === '/' ? '' : href}`;
-    }
-    return href;
-  };
-
   return (
     <AppBar position="sticky" sx={{ bgcolor: 'primary.main', backgroundImage: 'linear-gradient(to right, #106A5A, #0d594b)', boxShadow: 0, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ height: 72, display: 'flex', justifyContent: 'space-between' }}>
           {/* Logo */}
           <Box sx={{ display: 'flex', alignItems: 'center', width: { xs: 'auto', md: '25%' } }}>
-            <Link href={getLocalizedHref('/')} onClick={closeMenu} style={{ textDecoration: 'none' }}>
+            <Link href={getLocalizedHref('/', pathname)} onClick={closeMenu} style={{ textDecoration: 'none' }}>
               <Box sx={{ color: 'secondary.main' }}>
                 <AnimatedLogo />
               </Box>
@@ -148,7 +136,7 @@ export default function Navbar() {
               rootNavItems.map((item) => (
                 <Link
                   key={item.id}
-                  href={getLocalizedHref(item.url)}
+                  href={getLocalizedHref(item.url, pathname)}
                   style={{ textDecoration: 'none' }}
                 >
                   <Typography
@@ -158,8 +146,8 @@ export default function Navbar() {
                       fontSize: '0.85rem',
                       letterSpacing: 1.5,
                       textTransform: 'uppercase',
-                      color: pathname === getLocalizedHref(item.url) ? 'secondary.main' : 'white',
-                      opacity: pathname === getLocalizedHref(item.url) ? 1 : 0.8,
+                      color: pathname === getLocalizedHref(item.url, pathname) ? 'secondary.main' : 'white',
+                      opacity: pathname === getLocalizedHref(item.url, pathname) ? 1 : 0.8,
                       whiteSpace: 'nowrap',
                       '&:hover': { color: 'secondary.main', opacity: 1 },
                       transition: 'all 0.2s',
@@ -169,7 +157,7 @@ export default function Navbar() {
                         position: 'absolute',
                         bottom: -4,
                         left: 0,
-                        width: pathname === getLocalizedHref(item.url) ? '100%' : '0%',
+                        width: pathname === getLocalizedHref(item.url, pathname) ? '100%' : '0%',
                         height: 2,
                         bgcolor: 'secondary.main',
                         transition: 'width 0.3s ease'
@@ -256,10 +244,10 @@ export default function Navbar() {
               <ListItem key={item.id} disablePadding>
                 <ListItemButton 
                   component={Link} 
-                  href={getLocalizedHref(item.url)} 
+                  href={getLocalizedHref(item.url, pathname)} 
                   onClick={closeMenu}
                   sx={{ 
-                    bgcolor: pathname === getLocalizedHref(item.url) ? 'rgba(255,255,255,0.1)' : 'transparent',
+                    bgcolor: pathname === getLocalizedHref(item.url, pathname) ? 'rgba(255,255,255,0.1)' : 'transparent',
                     borderRadius: 1,
                     mb: 1,
                     '&:hover': { bgcolor: 'rgba(250, 204, 21, 0.1)' }
@@ -272,7 +260,7 @@ export default function Navbar() {
                         fontWeight: 700, 
                         letterSpacing: 2, 
                         textTransform: 'uppercase',
-                        color: pathname === getLocalizedHref(item.url) ? 'secondary.main' : 'white'
+                        color: pathname === getLocalizedHref(item.url, pathname) ? 'secondary.main' : 'white'
                       }
                     }} 
                   />

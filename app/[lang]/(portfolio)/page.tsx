@@ -19,7 +19,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const dict = await getDictionary(lang)
 
   return (
-    <div className="flex flex-col min-h-screen bg-transparent font-sans overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-transparent font-sans overflow-hidden relative">
       {/* We can pass dict to sections if we want to localize them */}
       <HeroSection dict={dict} />
       

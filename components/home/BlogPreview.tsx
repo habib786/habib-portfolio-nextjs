@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Calendar, Clock, Eye, ArrowRight, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { formatDate, calculateReadTime } from '@/lib/utils'
+import { formatDate, calculateReadTime, getLocalizedHref } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 
 const defaultBlogPosts = [
@@ -166,7 +166,7 @@ export default function BlogPreview() {
             <div className="p-6">
               <div className="mb-4">
                 <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  <Link href={`/blog/${post.slug}`}>
+                  <Link href={getLocalizedHref(`/blog/${post.slug}`, pathname)}>
                     {post.title}
                   </Link>
                 </h3>
@@ -211,7 +211,7 @@ export default function BlogPreview() {
 
               {/* Read More Button */}
               <Button variant="ghost" size="sm" className="w-full group/btn" asChild>
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={getLocalizedHref(`/blog/${post.slug}`, pathname)}>
                   Read Article
                   <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
@@ -224,7 +224,7 @@ export default function BlogPreview() {
       {/* View All Button */}
       <div className="text-center pt-8">
         <Button size="lg" asChild>
-          <Link href="/blog">
+          <Link href={getLocalizedHref('/blog', pathname)}>
             View All Articles
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>

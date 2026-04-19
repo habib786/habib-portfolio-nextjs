@@ -7,7 +7,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Contact - Habib Farooq',
+  title: 'Contact',
   description: 'Get in touch with Habib Farooq for project inquiries, collaborations, or just to say hello.',
 }
 

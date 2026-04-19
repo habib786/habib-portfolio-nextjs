@@ -8,8 +8,9 @@ import { useParams } from 'next/navigation'
 import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
 import Counter from '@/components/animations/Counter'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
+import { getLocalizedHref } from '@/lib/utils'
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 export default function HeroSection({ dict }: { dict?: any }) {
   const params = useParams()
@@ -202,7 +203,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                 <Button 
                   variant="contained" 
                   component={Link}
-                  href="/projects"
+                  href={`/${lang}/projects`}
                   sx={{ bgcolor: 'secondary.main', color: 'black', '&:hover': { bgcolor: 'secondary.light' }, px: 4, py: 1.5, fontSize: '1rem' }}
                 >
                   VIEW PROJECTS
@@ -210,7 +211,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                 <Button 
                   variant="outlined" 
                   component={Link}
-                  href="/contact#contact-form"
+                  href={`/${lang}/contact#contact-form`}
                   sx={{ borderColor: 'white', color: 'white', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }, px: 4 }}
                 >
                   LET'S TALK

@@ -10,6 +10,7 @@ import { faEnvelope, faMapMarkerAlt, faHeart, faArrowRight } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Container, Typography, Link as MuiLink, IconButton, Divider, Stack, Grid, Button } from '@mui/material'
 import { createClient } from '@/lib/supabase/client'
+import { getLocalizedHref } from '@/lib/utils'
 
 type FooterContent = {
   tagline: string
@@ -94,18 +95,6 @@ export default function Footer() {
     fetchFooterContent()
   }, [pathname, supabase])
 
-  const getLocalizedHref = (href: string) => {
-    if (href.startsWith('http')) return href;
-    const segments = pathname.split('/');
-    const currentLocale = segments[1];
-    const isLocale = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR'].includes(currentLocale);
-    
-    if (isLocale) {
-      return `/${currentLocale}${href === '/' ? '' : href}`;
-    }
-    return href;
-  };
-
   return (
     <Box component="footer" sx={{ bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', pt: { xs: 8, md: 12 }, pb: { xs: 4, md: 6 } }}>
       <Container maxWidth="lg">
@@ -174,7 +163,7 @@ export default function Footer() {
               {!loading && footerContent?.navLinks.map((item: string) => (
                 <NextLink
                   key={item}
-                  href={getLocalizedHref(item === 'Home' ? '/' : (item === 'Contact' ? '/contact#contact-form' : `/${item.toLowerCase()}`))}
+                  href={getLocalizedHref(item === 'Home' ? '/' : (item === 'Contact' ? '/contact#contact-form' : `/${item.toLowerCase()}`), pathname)}
                   style={{ textDecoration: 'none' }}
                 >
                   <MuiLink

@@ -79,6 +79,10 @@
   * {
     border-color: var(--color-border);
   }
+  html {
+    /* Required by Framer Motion's useScroll: scroll container must be non-static */
+    position: relative;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
