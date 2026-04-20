@@ -31,7 +31,7 @@ export default function FloatingActions() {
         position: 'fixed',
         bottom: 32,
         right: 32,
-        zIndex: 1000,
+        zIndex: 1200,
         display: 'flex',
         flexDirection: 'column',
         gap: 2,

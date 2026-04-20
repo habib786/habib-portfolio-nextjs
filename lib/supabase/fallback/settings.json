@@ -1,0 +1,10 @@
+[
+  { "id": "fallback-1", "key": "site_title", "value": "Habib Portfolio", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-2", "key": "site_description", "value": "Personal portfolio website", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-3", "key": "hero_title", "value": "Full Stack Developer", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-4", "key": "hero_subtitle", "value": "Building digital experiences", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-5", "key": "about_title", "value": "About Me", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-6", "key": "about_description", "value": "Software developer passionate about building quality applications.", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-7", "key": "email", "value": "hello@example.com", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" },
+  { "id": "fallback-8", "key": "location", "value": "Remote", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" }
+]

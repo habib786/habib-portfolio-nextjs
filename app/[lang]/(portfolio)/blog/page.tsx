@@ -2,8 +2,11 @@ import { Metadata } from 'next'
 import { getSettings } from '@/lib/supabase/queries'
 import BlogPageClient from './BlogPageClient'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings()
+export const revalidate = 3600
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  const settings = await getSettings(lang)
   const blogMetaTitle = settings?.blog_meta_title ?? null
   const blogMetaDesc = settings?.blog_meta_description ?? null
   return {

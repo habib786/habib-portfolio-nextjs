@@ -1,5 +1,6 @@
 import { createClient } from './server';
 import type { Database } from '../types';
+import { resilientQueryArray, resilientQuerySingle, resilientQuery } from './resilient';
 
 type Tables = Database['public']['Tables'];
 
@@ -39,7 +40,7 @@ export async function getPages(language?: string) {
     return [];
   }
   
-  return data;
+  return data || [];
 }
 
 export async function getPageBySlug(slug: string, language?: string) {
@@ -155,7 +156,7 @@ export async function getLanguages(activeOnly = true) {
     return [];
   }
   
-  return data;
+  return data || [];
 }
 
 export async function getDefaultLanguage() {
@@ -182,7 +183,7 @@ export async function getDefaultLanguage() {
 }
 
 // Settings queries
-export async function getSettings() {
+export async function getSettings(lang?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return {};
   
@@ -199,11 +200,25 @@ export async function getSettings() {
     return {};
   }
   
+  if (!data || data.length === 0) {
+    return {};
+  }
+  
   // Convert array to object
   const settingsObj: Record<string, any> = {};
-  data?.forEach((setting) => {
+  data.forEach((setting) => {
     settingsObj[setting.key] = setting.value;
   });
+
+  // If language is provided, override base keys with translated versions if they exist
+  if (lang) {
+    data.forEach((setting) => {
+      if (setting.key.endsWith(`_${lang}`)) {
+        const baseKey = setting.key.replace(`_${lang}`, '');
+        settingsObj[baseKey] = setting.value;
+      }
+    });
+  }
   
   return settingsObj;
 }
@@ -376,10 +391,10 @@ export async function getContactMessages(limit?: number) {
 
 
 // Site metadata
-export async function getSiteMetadata() {
+export async function getSiteMetadata(lang?: string) {
   try {
     const [settings, defaultLanguage] = await Promise.all([
-      getSettings(),
+      getSettings(lang),
       getDefaultLanguage(),
     ]);
 
@@ -393,7 +408,7 @@ export async function getSiteMetadata() {
       contactEmail: contactEmail,
       defaultLanguage: (defaultLanguage?.code || 'en').trim(),
       keywords: settings?.seo_keywords 
-        ? JSON.parse(settings.seo_keywords) 
+        ? typeof settings.seo_keywords === 'string' ? JSON.parse(settings.seo_keywords) : settings.seo_keywords
         : ['Full Stack Developer', 'AI Engineer', 'React', 'Next.js', 'TypeScript', 'Python', 'Machine Learning'],
       languages: await getLanguages(true),
     };

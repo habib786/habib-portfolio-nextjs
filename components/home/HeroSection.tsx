@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
+import { Box, Container, Typography, Stack, Button, Grid, Skeleton } from '@mui/material'
 import Counter from '@/components/animations/Counter'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 import { getLocalizedHref, cleanValue } from '@/lib/utils'
@@ -29,6 +29,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
 
   const [mounted, setMounted] = useState(false)
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setMounted(true)
@@ -44,6 +45,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
   const yStats = useTransform(scrollYProgress, [0, 1], [0, 150])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9])
+  const yPattern = useTransform(scrollYProgress, [0, 1], [0, 150])
 
   useEffect(() => {
     async function fetchProfile() {
@@ -58,26 +60,72 @@ export default function HeroSection({ dict }: { dict?: any }) {
             settings[item.key] = item.value
           })
 
-          if (settings.profile_name) {
+          const getVal = (key: string) => settings[`${key}_${lang}`] !== undefined ? settings[`${key}_${lang}`] : settings[key];
+
+          const profileName = getVal('profile_name')
+          if (profileName) {
             setProfile(prev => ({
               ...prev,
-              name: cleanValue(settings.profile_name),
-              role: cleanValue(settings.profile_role) || prev.role,
-              experience: cleanValue(settings.stat_experience) || prev.experience,
-              projects: cleanValue(settings.stat_projects) || prev.projects,
-              clients: cleanValue(settings.stat_clients) || prev.clients,
-              image: cleanValue(settings.profile_image) || prev.image
+              name: cleanValue(profileName),
+              role: cleanValue(getVal('profile_role')) || prev.role,
+              experience: cleanValue(getVal('stat_experience')) || prev.experience,
+              projects: cleanValue(getVal('stat_projects')) || prev.projects,
+              clients: cleanValue(getVal('stat_clients')) || prev.clients,
+              image: cleanValue(getVal('profile_image')) || prev.image
             }))
           }
         }
       } catch (err) {
         console.error('Error fetching profile:', err)
+      } finally {
+        setLoading(false)
       }
     }
     fetchProfile()
-  }, [])
+  }, [lang])
 
-  return (
+  return loading ? (
+    <Box 
+      component="section"
+      sx={{ 
+        position: 'relative', 
+        width: '100%', 
+        bgcolor: 'primary.main', 
+        backgroundImage: 'linear-gradient(135deg, #106A5A 0%, #0d594b 100%)',
+        py: { xs: 8, md: 0 }, 
+        overflow: 'hidden', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: 'calc(100vh - 64px)',
+        isolation: 'isolate' 
+      }}
+    >
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10, width: '100%' }}>
+        <Grid container spacing={4} sx={{ alignItems: 'center' }}>
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Skeleton variant="text" width="30%" height={20} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 2 }} />
+            <Skeleton variant="text" width="80%" height={80} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 2 }} />
+            <Skeleton variant="text" width="60%" height={40} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 4 }} />
+            <Stack direction="row" spacing={2}>
+              <Skeleton variant="rectangular" width={140} height={48} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+              <Skeleton variant="rectangular" width={120} height={48} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+            </Stack>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Skeleton variant="rectangular" width={380} height={460} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+          </Grid>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Stack direction={{ xs: 'row', md: 'column' }} spacing={{ xs: 3, md: 6 }} sx={{ justifyContent: 'center', alignItems: { xs: 'center', md: 'flex-end' } }}>
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+            </Stack>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  ) : (
     <Box 
       component="section"
       ref={setContainer}
@@ -95,13 +143,12 @@ export default function HeroSection({ dict }: { dict?: any }) {
         isolation: 'isolate' 
       }}
     >
-      {/* Decorative Blur Elements */}
       <Box sx={{ position: 'absolute', top: '10%', insetInlineEnd: '5%', width: 300, height: 300, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.15, borderRadius: '50%', zIndex: 0 }} />
       <Box sx={{ position: 'absolute', bottom: '10%', insetInlineStart: '5%', width: 400, height: 400, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.1, borderRadius: '50%', zIndex: 0 }} />
 
       <motion.div 
         style={{ 
-          y: useTransform(scrollYProgress, [0, 1], [0, 200]),
+          y: yPattern,
           zIndex: 0,
           left: 0,
           right: 0,

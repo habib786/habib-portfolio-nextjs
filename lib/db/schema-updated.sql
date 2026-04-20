@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   author VARCHAR(100),
   published_at TIMESTAMP WITH TIME ZONE,
   is_published BOOLEAN DEFAULT false,
+  meta_description TEXT,
   language VARCHAR(2) REFERENCES languages(code) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -79,6 +80,7 @@ CREATE TABLE IF NOT EXISTS projects (
   github_url VARCHAR(255),
   live_url VARCHAR(255),
   featured BOOLEAN DEFAULT false,
+  meta_description TEXT,
   language VARCHAR(2) REFERENCES languages(code) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

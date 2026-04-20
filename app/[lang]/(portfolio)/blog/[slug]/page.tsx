@@ -7,6 +7,8 @@ import ArticleHero from '@/components/blog/ArticleHero'
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/supabase/queries'
 import { RawBlogPost, MappedBlogPost } from '@/lib/types'
 
+export const revalidate = 3600
+
 interface BlogPostPageProps {
   params: Promise<{ lang: string; slug: string }>
 }

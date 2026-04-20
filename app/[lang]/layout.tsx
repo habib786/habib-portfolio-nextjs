@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 import '../globals.css'
 
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
@@ -9,18 +11,20 @@ import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvide
 import { MuiProvider } from '@/components/providers/MuiProvider'
 import { getSiteMetadata } from '@/lib/supabase/queries'
 import { Suspense } from 'react'
+import { Box, Skeleton } from '@mui/material'
 import { locales } from './dictionaries'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
 }
 
 // Generate metadata dynamically from Supabase
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   try {
-    const siteMetadata = await getSiteMetadata();
+    const { lang } = await params;
+    const siteMetadata = await getSiteMetadata(lang);
     
     // Safely construct the base URL
     let baseUrl: URL;
@@ -84,6 +88,16 @@ export async function generateMetadata(): Promise<Metadata> {
         images: ['/og-image.png'],
         creator: '@habibfarooq',
       },
+      alternates: {
+        canonical: finalOgUrl,
+        languages: {
+          'en-CA': `${baseUrl.origin}/en-CA`,
+          'ar-SA': `${baseUrl.origin}/ar-SA`,
+          'fr-CA': `${baseUrl.origin}/fr-CA`,
+          'tr-TR': `${baseUrl.origin}/tr-TR`,
+          'ur-PK': `${baseUrl.origin}/ur-PK`,
+        },
+      },
     };
   } catch (error) {
     console.error('Error fetching site metadata:', error);
@@ -130,6 +144,16 @@ export async function generateMetadata(): Promise<Metadata> {
         images: ['/og-image.png'],
         creator: '@habibfarooq',
       },
+      alternates: {
+        canonical: 'https://habibfarooq.com',
+        languages: {
+          'en-CA': 'https://habibfarooq.com/en-CA',
+          'ar-SA': 'https://habibfarooq.com/ar-SA',
+          'fr-CA': 'https://habibfarooq.com/fr-CA',
+          'tr-TR': 'https://habibfarooq.com/tr-TR',
+          'ur-PK': 'https://habibfarooq.com/ur-PK',
+        },
+      },
     };
   }
 }
@@ -141,13 +165,34 @@ export const viewport = {
   maximumScale: 1,
 }
 
-export const dynamic = 'force-dynamic'
+
 
 function LoadingFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-    </div>
+    <Box className="min-h-screen flex flex-col items-center justify-center" sx={{ gap: 3 }}>
+      <Box sx={{ display: 'flex', gap: 1.5 }}>
+        {[0, 1, 2].map((i) => (
+          <Skeleton
+            key={i}
+            variant="rounded"
+            width={14}
+            height={14}
+            animation="pulse"
+            sx={{
+              bgcolor: 'rgba(120, 120, 120, 0.2)',
+              animationDelay: `${i * 150}ms`,
+              borderRadius: '50%',
+            }}
+          />
+        ))}
+      </Box>
+      <Skeleton
+        variant="text"
+        width={120}
+        height={20}
+        sx={{ bgcolor: 'rgba(120, 120, 120, 0.15)' }}
+      />
+    </Box>
   )
 }
 
@@ -188,6 +233,8 @@ export default async function RootLayout({
             </ThemeConfigProvider>
           </MuiProvider>
         </ThemeProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )

@@ -143,6 +143,7 @@ export default function Future() {
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
         <motion.div
           style={{ y: textY, opacity: textOpacity }}
+          aria-label="Building the future, one line of code at a time"
         >
           {/* Word-by-word reveal */}
           {['BUILDING', 'THE', 'FUTURE,', 'ONE', 'LINE', 'OF', 'CODE', 'AT', 'A', 'TIME.'].map((word, i) => (

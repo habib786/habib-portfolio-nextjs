@@ -1,0 +1,3 @@
+[
+  { "id": "fallback-project-1", "title": "Sample Project", "slug": "sample-project", "description": "A sample project", "content": null, "cover_image": null, "technologies": [], "github_url": null, "live_url": null, "featured": false, "language": "en", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z" }
+]

@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const locale of locales) {
     for (const route of staticRoutes) {
-      const langPrefix = locale === 'en-CA' ? '' : `/${locale}`;
+      const langPrefix = `/${locale}`;
       const url = `${baseUrl}${langPrefix}${route}`;
       staticUrls.push({
         url,
@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogPosts = await getBlogPosts(locale);
     for (const post of blogPosts) {
       if (post.slug) {
-        const langPrefix = locale === 'en-CA' ? '' : `/${locale}`;
+        const langPrefix = `/${locale}`;
         dynamicUrls.push({
           url: `${baseUrl}${langPrefix}/blog/${post.slug}`,
           lastModified: post.updated_at || post.published_at || new Date(),
@@ -56,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const projects = await getProjects(locale);
     for (const project of projects) {
       if (project.slug) {
-        const langPrefix = locale === 'en-CA' ? '' : `/${locale}`;
+        const langPrefix = `/${locale}`;
         dynamicUrls.push({
           url: `${baseUrl}${langPrefix}/projects/${project.slug}`,
           lastModified: project.updated_at || new Date(),

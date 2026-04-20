@@ -1,21 +1,15 @@
 'use client'
 
 import React, { useRef, useState, useEffect } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Box, Container, Typography, Chip, Stack } from '@mui/material'
 import { Clock, Eye, Calendar } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
+import type { MappedBlogPost } from '@/lib/types'
 
 interface ArticleHeroProps {
-  post: {
-    title: string
-    category: string
-    author: string
-    publishedAt: string
-    views: number
-    readTime: number
-    featuredImage?: string
-  }
+  post: Pick<MappedBlogPost, 'title' | 'category' | 'author' | 'publishedAt' | 'views' | 'readTime' | 'featuredImage'>
 }
 
 export default function ArticleHero({ post }: ArticleHeroProps) {
@@ -45,7 +39,7 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
       <motion.div 
         style={{ y: yBg, opacity: 0.1, position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}
       >
-        <svg width="100%" height="100%" viewBox="0 0 1440 1000" fill="none" preserveAspectRatio="none">
+        <svg width="100%" height="100%" viewBox="0 0 1440 1000" fill="none" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 600C400 500 800 700 1200 600C1400 550 1440 600 1440 600V1000H0V600Z" fill="white" fillOpacity="0.05" />
           <path d="M-100 700C300 550 800 850 1300 700C1500 640 1600 700 1600 700V1000H-100V700Z" fill="white" fillOpacity="0.03" />
           <path d="M0 200 Q 360 400 720 200 T 1440 200" stroke="white" strokeWidth="1" strokeDasharray="20 20" opacity="0.2" />
@@ -60,13 +54,16 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
             position: 'absolute',
             inset: 0,
             zIndex: 0,
-            backgroundImage: `url(${post.featuredImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.08,
-            filter: 'blur(4px)',
           }}
-        />
+        >
+          <Image
+            src={post.featuredImage}
+            alt=""
+            fill
+            style={{ objectFit: 'cover', opacity: 0.08, filter: 'blur(4px)' }}
+            priority
+          />
+        </motion.div>
       )}
 
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
@@ -133,15 +130,15 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
               <Typography variant="body2" sx={{ fontWeight: 600 }}>{post.author}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-              <Calendar size={15} />
+              <Calendar size={15} aria-hidden="true" />
               <Typography variant="body2">{formatDate(post.publishedAt)}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-              <Clock size={15} />
+              <Clock size={15} aria-hidden="true" />
               <Typography variant="body2">{post.readTime} min read</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-              <Eye size={15} />
+              <Eye size={15} aria-hidden="true" />
               <Typography variant="body2">{post.views.toLocaleString()} views</Typography>
             </Box>
           </Stack>

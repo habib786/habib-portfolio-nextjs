@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Box, Container, Typography, Stack } from '@mui/material'
+import { getLocalizedHref } from '@/lib/utils'
 
 interface BlogCTASectionProps {
   profileImage: string
@@ -22,6 +23,7 @@ const defaultDict = {
 
 export default function BlogCTASection({ profileImage }: BlogCTASectionProps) {
   const params = useParams()
+  const pathname = usePathname()
   const lang = (params?.lang as string) || 'en-CA'
   const [imgError, setImgError] = useState(false)
   const [dict, setDict] = useState(defaultDict)
@@ -94,7 +96,7 @@ export default function BlogCTASection({ profileImage }: BlogCTASectionProps) {
                 >
                   {dict?.blog?.cta?.letsTalk}<br />{dict?.blog?.cta?.aboutProject}
                 </Typography>
-                <Link href={`/${lang}/contact#contact-form`} style={{ textDecoration: 'none' }}>
+                <Link href={getLocalizedHref('/contact#contact-form', pathname)} style={{ textDecoration: 'none' }}>
                   <Box
                     sx={{
                       bgcolor: 'var(--primary)',

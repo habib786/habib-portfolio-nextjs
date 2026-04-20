@@ -35,11 +35,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <ExperienceEducationSection />
       </Box>
 
-      <ScrollReveal direction="right">
+      <ScrollReveal direction="up">
         <ServicesSection lang={lang} />
       </ScrollReveal>
 
-      <ScrollReveal direction="left">
+      <ScrollReveal direction="up">
         <ClientsSection lang={lang} />
       </ScrollReveal>
     </div>

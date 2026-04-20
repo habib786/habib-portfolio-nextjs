@@ -1,11 +1,18 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Box, Container, Typography } from '@mui/material'
 import { Button } from '@/components/ui/Button'
 import { motion } from 'framer-motion'
 
+const SUPPORTED_LOCALES = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR']
+
 export default function NotFound() {
+  const pathname = usePathname()
+  const locale = SUPPORTED_LOCALES.includes(pathname.split('/')[1]) ? pathname.split('/')[1] : 'en-CA'
+  const homeHref = `/${locale}`
+
   return (
     <Box 
       sx={{ 
@@ -52,7 +59,7 @@ export default function NotFound() {
             The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
           </Typography>
           
-          <Link href="/" passHref legacyBehavior>
+          <Link href={homeHref} passHref legacyBehavior>
             <Button 
               variant="default" 
               size="lg"

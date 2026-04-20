@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Box, Container, Typography, Grid, Button, Stack, Card } from '@mui/material'
 import { createClient } from '@/lib/supabase/server'
-import { cleanValue } from '@/lib/utils'
+import { cleanValue, getLocalizedHref } from '@/lib/utils'
 import SectionHeading from '@/components/ui/SectionHeading'
 import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,6 +14,7 @@ import ServiceCard from '@/components/services/ServiceCard'
 
 export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
+  const pathname = `/${lang}/services`
   
   // Fetch profile image from settings if available
   let profileImage = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60'
@@ -129,7 +130,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
             <Typography variant="h6" sx={{ mb: 6, opacity: 0.9, fontWeight: 400 }}>
               Let's create something exceptional together. I'm currently available for new projects and collaborations.
             </Typography>
-            <Link href="/contact#contact-form" style={{ textDecoration: 'none' }}>
+            <Link href={getLocalizedHref('/contact#contact-form', pathname)} style={{ textDecoration: 'none' }}>
               <Button
                 variant="contained"
                 color="secondary"
