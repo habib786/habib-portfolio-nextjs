@@ -45,6 +45,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
   const yStats = useTransform(scrollYProgress, [0, 1], [0, 150])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9])
+  const yPattern = useTransform(scrollYProgress, [0, 1], [0, 150])
 
   useEffect(() => {
     async function fetchProfile() {
@@ -80,7 +81,48 @@ export default function HeroSection({ dict }: { dict?: any }) {
     fetchProfile()
   }, [])
 
-  return (
+  return loading ? (
+    <Box 
+      component="section"
+      sx={{ 
+        position: 'relative', 
+        width: '100%', 
+        bgcolor: 'primary.main', 
+        backgroundImage: 'linear-gradient(135deg, #106A5A 0%, #0d594b 100%)',
+        py: { xs: 8, md: 0 }, 
+        overflow: 'hidden', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: 'calc(100vh - 64px)',
+        isolation: 'isolate' 
+      }}
+    >
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10, width: '100%' }}>
+        <Grid container spacing={4} sx={{ alignItems: 'center' }}>
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Skeleton variant="text" width="30%" height={20} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 2 }} />
+            <Skeleton variant="text" width="80%" height={80} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 2 }} />
+            <Skeleton variant="text" width="60%" height={40} sx={{ bgcolor: 'rgba(255,255,255,0.2)', mb: 4 }} />
+            <Stack direction="row" spacing={2}>
+              <Skeleton variant="rectangular" width={140} height={48} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+              <Skeleton variant="rectangular" width={120} height={48} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+            </Stack>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Skeleton variant="rectangular" width={380} height={460} sx={{ bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }} />
+          </Grid>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Stack direction={{ xs: 'row', md: 'column' }} spacing={{ xs: 3, md: 6 }} sx={{ justifyContent: 'center', alignItems: { xs: 'center', md: 'flex-end' } }}>
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+              <Skeleton variant="text" width={80} height={60} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+            </Stack>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  ) : (
     <Box 
       component="section"
       ref={setContainer}
@@ -103,7 +145,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
 
       <motion.div 
         style={{ 
-          y: useTransform(scrollYProgress, [0, 1], [0, 200]),
+          y: yPattern,
           zIndex: 0,
           left: 0,
           right: 0,
