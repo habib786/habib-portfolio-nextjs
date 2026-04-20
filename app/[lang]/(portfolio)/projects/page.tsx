@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import { getSettings } from '@/lib/supabase/queries'
 import ProjectsPageClient from './ProjectsPageClient'
 
+export const revalidate = 3600
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings()
   const projectsMetaTitle = settings?.projects_meta_title ?? null
@@ -12,6 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function ProjectsPage() {
-  return <ProjectsPageClient />
+export default async function ProjectsPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  return <ProjectsPageClient lang={lang} />
 }

@@ -1,0 +1,4 @@
+[
+  { "id": "fallback-page-1", "title": "Home", "slug": "home", "content": {}, "meta_title": "Home", "meta_description": "Welcome to my portfolio", "is_published": true, "language": "en", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z", "order": 1 },
+  { "id": "fallback-page-2", "title": "About", "slug": "about", "content": {}, "meta_title": "About", "meta_description": "About me", "is_published": true, "language": "en", "created_at": "2024-01-01T00:00:00Z", "updated_at": "2024-01-01T00:00:00Z", "order": 2 }
+]

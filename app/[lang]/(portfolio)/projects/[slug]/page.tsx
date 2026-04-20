@@ -7,6 +7,8 @@ import ProjectHero from '@/components/projects/ProjectHero'
 import { getProjectBySlug, getProjects } from '@/lib/supabase/queries'
 import { MappedProject, RelatedProject } from '@/lib/types'
 
+export const revalidate = 3600
+
 interface ProjectPageProps {
   params: Promise<{ lang: string; slug: string }>
 }

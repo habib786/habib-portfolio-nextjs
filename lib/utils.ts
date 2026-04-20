@@ -83,7 +83,7 @@ export function formatBytes(bytes: number, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
 
-const SUPPORTED_LOCALES = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR']
+export const SUPPORTED_LOCALES = ['en-CA', 'fr-CA', 'ar-SA', 'ur-PK', 'tr-TR']
 
 export function getLocalizedHref(href: string, pathname: string): string {
   if (href.startsWith('http')) return href

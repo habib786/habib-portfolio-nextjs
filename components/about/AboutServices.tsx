@@ -62,6 +62,7 @@ const cardVariants = {
 }
 
 import { usePathname } from 'next/navigation'
+import { SUPPORTED_LOCALES } from '@/lib/utils'
 import SectionHeading from '../ui/SectionHeading'
 import ServiceCard from '@/components/services/ServiceCard'
 
@@ -77,6 +78,15 @@ export default function AboutServices() {
 
   const gridY = useTransform(scrollYProgress, [0, 1], [60, -60])
   const decorScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6])
+
+  const servicesLinkHref = (() => {
+    const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/)
+    const currentLocale = localeMatch ? localeMatch[1] : null
+    if (currentLocale && SUPPORTED_LOCALES.includes(currentLocale)) {
+      return `/${currentLocale}/services`
+    }
+    return '/services'
+  })()
 
   useEffect(() => {
     async function fetchData(lang: string) {
@@ -98,9 +108,12 @@ export default function AboutServices() {
 
         let data = await fetchData(currentLanguage)
 
-        // Fallback to en-CA
-        if (data.length === 0 && currentLanguage !== 'en-CA') {
-          data = await fetchData('en-CA')
+        if (data.length === 0) {
+          const fallbackLocales = SUPPORTED_LOCALES.filter(l => l !== currentLanguage)
+          for (const locale of fallbackLocales) {
+            data = await fetchData(locale)
+            if (data.length > 0) break
+          }
         }
 
         if (data && data.length > 0) {
@@ -188,7 +201,7 @@ export default function AboutServices() {
 
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
             <NextLink 
-              href={pathname.startsWith('/fr') || pathname.startsWith('/en') ? `/${pathname.split('/')[1]}/services` : '/services'} 
+              href={servicesLinkHref}
               style={{ textDecoration: 'none' }}
             >
               <Button

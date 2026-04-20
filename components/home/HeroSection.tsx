@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Box, Container, Typography, Stack, Button, Grid } from '@mui/material'
+import { Box, Container, Typography, Stack, Button, Grid, Skeleton } from '@mui/material'
 import Counter from '@/components/animations/Counter'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 import { getLocalizedHref, cleanValue } from '@/lib/utils'
@@ -29,6 +29,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
 
   const [mounted, setMounted] = useState(false)
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setMounted(true)
@@ -72,6 +73,8 @@ export default function HeroSection({ dict }: { dict?: any }) {
         }
       } catch (err) {
         console.error('Error fetching profile:', err)
+      } finally {
+        setLoading(false)
       }
     }
     fetchProfile()
@@ -95,7 +98,6 @@ export default function HeroSection({ dict }: { dict?: any }) {
         isolation: 'isolate' 
       }}
     >
-      {/* Decorative Blur Elements */}
       <Box sx={{ position: 'absolute', top: '10%', insetInlineEnd: '5%', width: 300, height: 300, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.15, borderRadius: '50%', zIndex: 0 }} />
       <Box sx={{ position: 'absolute', bottom: '10%', insetInlineStart: '5%', width: 400, height: 400, bgcolor: 'secondary.main', filter: 'blur(150px)', opacity: 0.1, borderRadius: '50%', zIndex: 0 }} />
 

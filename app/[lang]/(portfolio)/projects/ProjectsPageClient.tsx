@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useParams, usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Box, Container, Typography, Stack, Grid } from '@mui/material'
 import Link from 'next/link'
@@ -9,6 +10,7 @@ import WavyHeroBackground from '@/components/shared/WavyHeroBackground'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 import { useProfileImage } from '@/lib/hooks/useProfileImage'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
+import { getLocalizedHref } from '@/lib/utils'
 
 const defaultProjects = [
   {
@@ -55,7 +57,8 @@ const defaultProjects = [
   }
 ]
 
-export default function ProjectsPageClient() {
+export default function ProjectsPageClient({ lang }: { lang: string }) {
+  const pathname = `/${lang}/projects`
   const [projects, setProjects] = useState<any[]>([])
   const profileImage = useProfileImage()
 
@@ -193,7 +196,7 @@ export default function ProjectsPageClient() {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: (index % 2) * 0.15 }}
                 className={`relative ${index % 2 === 1 ? 'md:translate-y-48' : ''}`}
               >
-                <Link href={`/projects/${project.slug}`}>
+                <Link href={getLocalizedHref(`/projects/${project.slug}`, pathname)}>
                   <Box sx={{ 
                     position: 'relative', 
                     height: { xs: 280, md: 400 },

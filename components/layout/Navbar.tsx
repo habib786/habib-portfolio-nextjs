@@ -242,7 +242,7 @@ export default function Navbar() {
                 height: 36
               }}
             >
-              <FontAwesomeIcon icon={faLinkedin} style={{ width: 18, height: 18 }} />
+              <FontAwesomeIcon icon={faLinkedin} style={{ width: 18, height: 18 }} aria-hidden="true" />
             </IconButton>
             
             <IconButton 
@@ -259,7 +259,7 @@ export default function Navbar() {
                 height: 36
               }}
             >
-              <FontAwesomeIcon icon={faGithub} style={{ width: 18, height: 18 }} />
+              <FontAwesomeIcon icon={faGithub} style={{ width: 18, height: 18 }} aria-hidden="true" />
             </IconButton>
 
             {/* Mobile menu button */}
@@ -268,7 +268,7 @@ export default function Navbar() {
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X /> : <Menu />}
+              {isMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
             </IconButton>
           </Box>
         </Toolbar>

@@ -1,5 +1,6 @@
 import { createClient } from './server';
 import type { Database } from '../types';
+import { resilientQueryArray, resilientQuerySingle, resilientQuery } from './resilient';
 
 type Tables = Database['public']['Tables'];
 
@@ -39,7 +40,7 @@ export async function getPages(language?: string) {
     return [];
   }
   
-  return data;
+  return data || [];
 }
 
 export async function getPageBySlug(slug: string, language?: string) {
@@ -155,7 +156,7 @@ export async function getLanguages(activeOnly = true) {
     return [];
   }
   
-  return data;
+  return data || [];
 }
 
 export async function getDefaultLanguage() {
@@ -199,9 +200,13 @@ export async function getSettings() {
     return {};
   }
   
+  if (!data || data.length === 0) {
+    return {};
+  }
+  
   // Convert array to object
   const settingsObj: Record<string, any> = {};
-  data?.forEach((setting) => {
+  data.forEach((setting) => {
     settingsObj[setting.key] = setting.value;
   });
   

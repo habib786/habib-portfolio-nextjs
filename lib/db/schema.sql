@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS public.projects (
   images TEXT[] NOT NULL DEFAULT '{}',
   tags TEXT[] NOT NULL DEFAULT '{}',
   status TEXT NOT NULL DEFAULT 'completed' CHECK (status IN ('completed', 'in-progress', 'planned')),
+  meta_description TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   published BOOLEAN NOT NULL DEFAULT false,
@@ -48,7 +49,8 @@ CREATE TABLE IF NOT EXISTS public.blog_posts (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   views INTEGER NOT NULL DEFAULT 0,
-  read_time INTEGER NOT NULL DEFAULT 5
+  read_time INTEGER NOT NULL DEFAULT 5,
+  meta_description TEXT
 );
 
 -- Create contact_messages table
