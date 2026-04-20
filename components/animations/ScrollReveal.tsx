@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 
 interface ScrollRevealProps {
   children: ReactNode
@@ -16,6 +16,12 @@ export function ScrollReveal({
   delay = 0, 
   duration = 0.8 
 }: ScrollRevealProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const variants = {
     hidden: {
       opacity: 0,
@@ -32,6 +38,10 @@ export function ScrollReveal({
         ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       },
     },
+  }
+
+  if (!mounted) {
+    return <>{children}</>
   }
 
   return (

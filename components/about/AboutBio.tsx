@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import { motion, useScroll, useTransform, Variants } from 'framer-motion'
 import Counter from '../animations/Counter'
@@ -45,10 +45,10 @@ const slideRight: Variants = {
 import SectionHeading from '../ui/SectionHeading'
 
 export default function AboutBio() {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: container ? { current: container } : undefined,
     offset: ['start end', 'end start']
   })
 
@@ -59,7 +59,7 @@ export default function AboutBio() {
   return (
     <Box
       component="section"
-      ref={sectionRef}
+      ref={setContainer}
       sx={{ py: 12, bgcolor: 'white', position: 'relative', overflow: 'hidden' }}
     >
       {/* Floating decorative blobs */}

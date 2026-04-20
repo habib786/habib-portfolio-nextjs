@@ -18,6 +18,13 @@
       "clients": "کلائنٹس"
     }
   },
+  "projects": {
+    "exploreProject": "پروجیکٹ دیکھیں ←"
+  },
+  "experience": {
+    "education": "تعلیم",
+    "experience": "تجربہ"
+  },
   "blog": {
     "cta": {
       "haveProject": "کیا آپ کے پاس کوئی پروجیکٹ ہے؟",

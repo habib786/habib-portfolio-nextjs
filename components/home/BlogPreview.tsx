@@ -213,7 +213,7 @@ export default function BlogPreview() {
               <Button variant="ghost" size="sm" className="w-full group/btn" asChild>
                 <Link href={getLocalizedHref(`/blog/${post.slug}`, pathname)}>
                   Read Article
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                  <ArrowRight className="ms-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform rtl:group-hover/btn:-translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -226,7 +226,7 @@ export default function BlogPreview() {
         <Button size="lg" asChild>
           <Link href={getLocalizedHref('/blog', pathname)}>
             View All Articles
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
           </Link>
         </Button>
       </div>

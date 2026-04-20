@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
-import { useEffect, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography, Grid, Card, Avatar } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
@@ -45,11 +44,11 @@ import SectionHeading from '../ui/SectionHeading'
 
 export default function AboutTestimonials() {
   const pathname = usePathname()
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
   const [testimonials, setTestimonials] = useState(defaultTestimonials)
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: container ? { current: container } : undefined,
     offset: ['start end', 'end start']
   })
 
@@ -106,7 +105,7 @@ export default function AboutTestimonials() {
   return (
     <Box
       component="section"
-      ref={sectionRef}
+      ref={setContainer}
       sx={{ py: 12, bgcolor: 'white', position: 'relative', overflow: 'hidden' }}
     >
       {/* Floating teal orb */}

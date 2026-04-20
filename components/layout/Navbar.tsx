@@ -232,6 +232,7 @@ export default function Navbar() {
               component={Link} 
               href={socialLinks.linkedin} 
               target="_blank" 
+              aria-label="LinkedIn"
               sx={{ 
                 color: 'white', 
                 bgcolor: 'rgba(255,255,255,0.05)',
@@ -248,6 +249,7 @@ export default function Navbar() {
               component={Link} 
               href={socialLinks.github} 
               target="_blank" 
+              aria-label="GitHub"
               sx={{ 
                 color: 'white', 
                 bgcolor: 'rgba(255,255,255,0.05)',

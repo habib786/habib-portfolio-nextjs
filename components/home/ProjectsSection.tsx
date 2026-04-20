@@ -1,79 +1,59 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
-import { usePathname } from 'next/navigation'
+import { usePathname, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Box, Container, Typography, Card, CardContent, Chip, Stack, Grid, Skeleton } from '@mui/material'
 import { Button } from '@/components/ui/Button'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { getLocalizedHref } from '@/lib/utils'
 
+const defaultDict = {
+  projects: {
+    exploreProject: 'EXPLORE PROJECT →',
+  },
+}
+
+const FALLBACK_PROJECTS = [
+  { id: 1, title: 'Sales Al Jomaih', category: 'WEB APP', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', className: 'md:col-span-1 md:row-span-2' },
+  { id: 2, title: 'Brand Identity', category: 'DESIGN', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80', className: 'md:col-span-1 md:row-span-1' },
+  { id: 3, title: 'Choco Delivery', category: 'UI/UX DESIGN', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80', className: 'md:col-span-1 md:row-span-1' },
+  { id: 4, title: 'Tours Platform', category: 'WEB APP', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80', className: 'md:col-span-1 md:row-span-1' },
+]
+
+async function getDictionary(locale: string) {
+  const dicts: Record<string, any> = {
+    'en-CA': () => import('@/app/[lang]/dictionaries/en-CA.json').then((module) => module.default),
+    'fr-CA': () => import('@/app/[lang]/dictionaries/fr-CA.json').then((module) => module.default),
+    'ar-SA': () => import('@/app/[lang]/dictionaries/ar-SA.json').then((module) => module.default),
+    'ur-PK': () => import('@/app/[lang]/dictionaries/ur-PK.json').then((module) => module.default),
+    'tr-TR': () => import('@/app/[lang]/dictionaries/tr-TR.json').then((module) => module.default),
+  }
+  const loader = dicts[locale]
+  if (loader) {
+    return loader()
+  }
+  return dicts['en-CA']()
+}
 
 export default function ProjectsSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  })
-
-  // Large background text parallax
-  const xBg = useTransform(scrollYProgress, [0, 1], [-100, 100])
-
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const params = useParams()
+  const lang = (params?.lang as string) || 'en-CA'
+  const [dict, setDict] = useState(defaultDict)
   const pathname = usePathname()
-  
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function fetchData(lang: string) {
-      const supabase = createClient()
-      if (!supabase) return []
-
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('language', lang)
-        .order('order_index', { ascending: true })
-
-      if (error) throw error
-      return data || []
-    }
-
-    async function fetchProjects() {
-      try {
-        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
-        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
-
-        let data = await fetchData(currentLanguage)
-
-        // Fallback to en-CA
-        if (data.length === 0 && currentLanguage !== 'en-CA') {
-          data = await fetchData('en-CA')
-        }
-
-        if (data && data.length > 0) {
-          setProjects(data.map(p => ({
-            id: p.id,
-            title: p.title,
-            category: p.category,
-            image: p.cover_image,
-            className: p.grid_class || 'md:col-span-1 md:row-span-1'
-          })))
-        } else {
-          setProjects(defaultProjects)
-        }
-      } catch (err) {
-        console.error('Error fetching projects:', err)
-        setProjects(defaultProjects)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProjects()
-  }, [pathname])
+  const { scrollYProgress: sp } = useScroll({
+    target: container ? { current: container } : undefined,
+    offset: ["start end", "end start"]
+  })
+  const xBg = useTransform(sp, [0, 1], [-100, 100])
 
   const defaultProjects = [
     {
@@ -106,6 +86,62 @@ export default function ProjectsSection() {
     }
   ]
 
+  useEffect(() => {
+    setMounted(true)
+
+    async function fetchData(locale: string) {
+      const supabase = createClient()
+      if (!supabase) return []
+
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('language', locale)
+        .order('order_index', { ascending: true })
+
+      if (error) throw error
+      return data || []
+    }
+
+    async function fetchProjects() {
+      try {
+        const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
+        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
+
+        let data = await fetchData(currentLanguage)
+
+        if (data.length === 0 && currentLanguage !== 'en-CA') {
+          data = await fetchData('en-CA')
+        }
+
+        if (data && data.length > 0) {
+          setProjects(data.map(p => ({
+            id: p.id,
+            title: p.title,
+            category: p.category,
+            image: p.cover_image,
+            className: p.grid_class || 'md:col-span-1 md:row-span-1'
+          })))
+        } else {
+          setProjects(FALLBACK_PROJECTS)
+        }
+      } catch (err) {
+        console.error('Error fetching projects:', err)
+        setProjects(FALLBACK_PROJECTS)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProjects()
+
+    getDictionary(lang).then(setDict).catch(() => setDict(defaultDict))
+  }, [pathname, lang])
+
+  if (!mounted) {
+    return null
+  }
+
   const displayProjects = projects.length > 0 ? projects : defaultProjects
 
   if (loading) {
@@ -131,7 +167,7 @@ export default function ProjectsSection() {
   }
 
   return (
-    <Box component="section" ref={containerRef} sx={{ py: 12, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
+    <Box component="section" ref={setContainer} sx={{ py: 12, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
       {/* Background Parallax Text */}
       <motion.div 
         style={{ x: xBg }}
@@ -150,14 +186,14 @@ export default function ProjectsSection() {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={4}>
-               {displayProjects[0] && <ProjectCard project={displayProjects[0]} index={0} pathname={pathname} />}
-               {displayProjects[2] && <ProjectCard project={displayProjects[2]} index={2} pathname={pathname} />}
+               {displayProjects[0] && <ProjectCard project={displayProjects[0]} index={0} pathname={pathname} dict={dict} />}
+               {displayProjects[2] && <ProjectCard project={displayProjects[2]} index={2} pathname={pathname} dict={dict} />}
             </Stack>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={4} sx={{ mt: { md: 12 } }}>
-               {displayProjects[1] && <ProjectCard project={displayProjects[1]} index={1} pathname={pathname} />}
-               {displayProjects[3] && <ProjectCard project={displayProjects[3]} index={3} pathname={pathname} />}
+               {displayProjects[1] && <ProjectCard project={displayProjects[1]} index={1} pathname={pathname} dict={dict} />}
+               {displayProjects[3] && <ProjectCard project={displayProjects[3]} index={3} pathname={pathname} dict={dict} />}
             </Stack>
           </Grid>
         </Grid>
@@ -166,19 +202,22 @@ export default function ProjectsSection() {
   )
 }
 
-function ProjectCard({ project, index, pathname }: { project: any, index: number, pathname: string }) {
-  const cardRef = useRef(null)
+function ProjectCard({ project, index, pathname, dict }: { project: any, index: number, pathname: string, dict?: any }) {
+  const [cardElement, setCardElement] = useState<HTMLDivElement | null>(null)
+
   const { scrollYProgress } = useScroll({
-    target: cardRef,
+    target: cardElement ? { current: cardElement } : undefined,
     offset: ["start end", "end start"]
   })
 
   // Internal image parallax
   const yImage = useTransform(scrollYProgress, [0, 1], [-20, 20])
 
+  const buttonLabel = dict?.projects?.exploreProject || 'EXPLORE PROJECT →'
+
   return (
     <motion.div 
-      ref={cardRef}
+      ref={setCardElement}
       style={{ position: 'relative' }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -205,12 +244,14 @@ function ProjectCard({ project, index, pathname }: { project: any, index: number
         transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
       }}>
         <Box sx={{ aspectRatio: '4/3', width: '100%', position: 'relative', overflow: 'hidden' }}>
-          <motion.img 
-            style={{ y: yImage }}
-            src={project.image} 
-            alt={project.title} 
-            className="object-cover w-full h-full transition-transform duration-700 ease-out"
-          />
+          <motion.div style={{ y: yImage }}>
+            <Image 
+              src={project.image} 
+              alt={project.title} 
+              fill
+              className="object-cover w-full h-full transition-transform duration-700 ease-out"
+            />
+          </motion.div>
           <Box className="project-overlay" sx={{ 
             position: 'absolute', 
             inset: 0, 
@@ -263,7 +304,7 @@ function ProjectCard({ project, index, pathname }: { project: any, index: number
                 borderRadius: 1
               }}
             >
-              EXPLORE PROJECT →
+              {buttonLabel}
             </Button>
           </Box>
         </Box>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
 interface Client {
@@ -15,12 +16,12 @@ interface ClientsMarqueeProps {
 }
 
 export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  
+
   // Create a parallax scroll effect for the marquee
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ["start end", "end start"]
   });
 
@@ -33,8 +34,8 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     mouseX.set(x);
@@ -49,7 +50,7 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
 
   return (
     <div 
-      ref={containerRef} 
+      ref={setContainer} 
       className="relative w-full overflow-hidden py-16 md:py-24"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -111,9 +112,11 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
                 </>
               )}
               {client.logo_type === 'image' && (
-                <img 
+                <Image 
                   src={client.icon} 
                   alt={client.name} 
+                  width={80}
+                  height={80}
                   className="h-12 md:h-20 object-contain transition-all duration-500 group-hover:drop-shadow-2xl group-hover:scale-110" 
                 />
               )}

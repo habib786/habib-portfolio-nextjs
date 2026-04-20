@@ -18,6 +18,13 @@
       "clients": "العملاء"
     }
   },
+  "projects": {
+    "exploreProject": "استكشف المشروع ←"
+  },
+  "experience": {
+    "education": "التعليم",
+    "experience": "الخبرة"
+  },
   "blog": {
     "cta": {
       "haveProject": "هل لديك مشروع في ذهنك؟",

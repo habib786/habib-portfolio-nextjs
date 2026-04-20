@@ -27,9 +27,15 @@ export default function HeroSection({ dict }: { dict?: any }) {
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60'
   })
 
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false)
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } as React.RefObject<HTMLDivElement> : undefined,
     offset: ["start start", "end start"]
   })
 
@@ -74,7 +80,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
   return (
     <Box 
       component="section"
-      ref={containerRef}
+      ref={setContainer}
       sx={{ 
         position: 'relative', 
         width: '100%', 
@@ -261,6 +267,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
                       src={profile.image} 
                       alt={profile.name}
                       fill
+                      loading="eager"
                       className="object-cover object-top"
                     />
                    <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(16, 106, 90, 0.6), transparent)' }} />

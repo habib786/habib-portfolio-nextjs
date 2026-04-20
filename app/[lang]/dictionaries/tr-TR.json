@@ -18,6 +18,13 @@
       "clients": "Müşteriler"
     }
   },
+  "projects": {
+    "exploreProject": "PROJEYİ İNCELE →"
+  },
+  "experience": {
+    "education": "EĞİTİM",
+    "experience": "DENEYİM"
+  },
   "blog": {
     "cta": {
       "haveProject": "Aklınızda bir proje mi var?",

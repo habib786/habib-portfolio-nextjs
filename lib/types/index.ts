@@ -268,6 +268,90 @@ export interface Database {
   };
 }
 
+export interface RawProject {
+  id?: number | string
+  title?: string
+  slug?: string
+  description?: string | null
+  excerpt?: string
+  content?: string | null
+  thumbnail?: string
+  cover_image?: string | null
+  category?: string
+  technologies?: string[] | null
+  live_url?: string | null
+  github_url?: string | null
+  repo_url?: string
+  featured?: boolean
+  tags?: string[]
+  created_at?: string
+  views?: number
+}
+
+export interface MappedProject {
+  id: number | string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  thumbnail: string
+  category: string
+  technologies: string[]
+  liveUrl: string
+  repoUrl: string
+  featured: boolean
+  tags: string[]
+  createdAt: string
+  views: number
+}
+
+export interface RelatedProject {
+  id: number | string
+  title: string
+  slug: string
+  excerpt?: string
+  category?: string
+  thumbnail?: string
+}
+
+export interface RawBlogPost {
+  id?: number | string
+  title?: string
+  slug?: string
+  excerpt?: string | null
+  content?: string
+  cover_image?: string | null
+  featuredImage?: string
+  author?: string | null
+  author_bio?: string
+  author_image?: string
+  published_at?: string | null
+  created_at?: string
+  is_published?: boolean
+  tags?: string[]
+  views?: number
+  read_time?: number
+  category?: string
+}
+
+export interface MappedBlogPost {
+  id: number | string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  featuredImage: string
+  author: string
+  tags: string[]
+  published: boolean
+  publishedAt: string
+  views: number
+  readTime: number
+  category: string
+  authorBio: string
+  authorImage: string
+}
+
 // Legacy types for backward compatibility
 export type Project = Database['public']['Tables']['projects']['Row'] & {
   // Additional properties if needed
@@ -323,6 +407,31 @@ export interface Education {
   description?: string;
   location: string;
   order: number;
+}
+
+export interface MenuItemRaw {
+  id?: string
+  title?: string
+  url?: string
+  icon?: string | null
+  order?: number
+  parent_id?: string | null
+  is_external?: boolean
+  language?: string
+}
+
+export interface ServiceRaw {
+  id?: string
+  title?: string
+  description?: string | null
+  icon?: string | null
+  order?: number
+}
+
+export interface SettingRaw {
+  id?: string
+  key?: string
+  value?: Json
 }
 
 // Helper types

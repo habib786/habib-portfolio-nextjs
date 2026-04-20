@@ -202,8 +202,8 @@ export default function ContactInfo() {
         className="p-8 rounded-2xl bg-zinc-900 text-white relative overflow-hidden group shadow-xl"
       >
         {/* Background blobs for premium feel */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl" />
+        <div className="absolute top-0 end-0 -me-20 -mt-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500" />
+        <div className="absolute bottom-0 start-0 -ms-16 -mb-16 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl" />
 
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-6">

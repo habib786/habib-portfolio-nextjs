@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function AboutBanner() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ['start end', 'end start']
   })
 
@@ -22,7 +22,7 @@ export default function AboutBanner() {
 
   return (
     <Box
-      ref={containerRef}
+      ref={setContainer}
       sx={{
         position: 'relative',
         height: { xs: 320, md: 440 },

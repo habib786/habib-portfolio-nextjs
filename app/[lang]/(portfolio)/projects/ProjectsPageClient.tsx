@@ -196,6 +196,7 @@ export default function ProjectsPageClient() {
                 <Link href={`/projects/${project.slug}`}>
                   <Box sx={{ 
                     position: 'relative', 
+                    height: { xs: 280, md: 400 },
                     borderRadius: '10px', 
                     overflow: 'hidden',
                     transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',

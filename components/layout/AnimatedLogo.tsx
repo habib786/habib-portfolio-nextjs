@@ -52,13 +52,13 @@ export const AnimatedLogo = () => {
         display: 'flex', 
         alignItems: 'center', 
         cursor: 'pointer',
-        height: { xs: 40, md: 50 },
+        height: { xs: 36, md: 45 },
         transform: 'translateY(-2px)'
       }}
     >
       <svg
-        width="150"
-        height="50"
+        width="135"
+        height="45"
         viewBox="0 0 268.5 94.703"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

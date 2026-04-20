@@ -392,6 +392,9 @@ export async function getSiteMetadata() {
       url: siteUrl,
       contactEmail: contactEmail,
       defaultLanguage: (defaultLanguage?.code || 'en').trim(),
+      keywords: settings?.seo_keywords 
+        ? JSON.parse(settings.seo_keywords) 
+        : ['Full Stack Developer', 'AI Engineer', 'React', 'Next.js', 'TypeScript', 'Python', 'Machine Learning'],
       languages: await getLanguages(true),
     };
   } catch (error) {

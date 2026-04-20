@@ -29,7 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
       const urlString = rawUrl.trim();
       baseUrl = new URL(urlString.startsWith('http') ? urlString : `https://${urlString}`);
     } catch (e) {
-      baseUrl = new URL('http://localhost:3000');
+      const prodUrl = process.env.NEXT_PUBLIC_SITE_URL_PROD;
+      baseUrl = new URL(prodUrl ? `https://${prodUrl}` : 'http://localhost:3000');
     }
     
     // Ensure OG URL is absolute
@@ -40,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
       metadataBase: baseUrl,
       title: siteMetadata.title,
       description: siteMetadata.description,
-      keywords: ['Full Stack Developer', 'AI Engineer', 'React', 'Next.js', 'TypeScript', 'Python', 'Machine Learning'],
+      keywords: siteMetadata.keywords,
       authors: [{ name: 'Habib Farooq' }],
       creator: 'Habib Farooq',
       publisher: 'Habib Farooq',
@@ -88,7 +89,7 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error('Error fetching site metadata:', error);
     
     return {
-      metadataBase: new URL('http://localhost:3000'),
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL_PROD ? `https://${process.env.NEXT_PUBLIC_SITE_URL_PROD}` : 'http://localhost:3000'),
       title: 'Habib Farooq - Full Stack Developer & AI Engineer',
       description: 'Portfolio of Habib Farooq, a Full Stack Developer and AI Engineer specializing in modern web technologies, AI solutions, and scalable applications.',
       keywords: ['Full Stack Developer', 'AI Engineer', 'React', 'Next.js', 'TypeScript', 'Python', 'Machine Learning'],

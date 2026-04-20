@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Typography, Paper, useTheme, useMediaQuery } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +8,28 @@ import { faGraduationCap, faBriefcase, faCalendar } from '@fortawesome/free-soli
 import { useParams } from 'next/navigation'
 
 const isRtlLang = (lang: string) => lang === 'ar-SA' || lang === 'ur-PK'
+
+const defaultDict = {
+  experience: {
+    education: 'EDUCATION',
+    experience: 'EXPERIENCE',
+  },
+}
+
+async function getDictionary(locale: string) {
+  const dicts: Record<string, any> = {
+    'en-CA': () => import('@/app/[lang]/dictionaries/en-CA.json').then((module) => module.default),
+    'fr-CA': () => import('@/app/[lang]/dictionaries/fr-CA.json').then((module) => module.default),
+    'ar-SA': () => import('@/app/[lang]/dictionaries/ar-SA.json').then((module) => module.default),
+    'ur-PK': () => import('@/app/[lang]/dictionaries/ur-PK.json').then((module) => module.default),
+    'tr-TR': () => import('@/app/[lang]/dictionaries/tr-TR.json').then((module) => module.default),
+  }
+  const loader = dicts[locale]
+  if (loader) {
+    return loader()
+  }
+  return dicts['en-CA']()
+}
 
 export interface TimelineEvent {
   id: number | string
@@ -90,7 +112,7 @@ function TimelineItem({ event, index, isEven, isMobile, scrollYProgress, isRtl }
         }}
       >
         <motion.div
-          style={{ y: 0 }}
+          style={{ y: yOffset }}
           initial={{ opacity: 0, x: isAlternate ? -100 : 100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -236,17 +258,31 @@ export default function ExperienceTimeline({ data, lang: propLang }: { data?: Ti
   const isRtl = isRtlLang(lang)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  const [dict, setDict] = useState(defaultDict)
+  const [mounted, setMounted] = useState(false)
   
   const displayData = data || timelineData
-  
+
+  useEffect(() => {
+    setMounted(true)
+    getDictionary(lang).then(setDict).catch(() => setDict(defaultDict))
+  }, [lang])
+
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ["start end", "end start"]
   })
 
+  if (!mounted) {
+    return <Box sx={{ minHeight: 400 }} />
+  }
+
+  const educationLabel = dict?.experience?.education || 'EDUCATION'
+  const experienceLabel = dict?.experience?.experience || 'EXPERIENCE'
+
   return (
-    <Box ref={containerRef} sx={{ py: 10, position: 'relative', overflow: 'hidden' }}>
+    <Box ref={setContainer} sx={{ py: 10, position: 'relative', overflow: 'hidden' }}>
       <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 12, px: { md: 10 } }}>
           <motion.div
@@ -265,7 +301,7 @@ export default function ExperienceTimeline({ data, lang: propLang }: { data?: Ti
                   mb: 1
                 }}
               >
-                EDUCATION
+                {educationLabel}
               </Typography>
               <motion.div 
                 initial={{ width: 0 }}
@@ -300,7 +336,7 @@ export default function ExperienceTimeline({ data, lang: propLang }: { data?: Ti
                   mb: 1
                 }}
               >
-                EXPERIENCE
+                {experienceLabel}
               </Typography>
               <motion.div 
                 initial={{ width: 0 }}

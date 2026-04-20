@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Share2, Bookmark, Heart, MessageCircle } from 'lucide-react'
 import { Box, Typography, Chip, Stack, IconButton, Button } from '@mui/material'
@@ -102,10 +103,11 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
           }}
         >
           {post.featuredImage && !post.featuredImage.startsWith('/api/placeholder') ? (
-            <img
+            <Image
               src={post.featuredImage}
               alt={post.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              fill
+              style={{ objectFit: 'cover' }}
             />
           ) : (
             <Box

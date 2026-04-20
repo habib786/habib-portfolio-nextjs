@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography, Grid, Paper } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
@@ -9,10 +9,10 @@ import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 export default function ServicesHero({ profileImage }: { profileImage: string }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
+  const [mounted, setMounted] = useState(false)
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ['start start', 'end start'],
   })
 
@@ -28,7 +28,7 @@ export default function ServicesHero({ profileImage }: { profileImage: string })
 
   return (
     <Box
-      ref={containerRef}
+      ref={setContainer}
       sx={{
         bgcolor: 'primary.main',
         backgroundImage: 'linear-gradient(to bottom, #106A5A, #0d594b)',

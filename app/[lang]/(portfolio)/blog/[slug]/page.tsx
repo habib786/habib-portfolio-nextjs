@@ -5,6 +5,7 @@ import BlogPostContent from '@/components/blog/BlogPostContent'
 import BlogPostSidebar from '@/components/blog/BlogPostSidebar'
 import ArticleHero from '@/components/blog/ArticleHero'
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/supabase/queries'
+import { RawBlogPost, MappedBlogPost } from '@/lib/types'
 
 interface BlogPostPageProps {
   params: Promise<{ lang: string; slug: string }>
@@ -13,26 +14,45 @@ interface BlogPostPageProps {
 const DEFAULT_AUTHOR_BIO =
   'Full Stack Developer and AI Engineer focused on production-grade web applications.'
 
-function mapPost(raw: any) {
-  const tags = Array.isArray(raw?.tags) ? raw.tags : []
-  const publishedAt = raw?.published_at || raw?.created_at || new Date().toISOString()
+function mapPost(raw: RawBlogPost | null): MappedBlogPost {
+  if (!raw) {
+    return {
+      id: 0,
+      title: 'Untitled',
+      slug: '',
+      excerpt: '',
+      content: '',
+      featuredImage: '',
+      author: 'Habib Farooq',
+      tags: [],
+      published: false,
+      publishedAt: new Date().toISOString(),
+      views: 0,
+      readTime: 6,
+      category: 'General',
+      authorBio: DEFAULT_AUTHOR_BIO,
+      authorImage: '/api/placeholder/100/100',
+    }
+  }
+const tags = Array.isArray(raw.tags) ? raw.tags as string[] : []
+  const publishedAt = raw.published_at || raw.created_at || new Date().toISOString()
 
   return {
-    id: raw?.id ?? 0,
-    title: raw?.title ?? 'Untitled',
-    slug: raw?.slug ?? '',
-    excerpt: raw?.excerpt ?? '',
-    content: raw?.content ?? '',
-    featuredImage: raw?.cover_image ?? '',
-    author: raw?.author ?? 'Habib Farooq',
+    id: (raw.id as number | string) ?? 0,
+    title: (raw.title as string) ?? 'Untitled',
+    slug: (raw.slug as string) ?? '',
+    excerpt: (raw.excerpt as string) ?? '',
+    content: (raw.content as string) ?? '',
+    featuredImage: (raw.cover_image as string) ?? (raw.featuredImage as string) ?? '',
+    author: (raw.author as string) ?? 'Habib Farooq',
     tags,
-    published: Boolean(raw?.is_published),
-    publishedAt,
-    views: Number(raw?.views ?? 0),
-    readTime: Number(raw?.read_time ?? 6),
-    category: raw?.category ?? 'General',
-    authorBio: raw?.author_bio ?? DEFAULT_AUTHOR_BIO,
-    authorImage: raw?.author_image ?? '/api/placeholder/100/100',
+    published: Boolean(raw.is_published),
+    publishedAt: publishedAt as string,
+    views: Number(raw.views ?? 0),
+    readTime: Number(raw.read_time ?? 6),
+    category: (raw.category as string) ?? 'General',
+    authorBio: (raw.author_bio as string) ?? DEFAULT_AUTHOR_BIO,
+    authorImage: (raw.author_image as string) ?? '/api/placeholder/100/100',
   }
 }
 
@@ -81,7 +101,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = mapPost(rawPost)
   const relatedRaw = await getBlogPosts(lang, 5)
   const related = (relatedRaw || [])
-    .filter((item: any) => item.slug !== slug)
+    .filter((item: RawBlogPost | null) => (item as RawBlogPost)?.slug !== slug)
     .slice(0, 3)
     .map(mapPost)
 

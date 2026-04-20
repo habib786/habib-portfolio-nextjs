@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Box, Container, Typography, Chip, Stack } from '@mui/material'
 import { Clock, Eye, Calendar } from 'lucide-react'
@@ -19,9 +19,9 @@ interface ProjectHeroProps {
 }
 
 export default function ProjectHero({ project }: ProjectHeroProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ['start start', 'end start'],
   })
 
@@ -31,7 +31,8 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
 
   return (
     <Box
-      ref={containerRef}
+      component="section"
+      ref={setContainer}
       sx={{
         bgcolor: 'var(--primary)',
         position: 'relative',

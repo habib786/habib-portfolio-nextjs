@@ -18,6 +18,13 @@
       "clients": "Clients"
     }
   },
+  "projects": {
+    "exploreProject": "EXPLORE PROJECT →"
+  },
+  "experience": {
+    "education": "EDUCATION",
+    "experience": "EXPERIENCE"
+  },
   "blog": {
     "cta": {
       "haveProject": "Have a project in mind?",

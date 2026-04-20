@@ -10,23 +10,10 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { MappedProject } from '@/lib/types'
 
 interface ProjectContentProps {
-  project: {
-    id: number
-    title: string
-    slug: string
-    excerpt: string
-    content: string
-    thumbnail: string
-    category: string
-    technologies: string[]
-    liveUrl?: string
-    repoUrl?: string
-    tags: string[]
-    createdAt: string
-    views: number
-  }
+  project: MappedProject
 }
 
 export default function ProjectContent({ project }: ProjectContentProps) {

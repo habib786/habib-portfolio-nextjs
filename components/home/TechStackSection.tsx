@@ -20,9 +20,10 @@ const defaultTechStack = [
 export default function TechStackSection() {
   const pathname = usePathname()
   const [techStack, setTechStack] = useState<any[]>(defaultTechStack)
-  const containerRef = useRef(null)
+  const [mounted, setMounted] = useState(false)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ["start end", "end start"]
   })
 
@@ -68,7 +69,7 @@ export default function TechStackSection() {
   }, [pathname])
 
   return (
-    <Box component="section" ref={containerRef} sx={{ position: 'relative', bgcolor: 'background.default', pt: { xs: 8, md: 12 }, pb: 8, mt: 4, overflow: 'hidden' }}>
+    <Box component="section" ref={setContainer} sx={{ position: 'relative', bgcolor: 'background.default', pt: { xs: 8, md: 12 }, pb: 8, mt: 4, overflow: 'hidden' }}>
       <Container maxWidth="md">
         <SectionHeading 
           title="TECH STACK"

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Box, Container, Typography, Grid, Stack } from '@mui/material'
 import Link from 'next/link'
@@ -16,12 +16,17 @@ import BlogCTASection from '@/components/blog/BlogCTASection'
 
 export default function BlogPageClient() {
   const [imgError, setImgError] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const profileImage = useProfileImage()
   const handleImgError = () => setImgError(true)
 
-  const heroRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const [heroElement, setHeroElement] = useState<HTMLDivElement | null>(null)
   const { scrollYProgress } = useScroll({
-    target: heroRef,
+    target: heroElement ? { current: heroElement } : undefined,
     offset: ['start start', 'end start'],
   })
   const yImage = useTransform(scrollYProgress, [0, 1], [0, -80])
@@ -32,7 +37,7 @@ export default function BlogPageClient() {
     <Box sx={{ bgcolor: 'var(--background)', minHeight: '100vh', pb: { xs: 10, md: 20 } }}>
       {/* ── Hero Header ── */}
       <Box
-        ref={heroRef}
+        ref={setHeroElement}
         sx={{
           bgcolor: 'var(--primary)',
           position: 'relative',

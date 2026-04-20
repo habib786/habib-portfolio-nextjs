@@ -1,15 +1,17 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import AnimatedSquigglyLine from '@/components/animations/AnimatedSquigglyLine'
 import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
 
 export default function ContactHero({ profileImage }: { profileImage: string }) {
-  const heroRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  
   const { scrollYProgress } = useScroll({
-    target: heroRef,
+    target: container ? { current: container } : undefined,
     offset: ['start start', 'end start'],
   })
 
@@ -19,7 +21,7 @@ export default function ContactHero({ profileImage }: { profileImage: string }) 
 
   return (
     <Box
-      ref={heroRef}
+      ref={setContainer}
       id="contact-hero"
       sx={{
         bgcolor: 'var(--primary)',
@@ -151,15 +153,11 @@ export default function ContactHero({ profileImage }: { profileImage: string }) 
                       border: '4px solid rgba(255,255,255,0.1)'
                     }}
                   >
-                    <img 
+                    <Image 
                       src={profileImage}
                       alt="Habib"
-                      style={{ 
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: 'top'
-                      }}
+                      fill
+                      style={{ objectFit: 'cover', objectPosition: 'top' }}
                     />
                   </Box>
                 </motion.div>

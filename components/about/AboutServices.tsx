@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
-import { useEffect, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography, Grid, Card, Button } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
@@ -68,11 +67,11 @@ import ServiceCard from '@/components/services/ServiceCard'
 
 export default function AboutServices() {
   const pathname = usePathname()
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
   const [services, setServices] = useState(defaultServices)
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: container ? { current: container } : undefined,
     offset: ['start end', 'end start']
   })
 
@@ -125,7 +124,7 @@ export default function AboutServices() {
   return (
     <Box
       component="section"
-      ref={sectionRef}
+      ref={setContainer}
       sx={{ py: 12, bgcolor: '#f8f9fa', position: 'relative', overflow: 'hidden' }}
     >
       {/* Drifting decorative circle */}

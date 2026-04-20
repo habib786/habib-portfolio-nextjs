@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box, Container, Typography } from '@mui/material'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
@@ -15,10 +15,9 @@ import AnimatedWaveSeparator from '@/components/shared/AnimatedWaveSeparator'
  *  [2] Portrait photo rect — moves up fastest (classic foreground parallax)
  */
 export default function AboutHero({ profileImage }: { profileImage: string }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
+  const [container, setContainer] = useState<HTMLDivElement | null>(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ['start start', 'end start'],
   })
 
@@ -33,7 +32,7 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
   return (
     <Box
       component="section"
-      ref={containerRef}
+      ref={setContainer}
       sx={{
         bgcolor: '#106A5A',
         backgroundImage: 'linear-gradient(135deg, #106A5A 0%, #0d594b 100%)',

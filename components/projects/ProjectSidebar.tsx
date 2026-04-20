@@ -8,27 +8,11 @@ import {
   Chip, Stack, Button
 } from '@mui/material'
 import { motion } from 'framer-motion'
+import { MappedProject, RelatedProject } from '@/lib/types'
 
 interface ProjectSidebarProps {
-  project: {
-    id: number
-    title: string
-    slug: string
-    category: string
-    technologies: string[]
-    liveUrl?: string
-    repoUrl?: string
-    createdAt: string
-    views: number
-  }
-  relatedProjects?: Array<{
-    id: number | string
-    title: string
-    slug: string
-    excerpt?: string
-    category?: string
-    thumbnail?: string
-  }>
+  project: Pick<MappedProject, 'id' | 'title' | 'slug' | 'category' | 'technologies' | 'liveUrl' | 'repoUrl' | 'createdAt' | 'views'>
+  relatedProjects?: RelatedProject[]
 }
 
 const cardVariants = {
