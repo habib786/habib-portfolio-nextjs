@@ -4,8 +4,9 @@ import ProjectsPageClient from './ProjectsPageClient'
 
 export const revalidate = 3600
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings()
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  const settings = await getSettings(lang)
   const projectsMetaTitle = settings?.projects_meta_title ?? null
   const projectsMetaDesc = settings?.projects_meta_description ?? null
   return {

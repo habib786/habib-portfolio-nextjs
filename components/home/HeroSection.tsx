@@ -60,15 +60,18 @@ export default function HeroSection({ dict }: { dict?: any }) {
             settings[item.key] = item.value
           })
 
-          if (settings.profile_name) {
+          const getVal = (key: string) => settings[`${key}_${lang}`] !== undefined ? settings[`${key}_${lang}`] : settings[key];
+
+          const profileName = getVal('profile_name')
+          if (profileName) {
             setProfile(prev => ({
               ...prev,
-              name: cleanValue(settings.profile_name),
-              role: cleanValue(settings.profile_role) || prev.role,
-              experience: cleanValue(settings.stat_experience) || prev.experience,
-              projects: cleanValue(settings.stat_projects) || prev.projects,
-              clients: cleanValue(settings.stat_clients) || prev.clients,
-              image: cleanValue(settings.profile_image) || prev.image
+              name: cleanValue(profileName),
+              role: cleanValue(getVal('profile_role')) || prev.role,
+              experience: cleanValue(getVal('stat_experience')) || prev.experience,
+              projects: cleanValue(getVal('stat_projects')) || prev.projects,
+              clients: cleanValue(getVal('stat_clients')) || prev.clients,
+              image: cleanValue(getVal('profile_image')) || prev.image
             }))
           }
         }
@@ -79,7 +82,7 @@ export default function HeroSection({ dict }: { dict?: any }) {
       }
     }
     fetchProfile()
-  }, [])
+  }, [lang])
 
   return loading ? (
     <Box 

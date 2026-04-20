@@ -21,9 +21,10 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata dynamically from Supabase
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   try {
-    const siteMetadata = await getSiteMetadata();
+    const { lang } = await params;
+    const siteMetadata = await getSiteMetadata(lang);
     
     // Safely construct the base URL
     let baseUrl: URL;

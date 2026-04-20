@@ -8,8 +8,9 @@ import { createClient } from '@/lib/supabase/server'
 import { getSettings } from '@/lib/supabase/queries'
 import { cleanValue } from '@/lib/utils'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings()
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  const settings = await getSettings(lang)
   const contactMetaTitle = settings?.contact_meta_title ?? null
   const contactMetaDesc = settings?.contact_meta_description ?? null
   return {
@@ -20,7 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import ContactHero from '@/components/contact/ContactHero'
 
-export default async function ContactPage() {
+export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
   // Fetch profile image from Supabase
   const supabase = await createClient()
   let profileImage = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60'
@@ -28,7 +30,12 @@ export default async function ContactPage() {
   if (supabase) {
     const { data: settingsData } = await supabase.from('settings').select('*')
     if (settingsData) {
-      const profileImg = settingsData.find((s: any) => s.key === 'profile_image')?.value
+      const settings: any = {}
+      settingsData.forEach((item: any) => {
+        settings[item.key] = item.value
+      })
+      
+      const profileImg = settings[`profile_image_${lang}`] || settings['profile_image']
       if (profileImg) {
         profileImage = cleanValue(profileImg)
       }

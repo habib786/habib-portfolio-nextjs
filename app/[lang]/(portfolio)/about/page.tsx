@@ -39,8 +39,9 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
           settings[item.key] = item.value
         }
       })
-      if (settings.profile_image && typeof settings.profile_image === 'string' && settings.profile_image.trim()) {
-        profileImage = cleanValue(settings.profile_image)
+      const profileImg = settings[`profile_image_${lang}`] || settings['profile_image']
+      if (profileImg && typeof profileImg === 'string' && profileImg.trim()) {
+        profileImage = cleanValue(profileImg)
       }
     }
   }
