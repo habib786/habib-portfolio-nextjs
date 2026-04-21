@@ -1,11 +1,11 @@
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
-import FloatingActions from '@/components/layout/FloatingActions'
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import FloatingActions from "@/components/layout/FloatingActions";
 
 export default function PortfolioLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -14,5 +14,5 @@ export default function PortfolioLayout({
       <Footer />
       <FloatingActions />
     </>
-  )
+  );
 }

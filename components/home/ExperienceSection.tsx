@@ -1,5 +1,5 @@
-import ExperienceEducationSection from '@/components/experience/ExperienceEducationSection'
+import ExperienceEducationSection from "@/components/experience/ExperienceEducationSection";
 
 export default function ExperienceSection() {
-  return <ExperienceEducationSection />
+  return <ExperienceEducationSection />;
 }

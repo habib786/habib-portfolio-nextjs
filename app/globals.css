@@ -26,10 +26,12 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 1px);
   --radius-sm: calc(var(--radius) - 2px);
+  --font-sans: var(--font-primary);
 }
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: hsl(0 0% 100%);
     --foreground: hsl(0 0% 10%);
     --card: hsl(0 0% 100%);
@@ -50,9 +52,11 @@
     --input: hsl(0 0% 90%);
     --ring: hsl(220 70% 50%);
     --radius: 5px;
+    --font-primary: "Outfit", sans-serif;
   }
 
   .dark {
+    color-scheme: dark;
     --background: hsl(0 0% 10%);
     --foreground: hsl(0 0% 95%);
     --card: hsl(0 0% 15%);
@@ -82,11 +86,32 @@
   html {
     /* Required by Framer Motion's useScroll: scroll container must be non-static */
     position: relative;
+    background-color: var(--color-background);
+    transition:
+      background-color 220ms ease,
+      color 220ms ease;
   }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-primary);
     font-feature-settings: "rlig" 1, "calt" 1;
+    transition:
+      background-color 220ms ease,
+      color 220ms ease;
+  }
+  :root:has(.--font-amiri) {
+    --font-primary: var(--font-amiri, "Outfit", sans-serif);
+  }
+  :root:has(.--font-reem-kufi) {
+    --font-primary: var(--font-reem-kufi, "Outfit", sans-serif);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
   }
 }
 
@@ -109,6 +134,14 @@
   
   .animate-slide-right {
     animation: slideRight 0.5s ease-out;
+  }
+
+  [dir="rtl"] .animate-slide-left {
+    animation: slideRight 0.5s ease-out;
+  }
+
+  [dir="rtl"] .animate-slide-right {
+    animation: slideLeft 0.5s ease-out;
   }
 }
 

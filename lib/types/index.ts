@@ -269,95 +269,95 @@ export interface Database {
 }
 
 export interface RawProject {
-  id?: number | string
-  title?: string
-  slug?: string
-  description?: string | null
-  excerpt?: string
-  content?: string | null
-  thumbnail?: string
-  cover_image?: string | null
-  category?: string
-  technologies?: string[] | null
-  live_url?: string | null
-  github_url?: string | null
-  repo_url?: string
-  featured?: boolean
-  tags?: string[]
-  created_at?: string
-  views?: number
+  id?: number | string;
+  title?: string;
+  slug?: string;
+  description?: string | null;
+  excerpt?: string;
+  content?: string | null;
+  thumbnail?: string;
+  cover_image?: string | null;
+  category?: string;
+  technologies?: string[] | null;
+  live_url?: string | null;
+  github_url?: string | null;
+  repo_url?: string;
+  featured?: boolean;
+  tags?: string[];
+  created_at?: string;
+  views?: number;
 }
 
 export interface MappedProject {
-  id: number | string
-  title: string
-  slug: string
-  excerpt: string
-  content: string
-  thumbnail: string
-  category: string
-  technologies: string[]
-  liveUrl: string
-  repoUrl: string
-  featured: boolean
-  tags: string[]
-  createdAt: string
-  views: number
+  id: number | string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  thumbnail: string;
+  category: string;
+  technologies: string[];
+  liveUrl: string;
+  repoUrl: string;
+  featured: boolean;
+  tags: string[];
+  createdAt: string;
+  views: number;
 }
 
 export interface RelatedProject {
-  id: number | string
-  title: string
-  slug: string
-  excerpt?: string
-  category?: string
-  thumbnail?: string
+  id: number | string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  category?: string;
+  thumbnail?: string;
 }
 
 export interface RawBlogPost {
-  id?: number | string
-  title?: string
-  slug?: string
-  excerpt?: string | null
-  content?: string
-  cover_image?: string | null
-  featuredImage?: string
-  author?: string | null
-  author_bio?: string
-  author_image?: string
-  published_at?: string | null
-  created_at?: string
-  is_published?: boolean
-  tags?: string[]
-  views?: number
-  read_time?: number
-  category?: string
+  id?: number | string;
+  title?: string;
+  slug?: string;
+  excerpt?: string | null;
+  content?: string;
+  cover_image?: string | null;
+  featuredImage?: string;
+  author?: string | null;
+  author_bio?: string;
+  author_image?: string;
+  published_at?: string | null;
+  created_at?: string;
+  is_published?: boolean;
+  tags?: string[];
+  views?: number;
+  read_time?: number;
+  category?: string;
 }
 
 export interface MappedBlogPost {
-  id: number | string
-  title: string
-  slug: string
-  excerpt: string
-  content: string
-  featuredImage: string
-  author: string
-  tags: string[]
-  published: boolean
-  publishedAt: string
-  views: number
-  readTime: number
-  category: string
-  authorBio: string
-  authorImage: string
+  id: number | string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  author: string;
+  tags: string[];
+  published: boolean;
+  publishedAt: string;
+  views: number;
+  readTime: number;
+  category: string;
+  authorBio: string;
+  authorImage: string;
 }
 
 // Legacy types for backward compatibility
-export type Project = Database['public']['Tables']['projects']['Row'] & {
+export type Project = Database["public"]["Tables"]["projects"]["Row"] & {
   // Additional properties if needed
 };
 
-export type BlogPost = Database['public']['Tables']['blog_posts']['Row'] & {
+export type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"] & {
   // Additional properties if needed
 };
 
@@ -367,17 +367,18 @@ export interface User {
   name: string;
   avatar_url?: string;
   bio?: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   created_at: string;
   updated_at: string;
 }
 
-export type ContactMessage = Database['public']['Tables']['contact_messages']['Row'];
+export type ContactMessage =
+  Database["public"]["Tables"]["contact_messages"]["Row"];
 
 export interface Skill {
   id: string;
   name: string;
-  category: 'frontend' | 'backend' | 'devops' | 'tools' | 'other';
+  category: "frontend" | "backend" | "devops" | "tools" | "other";
   proficiency: number; // 1-100
   icon?: string;
   order: number;
@@ -410,32 +411,32 @@ export interface Education {
 }
 
 export interface MenuItemRaw {
-  id?: string
-  title?: string
-  url?: string
-  icon?: string | null
-  order?: number
-  parent_id?: string | null
-  is_external?: boolean
-  language?: string
+  id?: string;
+  title?: string;
+  url?: string;
+  icon?: string | null;
+  order?: number;
+  parent_id?: string | null;
+  is_external?: boolean;
+  language?: string;
 }
 
 export interface ServiceRaw {
-  id?: string
-  title?: string
-  description?: string | null
-  icon?: string | null
-  order?: number
+  id?: string;
+  title?: string;
+  description?: string | null;
+  icon?: string | null;
+  order?: number;
 }
 
 export interface SettingRaw {
-  id?: string
-  key?: string
-  value?: Json
+  id?: string;
+  key?: string;
+  value?: Json;
 }
 
 // Helper types
-export type Page = Database['public']['Tables']['pages']['Row'];
-export type MenuItem = Database['public']['Tables']['menu_items']['Row'];
-export type Language = Database['public']['Tables']['languages']['Row'];
-export type Setting = Database['public']['Tables']['settings']['Row'];
+export type Page = Database["public"]["Tables"]["pages"]["Row"];
+export type MenuItem = Database["public"]["Tables"]["menu_items"]["Row"];
+export type Language = Database["public"]["Tables"]["languages"]["Row"];
+export type Setting = Database["public"]["Tables"]["settings"]["Row"];

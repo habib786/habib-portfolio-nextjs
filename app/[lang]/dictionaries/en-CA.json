@@ -31,5 +31,99 @@
       "letsTalk": "LET'S TALK",
       "aboutProject": "ABOUT YOUR PROJECT"
     }
+  },
+  "services": {
+    "title": "My Expert Services",
+    "exploreMore": "Explore More Services",
+    "serviceLabel": "SERVICE",
+    "defaultServices": [
+      {
+        "title": "FULL-STACK WEB & MOBILE DEVELOPMENT",
+        "description": "End-to-end development of robust web applications and cross-platform native mobile apps that scale perfectly."
+      },
+      {
+        "title": "UI/UX DESIGN & WEB DESIGN",
+        "description": "Creating intuitive, engaging, and aesthetically pleasing user interfaces holding strong UX principles."
+      },
+      {
+        "title": "SERVERLESS ARCHITECTURE & CLOUD SOLUTIONS",
+        "description": "Designing and deploying scalable, cost-effective infrastructure using modern cloud services and serverless setups."
+      }
+    ]
+  },
+  "techStack": {
+    "title": "TECH STACK",
+    "tooltip": "{name}: {percent}% Proficiency"
+  },
+  "contactForm": {
+    "labels": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "inquiryType": "What are you reaching out for? *",
+      "technicalLevel": "Your Technical Level",
+      "budget": "Budget Range",
+      "timeline": "Timeline",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "helperText": {
+      "technicalLevel": "Select the level that best describes you - helps me tailor my response",
+      "budget": "Optional but helps with planning",
+      "message": "Please include as much detail as possible about your project requirements."
+    },
+    "buttons": {
+      "send": "Send Message",
+      "sending": "Sending..."
+    },
+    "status": {
+      "successTitle": "Message sent successfully!",
+      "successBody": "Thank you for reaching out. I'll get back to you within 24 hours.",
+      "errorTitle": "Something went wrong",
+      "errorBody": "Please try again or contact me directly via email."
+    },
+    "privacyNotice": "Your information is secure and will only be used to respond to your inquiry. I never share your details with third parties.",
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "subjectRequired": "Subject is required",
+      "subjectMin": "Subject must be at least 5 characters",
+      "messageRequired": "Message is required",
+      "messageMin": "Message must be at least 10 characters",
+      "inquiryTypeRequired": "Please select what you are reaching out for"
+    },
+    "inquiryTypes": [
+      { "value": "project", "label": "New Project" },
+      { "value": "consulting", "label": "IT Consulting" },
+      { "value": "collaboration", "label": "Collaboration" },
+      { "value": "job", "label": "Job Opportunity" },
+      { "value": "mentorship", "label": "Mentorship" },
+      { "value": "support", "label": "Technical Support" },
+      { "value": "other", "label": "Other" }
+    ],
+    "technicalLevels": [
+      { "value": "non-technical", "label": "Non-Technical (Just have an idea)" },
+      { "value": "beginner", "label": "Beginner (Learning the basics)" },
+      { "value": "intermediate", "label": "Intermediate (Know my way around)" },
+      { "value": "advanced", "label": "Advanced (Can build things)" },
+      { "value": "expert", "label": "Expert (Need complex solutions)" }
+    ],
+    "budgetRanges": [
+      { "value": "not-sure", "label": "Not sure yet" },
+      { "value": "under-1k", "label": "Under $1,000" },
+      { "value": "1k-5k", "label": "$1,000 - $5,000" },
+      { "value": "5k-10k", "label": "$5,000 - $10,000" },
+      { "value": "10k-25k", "label": "$10,000 - $25,000" },
+      { "value": "25k-plus", "label": "$25,000+" },
+      { "value": "no-budget", "label": "No budget (Just asking)" }
+    ],
+    "timelines": [
+      { "value": "asap", "label": "ASAP (Urgent)" },
+      { "value": "1-month", "label": "Within 1 month" },
+      { "value": "1-3-months", "label": "1-3 months" },
+      { "value": "3-6-months", "label": "3-6 months" },
+      { "value": "flexible", "label": "Flexible / No rush" }
+    ]
   }
 }

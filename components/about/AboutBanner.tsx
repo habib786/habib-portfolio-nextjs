@@ -1,36 +1,44 @@
-'use client'
+"use client";
 
-import React, { useRef, useState, useEffect } from 'react'
-import { Box, Container, Typography } from '@mui/material'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import React, { useRef, useState, useEffect } from "react";
+import { Box, Container, Typography } from "@mui/material";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function AboutBanner() {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const containerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
-    target: container ? { current: container } : undefined,
-    offset: ['start end', 'end start']
-  })
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
   // Parallax layers at different speeds
-  const yBackground = useTransform(scrollYProgress, [0, 1], [-60, 60])
-  const yCode = useTransform(scrollYProgress, [0, 1], [-30, 80])
-  const xMarquee = useTransform(scrollYProgress, [0, 1], ['0%', '-20%'])
-  const scaleOverlay = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05])
-  const textY = useTransform(scrollYProgress, [0, 1], [40, -40])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6])
+  const yBackground = useTransform(scrollYProgress, [0, 1], [-60, 60]);
+  const yCode = useTransform(scrollYProgress, [0, 1], [-30, 80]);
+  const xMarquee = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const scaleOverlay = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [1.05, 1, 1.05],
+  );
+  const textY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const textOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.7, 1],
+    [0.6, 1, 1, 0.6],
+  );
 
   return (
     <Box
-      ref={setContainer}
+      ref={containerRef}
       sx={{
-        position: 'relative',
+        position: "relative",
         height: { xs: 320, md: 440 },
-        bgcolor: '#0a0a0a',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden'
+        bgcolor: "#0a0a0a",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
       }}
     >
       {/* Code Background — slower parallax */}
@@ -102,8 +110,9 @@ export default function Future() {
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)',
-          scale: scaleOverlay as any
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)",
+          scale: scaleOverlay as any,
         }}
       />
 
@@ -112,8 +121,9 @@ export default function Future() {
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.45), rgba(0,0,0,0.9))',
-          y: yBackground as any
+          background:
+            "linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.45), rgba(0,0,0,0.9))",
+          y: yBackground as any,
         }}
       />
 
@@ -127,44 +137,61 @@ export default function Future() {
         viewport={{ once: false }}
         transition={{ duration: 0.8 }}
       >
-        <Typography sx={{
-          fontSize: { xs: '4rem', md: '7rem' },
-          fontWeight: 900,
-          color: 'rgba(255,255,255,0.04)',
-          letterSpacing: 16,
-          textTransform: 'uppercase',
-          userSelect: 'none'
-        }}>
-          CODE &nbsp; BUILD &nbsp; DEPLOY &nbsp; CODE &nbsp; BUILD &nbsp; DEPLOY &nbsp; CODE &nbsp; BUILD
+        <Typography
+          sx={{
+            fontSize: { xs: "4rem", md: "7rem" },
+            fontWeight: 900,
+            color: "rgba(255,255,255,0.04)",
+            letterSpacing: 16,
+            textTransform: "uppercase",
+            userSelect: "none",
+          }}
+        >
+          CODE &nbsp; BUILD &nbsp; DEPLOY &nbsp; CODE &nbsp; BUILD &nbsp; DEPLOY
+          &nbsp; CODE &nbsp; BUILD
         </Typography>
       </motion.div>
 
       {/* Central headline */}
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+      <Container
+        maxWidth="lg"
+        sx={{ position: "relative", zIndex: 2, textAlign: "center" }}
+      >
         <motion.div
           style={{ y: textY, opacity: textOpacity }}
           aria-label="Building the future, one line of code at a time"
         >
           {/* Word-by-word reveal */}
-          {['BUILDING', 'THE', 'FUTURE,', 'ONE', 'LINE', 'OF', 'CODE', 'AT', 'A', 'TIME.'].map((word, i) => (
+          {[
+            "BUILDING",
+            "THE",
+            "FUTURE,",
+            "ONE",
+            "LINE",
+            "OF",
+            "CODE",
+            "AT",
+            "A",
+            "TIME.",
+          ].map((word, i) => (
             <motion.span
               key={word + i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
-              style={{ display: 'inline-block', marginRight: '0.35em' }}
+              style={{ display: "inline-block", marginRight: "0.35em" }}
             >
               <Typography
                 component="span"
                 sx={{
-                  color: 'white',
+                  color: "white",
                   fontWeight: 900,
-                  fontSize: { xs: '1.8rem', md: '3.5rem' },
-                  textTransform: 'uppercase',
+                  fontSize: { xs: "1.8rem", md: "3.5rem" },
+                  textTransform: "uppercase",
                   letterSpacing: 2,
                   lineHeight: 1.2,
-                  display: 'inline',
+                  display: "inline",
                 }}
               >
                 {word}
@@ -176,12 +203,23 @@ export default function Future() {
         {/* Animated yellow cursor blink */}
         <motion.div
           animate={{ opacity: [1, 0, 1] }}
-          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-          style={{ display: 'inline-block', marginLeft: 4, verticalAlign: 'middle' }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          style={{
+            display: "inline-block",
+            marginLeft: 4,
+            verticalAlign: "middle",
+          }}
         >
-          <Box sx={{ width: 4, height: { xs: 28, md: 48 }, bgcolor: '#FACC15', borderRadius: 1 }} />
+          <Box
+            sx={{
+              width: 4,
+              height: { xs: 28, md: 48 },
+              bgcolor: "#FACC15",
+              borderRadius: 1,
+            }}
+          />
         </motion.div>
       </Container>
     </Box>
-  )
+  );
 }

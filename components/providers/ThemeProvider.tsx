@@ -1,19 +1,27 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import { type ThemeProviderProps } from 'next-themes'
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes";
 
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   const orig = console.error;
   console.error = (...args: unknown[]) => {
-    if (typeof args[0] === 'string' && args[0].includes('Encountered a script tag while rendering React component')) {
+    if (
+      typeof args[0] === "string" &&
+      args[0].includes(
+        "Encountered a script tag while rendering React component",
+      )
+    ) {
       return;
     }
-    (orig as (this: typeof console, ...args: unknown[]) => void).apply(console, args as unknown[]);
+    (orig as (this: typeof console, ...args: unknown[]) => void).apply(
+      console,
+      args as unknown[],
+    );
   };
 }
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }

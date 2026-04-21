@@ -1,51 +1,56 @@
-'use client'
+"use client";
 
-import React, { useRef, useState, useEffect } from 'react'
-import { Box, Container, Typography, Grid, Card, Button } from '@mui/material'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { createClient } from '@/lib/supabase/client'
-import NextLink from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import React, { useRef, useState, useEffect } from "react";
+import { Box, Container, Typography, Grid, Card, Button } from "@mui/material";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { createClient } from "@/lib/supabase/client";
+import NextLink from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const defaultServices = [
   {
-    id: '01',
-    title: 'FULL-STACK WEB & MOBILE DEVELOPMENT',
-    description: 'Developing high-quality, scalable web and mobile applications using modern technologies.',
-    icon: '💻'
+    id: "01",
+    title: "FULL-STACK WEB & MOBILE DEVELOPMENT",
+    description:
+      "Developing high-quality, scalable web and mobile applications using modern technologies.",
+    icon: "💻",
   },
   {
-    id: '02',
-    title: 'UI/UX DESIGN & DEVELOPMENT',
-    description: 'Creating user-centered designs that are both functional and visually appealing.',
-    icon: '🎨'
+    id: "02",
+    title: "UI/UX DESIGN & DEVELOPMENT",
+    description:
+      "Creating user-centered designs that are both functional and visually appealing.",
+    icon: "🎨",
   },
   {
-    id: '03',
-    title: 'SERVERLESS ARCHITECTURE & CLOUD SOLUTIONS',
-    description: 'Leveraging cloud technologies to build scalable and cost-effective solutions.',
-    icon: '☁️'
+    id: "03",
+    title: "SERVERLESS ARCHITECTURE & CLOUD SOLUTIONS",
+    description:
+      "Leveraging cloud technologies to build scalable and cost-effective solutions.",
+    icon: "☁️",
   },
   {
-    id: '04',
-    title: 'E-COMMERCE PLATFORM DEVELOPMENT',
-    description: 'Building robust and secure e-commerce platforms to help businesses grow.',
-    icon: '🛒'
+    id: "04",
+    title: "E-COMMERCE PLATFORM DEVELOPMENT",
+    description:
+      "Building robust and secure e-commerce platforms to help businesses grow.",
+    icon: "🛒",
   },
   {
-    id: '05',
-    title: 'DATABASE MANAGEMENT & ANALYTICS',
-    description: 'Optimizing and managing data to provide valuable insights for decision-making.',
-    icon: '📊'
+    id: "05",
+    title: "DATABASE MANAGEMENT & ANALYTICS",
+    description:
+      "Optimizing and managing data to provide valuable insights for decision-making.",
+    icon: "📊",
   },
   {
-    id: '06',
-    title: 'API INTEGRATION & TECHNICAL CONSULTING',
-    description: 'Expert advice and integration of APIs to enhance application functionality.',
-    icon: '🔌'
-  }
-]
+    id: "06",
+    title: "API INTEGRATION & TECHNICAL CONSULTING",
+    description:
+      "Expert advice and integration of APIs to enhance application functionality.",
+    icon: "🔌",
+  },
+];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50, scale: 0.96 },
@@ -56,89 +61,92 @@ const cardVariants = {
     transition: {
       duration: 0.6,
       delay: i * 0.1,
-      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number]
-    }
-  })
-}
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+    },
+  }),
+};
 
-import { usePathname } from 'next/navigation'
-import { SUPPORTED_LOCALES } from '@/lib/utils'
-import SectionHeading from '../ui/SectionHeading'
-import ServiceCard from '@/components/services/ServiceCard'
+import { usePathname } from "next/navigation";
+import { getLocalizedHref, SUPPORTED_LOCALES } from "@/lib/utils";
+import SectionHeading from "../ui/SectionHeading";
+import ServiceCard from "@/components/services/ServiceCard";
 
 export default function AboutServices() {
-  const pathname = usePathname()
-  const [container, setContainer] = useState<HTMLElement | null>(null)
-  const [services, setServices] = useState(defaultServices)
+  const pathname = usePathname();
+  const containerRef = useRef<HTMLElement>(null);
+  const [services, setServices] = useState(defaultServices);
 
   const { scrollYProgress } = useScroll({
-    target: container ? { current: container } : undefined,
-    offset: ['start end', 'end start']
-  })
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-  const gridY = useTransform(scrollYProgress, [0, 1], [60, -60])
-  const decorScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6])
+  const gridY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const decorScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6]);
 
-  const servicesLinkHref = (() => {
-    const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/)
-    const currentLocale = localeMatch ? localeMatch[1] : null
-    if (currentLocale && SUPPORTED_LOCALES.includes(currentLocale)) {
-      return `/${currentLocale}/services`
-    }
-    return '/services'
-  })()
+  const servicesLinkHref = getLocalizedHref("/services", pathname);
 
   useEffect(() => {
     async function fetchData(lang: string) {
-      const supabase = createClient()
-      if (!supabase) return []
+      const supabase = createClient();
+      if (!supabase) return [];
       const { data, error } = await supabase
-        .from('portfolio_services')
-        .select('*')
-        .eq('language', lang)
-        .order('order_index', { ascending: true })
-      if (error) throw error
-      return data || []
+        .from("portfolio_services")
+        .select("*")
+        .eq("language", lang)
+        .order("order_index", { ascending: true });
+      if (error) throw error;
+      return data || [];
     }
 
     async function loadServices() {
       try {
         const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
-        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
+        const currentLanguage = localeMatch ? localeMatch[1] : "en-CA";
 
-        let data = await fetchData(currentLanguage)
+        let data = await fetchData(currentLanguage);
 
         if (data.length === 0) {
-          const fallbackLocales = SUPPORTED_LOCALES.filter(l => l !== currentLanguage)
+          const fallbackLocales = SUPPORTED_LOCALES.filter(
+            (l) => l !== currentLanguage,
+          );
           for (const locale of fallbackLocales) {
-            data = await fetchData(locale)
-            if (data.length > 0) break
+            data = await fetchData(locale);
+            if (data.length > 0) break;
           }
         }
 
         if (data && data.length > 0) {
           setServices(
             data.map((item: any, index: number) => ({
-              id: item.number_id || String(item.order_index) || String(index + 1).padStart(2, '0'),
+              id:
+                item.number_id ||
+                String(item.order_index) ||
+                String(index + 1).padStart(2, "0"),
               title: item.title,
               description: item.description,
-              icon: item.icon_emoji || '💻',
-            }))
-          )
+              icon: item.icon_emoji || "💻",
+            })),
+          );
         }
       } catch (error) {
-        console.error('Failed to load about services:', error)
+        console.error("Failed to load about services:", error);
       }
     }
 
-    loadServices()
-  }, [pathname])
+    loadServices();
+  }, [pathname]);
 
   return (
     <Box
       component="section"
-      ref={setContainer}
-      sx={{ py: 12, bgcolor: '#f8f9fa', position: 'relative', overflow: 'hidden' }}
+      ref={containerRef}
+      sx={{
+        py: 12,
+        bgcolor: "#f8f9fa",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
       {/* Drifting decorative circle */}
       <motion.div
@@ -146,11 +154,16 @@ export default function AboutServices() {
         aria-hidden
         className="absolute -top-16 right-[10%] w-72 h-72 rounded-full pointer-events-none"
       >
-        <div style={{
-          width: '100%', height: '100%', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(16,106,90,0.07) 0%, transparent 70%)',
-          border: '1px solid rgba(16,106,90,0.08)'
-        }} />
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(16,106,90,0.07) 0%, transparent 70%)",
+            border: "1px solid rgba(16,106,90,0.08)",
+          }}
+        />
       </motion.div>
 
       <motion.div
@@ -158,21 +171,25 @@ export default function AboutServices() {
         aria-hidden
         className="absolute bottom-0 left-[5%] w-48 h-48 rounded-full pointer-events-none"
       >
-        <div style={{
-          width: '100%', height: '100%', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(250,204,21,0.1) 0%, transparent 70%)',
-        }} />
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(250,204,21,0.1) 0%, transparent 70%)",
+          }}
+        />
       </motion.div>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <SectionHeading 
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+        <SectionHeading
           title="MY SERVICES"
           subtitle="I offer a wide range of services to help you build and scale your products. Our team is dedicated to providing high-quality solutions tailored to your needs."
           align="center"
           variant="h3"
           sx={{ mb: 10 }}
         />
-
 
         {/* Cards with parallax + stagger */}
         <motion.div style={{ y: gridY }}>
@@ -184,7 +201,7 @@ export default function AboutServices() {
                   variants={cardVariants}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, margin: '-60px' }}
+                  viewport={{ once: true, margin: "-60px" }}
                   whileHover={{ y: -8, transition: { duration: 0.25 } }}
                 >
                   <ServiceCard
@@ -199,27 +216,27 @@ export default function AboutServices() {
             ))}
           </Grid>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
-            <NextLink 
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+            <NextLink
               href={servicesLinkHref}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               <Button
                 variant="contained"
                 size="large"
-                endIcon={<FontAwesomeIcon icon={faArrowRight} />}
+                endIcon={<ArrowRight />}
                 sx={{
                   px: 4,
                   py: 1.5,
                   fontWeight: 700,
-                  bgcolor: 'primary.main',
-                  color: 'white',
+                  bgcolor: "primary.main",
+                  color: "white",
                   borderRadius: 2,
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                    transform: 'translateX(8px)'
+                  "&:hover": {
+                    bgcolor: "primary.dark",
+                    transform: "translateX(8px)",
                   },
-                  transition: 'all 0.3s ease'
+                  transition: "all 0.3s ease",
                 }}
               >
                 View All Services
@@ -229,5 +246,5 @@ export default function AboutServices() {
         </motion.div>
       </Container>
     </Box>
-  )
+  );
 }

@@ -31,5 +31,99 @@
       "letsTalk": "لنتحدث",
       "aboutProject": "عن مشروعك"
     }
+  },
+  "services": {
+    "title": "خدمات خبرائي",
+    "exploreMore": "استكشف المزيد من الخدمات",
+    "serviceLabel": "الخدمة",
+    "defaultServices": [
+      {
+        "title": "تطوير ويب وموبايل متكامل",
+        "description": "تطوير شامل لتطبيقات ويب قوية وتطبيقات موبايل متعددة المنصات قابلة للتوسع بكفاءة."
+      },
+      {
+        "title": "تصميم UI/UX وتصميم ويب",
+        "description": "إنشاء واجهات مستخدم بديهية وجذابة وجميلة مع الالتزام بمبادئ تجربة المستخدم."
+      },
+      {
+        "title": "معمارية Serverless وحلول سحابية",
+        "description": "تصميم ونشر بنية تحتية قابلة للتوسع وفعالة من حيث التكلفة باستخدام خدمات سحابية حديثة وإعدادات Serverless."
+      }
+    ]
+  },
+  "techStack": {
+    "title": "المهارات التقنية",
+    "tooltip": "{name}: ‏{percent}% إتقان"
+  },
+  "contactForm": {
+    "labels": {
+      "name": "اسمك",
+      "email": "البريد الإلكتروني",
+      "inquiryType": "بماذا تتواصل؟ *",
+      "technicalLevel": "مستواك التقني",
+      "budget": "نطاق الميزانية",
+      "timeline": "الجدول الزمني",
+      "subject": "الموضوع",
+      "message": "الرسالة"
+    },
+    "helperText": {
+      "technicalLevel": "اختر المستوى الذي يصفك — يساعدني على تخصيص ردي",
+      "budget": "اختياري لكنه يساعد في التخطيط",
+      "message": "يرجى إضافة أكبر قدر ممكن من التفاصيل عن متطلبات مشروعك."
+    },
+    "buttons": {
+      "send": "إرسال الرسالة",
+      "sending": "جارٍ الإرسال..."
+    },
+    "status": {
+      "successTitle": "تم إرسال الرسالة بنجاح!",
+      "successBody": "شكرًا لتواصلك. سأعود إليك خلال 24 ساعة.",
+      "errorTitle": "حدث خطأ ما",
+      "errorBody": "يرجى المحاولة مرة أخرى أو التواصل معي عبر البريد الإلكتروني."
+    },
+    "privacyNotice": "معلوماتك آمنة وستُستخدم فقط للرد على استفسارك. لا أشارك تفاصيلك مع أطراف ثالثة.",
+    "validation": {
+      "nameRequired": "الاسم مطلوب",
+      "nameMin": "يجب أن يكون الاسم حرفين على الأقل",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+      "subjectRequired": "الموضوع مطلوب",
+      "subjectMin": "يجب أن يكون الموضوع 5 أحرف على الأقل",
+      "messageRequired": "الرسالة مطلوبة",
+      "messageMin": "يجب أن تكون الرسالة 10 أحرف على الأقل",
+      "inquiryTypeRequired": "يرجى اختيار سبب تواصلك"
+    },
+    "inquiryTypes": [
+      { "value": "project", "label": "مشروع جديد" },
+      { "value": "consulting", "label": "استشارات تقنية" },
+      { "value": "collaboration", "label": "تعاون" },
+      { "value": "job", "label": "فرصة عمل" },
+      { "value": "mentorship", "label": "إرشاد" },
+      { "value": "support", "label": "دعم تقني" },
+      { "value": "other", "label": "أخرى" }
+    ],
+    "technicalLevels": [
+      { "value": "non-technical", "label": "غير تقني (مجرد فكرة)" },
+      { "value": "beginner", "label": "مبتدئ (أتعلم الأساسيات)" },
+      { "value": "intermediate", "label": "متوسط (لدي خبرة)" },
+      { "value": "advanced", "label": "متقدم (أستطيع بناء حلول)" },
+      { "value": "expert", "label": "خبير (حلول معقدة)" }
+    ],
+    "budgetRanges": [
+      { "value": "not-sure", "label": "غير متأكد بعد" },
+      { "value": "under-1k", "label": "أقل من 1,000$" },
+      { "value": "1k-5k", "label": "1,000$ - 5,000$" },
+      { "value": "5k-10k", "label": "5,000$ - 10,000$" },
+      { "value": "10k-25k", "label": "10,000$ - 25,000$" },
+      { "value": "25k-plus", "label": "25,000$+" },
+      { "value": "no-budget", "label": "بدون ميزانية (مجرد سؤال)" }
+    ],
+    "timelines": [
+      { "value": "asap", "label": "في أسرع وقت (عاجل)" },
+      { "value": "1-month", "label": "خلال شهر" },
+      { "value": "1-3-months", "label": "1-3 أشهر" },
+      { "value": "3-6-months", "label": "3-6 أشهر" },
+      { "value": "flexible", "label": "مرن / لا استعجال" }
+    ]
   }
 }

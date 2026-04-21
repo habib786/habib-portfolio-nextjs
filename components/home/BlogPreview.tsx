@@ -1,112 +1,129 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Calendar, Clock, Eye, ArrowRight, BookOpen } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
-import { formatDate, calculateReadTime, getLocalizedHref } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Calendar, Clock, Eye, ArrowRight, BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { formatDate, calculateReadTime, getLocalizedHref } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 const defaultBlogPosts = [
   {
-    id: '1',
-    title: 'Building Scalable Next.js Applications with TypeScript',
-    slug: 'building-scalable-nextjs-applications-with-typescript',
-    excerpt: 'Learn how to architect and build scalable Next.js applications using TypeScript, proper folder structure, and best practices.',
-    author: 'Habib Farooq',
-    published_at: '2024-03-15',
+    id: "1",
+    title: "Building Scalable Next.js Applications with TypeScript",
+    slug: "building-scalable-nextjs-applications-with-typescript",
+    excerpt:
+      "Learn how to architect and build scalable Next.js applications using TypeScript, proper folder structure, and best practices.",
+    author: "Habib Farooq",
+    published_at: "2024-03-15",
     is_published: true,
   },
   {
-    id: '2',
-    title: 'Mastering React Performance Optimization',
-    slug: 'mastering-react-performance-optimization',
-    excerpt: 'Advanced techniques for optimizing React applications including memoization, code splitting, and virtualization.',
-    author: 'Habib Farooq',
-    published_at: '2024-02-28',
+    id: "2",
+    title: "Mastering React Performance Optimization",
+    slug: "mastering-react-performance-optimization",
+    excerpt:
+      "Advanced techniques for optimizing React applications including memoization, code splitting, and virtualization.",
+    author: "Habib Farooq",
+    published_at: "2024-02-28",
     is_published: true,
   },
   {
-    id: '3',
-    title: 'Implementing Authentication in Next.js with Supabase',
-    slug: 'implementing-authentication-in-nextjs-with-supabase',
-    excerpt: 'A comprehensive guide to implementing secure authentication in Next.js applications using Supabase Auth.',
-    author: 'Habib Farooq',
-    published_at: '2024-02-10',
+    id: "3",
+    title: "Implementing Authentication in Next.js with Supabase",
+    slug: "implementing-authentication-in-nextjs-with-supabase",
+    excerpt:
+      "A comprehensive guide to implementing secure authentication in Next.js applications using Supabase Auth.",
+    author: "Habib Farooq",
+    published_at: "2024-02-10",
     is_published: true,
   },
   {
-    id: '4',
-    title: 'The Future of AI in Web Development',
-    slug: 'future-of-ai-in-web-development',
-    excerpt: 'Exploring how artificial intelligence is transforming web development and what developers need to know.',
-    author: 'Habib Farooq',
-    published_at: '2024-01-22',
+    id: "4",
+    title: "The Future of AI in Web Development",
+    slug: "future-of-ai-in-web-development",
+    excerpt:
+      "Exploring how artificial intelligence is transforming web development and what developers need to know.",
+    author: "Habib Farooq",
+    published_at: "2024-01-22",
     is_published: true,
   },
-]
+];
 
 const popularTags = [
-  'React', 'Next.js', 'TypeScript', 'JavaScript', 'AI', 'Web Development',
-  'Performance', 'Security', 'Database', 'Cloud', 'DevOps', 'Tutorial'
-]
+  "React",
+  "Next.js",
+  "TypeScript",
+  "JavaScript",
+  "AI",
+  "Web Development",
+  "Performance",
+  "Security",
+  "Database",
+  "Cloud",
+  "DevOps",
+  "Tutorial",
+];
 
-import { usePathname } from 'next/navigation'
-import { Chip, Box, TextField, Stack, Typography } from '@mui/material'
+import { usePathname } from "next/navigation";
+import { Chip, Box, TextField, Stack, Typography } from "@mui/material";
 
 export default function BlogPreview() {
-  const pathname = usePathname()
-  const [selectedTag, setSelectedTag] = useState<string | null>(null)
-  const [blogPosts, setBlogPosts] = useState<any[]>(defaultBlogPosts)
+  const pathname = usePathname();
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [blogPosts, setBlogPosts] = useState<any[]>(defaultBlogPosts);
 
   useEffect(() => {
     async function fetchData(lang: string) {
-      const supabase = createClient()
-      if (!supabase) return []
+      const supabase = createClient();
+      if (!supabase) return [];
 
       const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('is_published', true)
-        .eq('language', lang)
-        .order('published_at', { ascending: false })
-        .limit(4)
+        .from("blog_posts")
+        .select("*")
+        .eq("is_published", true)
+        .eq("language", lang)
+        .order("published_at", { ascending: false })
+        .limit(4);
 
-      if (error) throw error
-      return data || []
+      if (error) throw error;
+      return data || [];
     }
 
     async function fetchPosts() {
       try {
         const localeMatch = pathname.match(/^\/([a-z]{2}-[A-Z]{2})/);
-        const currentLanguage = localeMatch ? localeMatch[1] : 'en-CA';
+        const currentLanguage = localeMatch ? localeMatch[1] : "en-CA";
 
-        let data = await fetchData(currentLanguage)
+        let data = await fetchData(currentLanguage);
 
         // Fallback to en-CA
-        if (data.length === 0 && currentLanguage !== 'en-CA') {
-          data = await fetchData('en-CA')
+        if (data.length === 0 && currentLanguage !== "en-CA") {
+          data = await fetchData("en-CA");
         }
 
         if (data && data.length > 0) {
-          setBlogPosts(data)
+          setBlogPosts(data);
         }
       } catch (err) {
-        console.error('Error fetching blog posts:', err)
+        console.error("Error fetching blog posts:", err);
       }
     }
-    fetchPosts()
-  }, [pathname])
+    fetchPosts();
+  }, [pathname]);
 
   const filteredPosts = selectedTag
-    ? blogPosts.filter(post => (post.tags || []).includes(selectedTag))
-    : blogPosts
-
+    ? blogPosts.filter((post) => (post.tags || []).includes(selectedTag))
+    : blogPosts;
 
   return (
-    <Box sx={{ width: '100%', py: 4 }}>
+    <Box sx={{ width: "100%", py: 4 }}>
       {/* Tags Filter */}
-      <Stack direction="row" spacing={1} sx={{ mb: 6, gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ mb: 6, gap: 1, flexWrap: "wrap", justifyContent: "center" }}
+      >
         <Chip
           label="All Posts"
           onClick={() => setSelectedTag(null)}
@@ -138,7 +155,7 @@ export default function BlogPreview() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <BookOpen className="h-16 w-16 text-muted-foreground/30" />
               </div>
-              
+
               {/* Tags overlay */}
               <div className="absolute top-4 left-4 flex flex-wrap gap-1">
                 {(post.tags || []).slice(0, 2).map((tag: string) => (
@@ -146,11 +163,15 @@ export default function BlogPreview() {
                     key={tag}
                     label={tag}
                     size="small"
-                    sx={{ bgcolor: 'rgba(255,255,255,0.9)', color: 'text.primary', border: 'none' }}
+                    sx={{
+                      bgcolor: "rgba(255,255,255,0.9)",
+                      color: "text.primary",
+                      border: "none",
+                    }}
                   />
                 ))}
               </div>
-              
+
               {/* Stats overlay - views not in schema by default */}
               {post.views && (
                 <div className="absolute bottom-4 right-4 flex items-center space-x-3 text-sm text-background/90">
@@ -196,21 +217,26 @@ export default function BlogPreview() {
 
               {/* Tags */}
               <div className="mb-4">
-                <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>
+                <Stack direction="row" sx={{ gap: 1, flexWrap: "wrap" }}>
                   {(post.tags || []).map((tag: string) => (
                     <Chip
                       key={tag}
                       label={tag}
                       size="small"
                       onClick={() => setSelectedTag(tag)}
-                      sx={{ cursor: 'pointer', borderRadius: 1 }}
+                      sx={{ cursor: "pointer", borderRadius: 1 }}
                     />
                   ))}
                 </Stack>
               </div>
 
               {/* Read More Button */}
-              <Button variant="ghost" size="sm" className="w-full group/btn" asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full group/btn"
+                asChild
+              >
                 <Link href={getLocalizedHref(`/blog/${post.slug}`, pathname)}>
                   Read Article
                   <ArrowRight className="ms-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform rtl:group-hover/btn:-translate-x-1" />
@@ -224,7 +250,7 @@ export default function BlogPreview() {
       {/* View All Button */}
       <div className="text-center pt-8">
         <Button size="lg" asChild>
-          <Link href={getLocalizedHref('/blog', pathname)}>
+          <Link href={getLocalizedHref("/blog", pathname)}>
             View All Articles
             <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
           </Link>
@@ -232,35 +258,57 @@ export default function BlogPreview() {
       </div>
 
       {/* Newsletter Signup */}
-      <Box sx={{ mt: 10, pt: 8, borderTop: '1px solid', borderColor: 'divider' }}>
-        <Box sx={{ maxWidth: 'sm', mx: 'auto', textAlign: 'center' }}>
-          <Box sx={{ display: 'inline-flex', p: 2, borderRadius: '50%', bgcolor: 'primary.lighter', color: 'primary.main', mb: 3 }}>
+      <Box
+        sx={{ mt: 10, pt: 8, borderTop: "1px solid", borderColor: "divider" }}
+      >
+        <Box sx={{ maxWidth: "sm", mx: "auto", textAlign: "center" }}>
+          <Box
+            sx={{
+              display: "inline-flex",
+              p: 2,
+              borderRadius: "50%",
+              bgcolor: "primary.lighter",
+              color: "primary.main",
+              mb: 3,
+            }}
+          >
             <BookOpen size={32} />
           </Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>Stay Updated</Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-            Subscribe to my newsletter to get notified about new articles, tutorials, and insights.
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            Stay Updated
           </Typography>
-          
-          <Box component="form" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, maxWidth: 460, mx: 'auto' }}>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+            Subscribe to my newsletter to get notified about new articles,
+            tutorials, and insights.
+          </Typography>
+
+          <Box
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: 2,
+              maxWidth: 460,
+              mx: "auto",
+            }}
+          >
             <TextField
               placeholder="Enter your email"
               type="email"
               required
               fullWidth
               size="medium"
-              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
+              sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1 } }}
             />
             <Button type="submit" size="lg" sx={{ height: 56, px: 4 }}>
               Subscribe
             </Button>
           </Box>
-          <Typography variant="caption"  color="text.secondary" sx={{ mt: 3 }}>
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 3 }}>
             No spam. Unsubscribe at any time.
           </Typography>
         </Box>
       </Box>
     </Box>
-
-  )
+  );
 }

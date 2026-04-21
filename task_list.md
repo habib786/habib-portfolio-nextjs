@@ -1,45 +1,17 @@
-# Project Audit & SQA Task List
+# Software Quality Assurance (SQA) Task List
 
-## 🛡️ Security & Best Practices
-- [ ] Add `rel="noopener noreferrer"` to all external links in `Footer.tsx` and `Navbar.tsx`.
-- [ ] Update `mailto` link in `Footer.tsx` to use the correct domain/email.
-- [ ] Ensure all API routes (if any) have proper rate limiting or protection.
+## 1. High Priority (Critical Functionality & Performance)
+- [ ] **Sitemap Dynamic Rendering Error:** The `app/sitemap.ts` file attempts to use Next.js dynamic cookies via Supabase API route handlers (`@supabase/ssr`) which throws a `DYNAMIC_SERVER_USAGE` error during the static generation phase (`next build`).  
+      *Fix:* Ensure `sitemap.ts` caches API calls or uses server-side data fetching that bypasses the request context cookie requirement during build time. This is causing standard `next build` processes to output warnings/errors during static generation.
+- [ ] **Next.js Dev Server Port Conflict:** Running `next dev` frequently encounters a "Port 3000 is in use" error (e.g. by process 37416 in prior runs). Ensure `taskkill` or process cleanup scripts are implemented securely or port is overridden if active.
 
-## 🔍 SEO & Metadata
-- [ ] Create a `manifest.json` file in `public/` for PWA support.
-- [ ] Generate multiple favicon sizes (16x16, 32x32) and link them in `layout.tsx`.
-- [ ] Add `apple-touch-icon.png` for iOS users.
-- [ ] Review `robots.txt` to ensure it allows crawling of all public routes.
-- [ ] Verify Open Graph (`og-image.png`) dimensions and appearance on social platforms.
-- [ ] Add `Twitter:site` and `Twitter:creator` tag consistency in `layout.tsx`.
+## 2. High/Medium Priority (SEO & Core Vitals)
+- [ ] **Missing `robots.txt`:** The root project is missing a `app/robots.ts` or `public/robots.txt` file which is essential for SEO crawl directing.
+- [ ] **Image Optimization:** Review all large asset references (like `/opengraph-image.png`). Ensure they use proper modern formats (WebP/AVIF) via Next.js `<Image />` component.
+- [ ] **Sitemap Page Redirect / Clean up:** The explicit `/sitemap` page provides a link to `/sitemap.xml`. Ensure this renders cleanly or just strictly rely on `sitemap.xml`.
 
-## 🎨 UI & UX Improvements
-- [ ] Fix placeholder resource/legal links in `Footer.tsx`.
-- [ ] Improve `LoadingFallback` in `layout.tsx` with a more "premium" skeleton or branding.
-- [ ] Fix potential layout shift in `Navbar` during language switching or loading state.
-- [ ] Resolve CSS filter issue in `ServicesSection` (icons are hidden/tricked into white). Use native SVGs where possible.
-- [ ] Add smooth transition to the `Dark Mode` / `Light Mode` switch to prevent "flash" of white.
-- [ ] Standardize `getLocalizedHref` usage across all components (`ServicesSection`, `ProjectsSection`, etc.).
+## 3. Medium Priority (UI / Component Issues)
+- [ ] **Linting Setup:** The `lint` script command was missing from `package.json` and a `lint` directory error occurred in run attempt. Ensure `next lint` executes cleanly without `eslint` errors.
 
-## 🚀 Performance & Page Load
-- [ ] Optimize `HeroSection` scroll listener; use `useRef` instead of `useState` for the container ref to avoid unnecessary re-renders.
-- [ ] Implement `priority` loading for below-the-fold hero images if necessary (already set for some).
-- [ ] Check bundle size of `@fortawesome` icons; consider using a lighter alternative or specific imports (already using specific imports mostly).
-- [ ] Audit `Google Fonts` loading strategy in `layout.tsx` (using `next/font/google`, which is good).
-
-## 🛠️ Component & Logic Refactoring
-- [ ] Refactor `middleware.ts` to be more descriptive (rename `proxy` if not actual proxying).
-- [ ] Update `Navbar` and `Footer` to use the dynamic `locales` array from `dictionaries.ts` instead of hardcoded strings.
-- [ ] Implement a more robust `getLocale` detection in `middleware.ts` (currently very simple).
-- [ ] Fix `iconMap` in `ExperienceEducationSection` to handle missing icons gracefully (show a default icon instead of nothing).
-
-## 🌍 Localization
-- [ ] Fully externalize all hardcoded strings (e.g., "My Expert Services" in `ServicesSection.tsx`, "TECH STACK" in `TechStackSection.tsx`) into translation `.json` files.
-- [ ] Verify that all strings in `HeroSection`, `ServicesSection`, etc. are fully localized in `.json` dictionaries.
-- [ ] Check RTL alignment for all sections, especially `TechStack` and `ProjectsGrid`.
-- [ ] Ensure that `slug` based pages (`/blog/[slug]`) correctly handle language-specific slugs.
-
-## 🐛 Bug Fixes
-- [ ] Fix `suppressHydrationWarning` on `html` and `body` in `layout.tsx` by resolving the actual hydration mismatches (likely from `ThemeProvider`).
-- [ ] Check for mobile clipping in the `staggered` projects grid.
-- [ ] Verify `SmoothScrollProvider` doesn't break header anchor links (`#contact-form`).
+## 4. Low Priority (General Code Cleanliness - Caveman Mode tasks)
+- [ ] **Code Minification / Comment Stripping:** Go through core high-traffic components (`Navbar.tsx`, `HeroSection.tsx`) and strip trailing comments/white-spaces to adhere to the compressed mode requirements.

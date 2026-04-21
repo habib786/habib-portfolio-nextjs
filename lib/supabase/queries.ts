@@ -1,15 +1,19 @@
-import { createClient } from './server';
-import type { Database } from '../types';
-import { resilientQueryArray, resilientQuerySingle, resilientQuery } from './resilient';
+import { createClient } from "./server";
+import type { Database } from "../types";
+import {
+  resilientQueryArray,
+  resilientQuerySingle,
+  resilientQuery,
+} from "./resilient";
 
-type Tables = Database['public']['Tables'];
+type Tables = Database["public"]["Tables"];
 
 // Helper function to get Supabase client
 const getSupabaseClient = async () => {
   try {
     return await createClient();
   } catch (error) {
-    console.warn('Failed to create Supabase client:', error);
+    console.warn("Failed to create Supabase client:", error);
     return null;
   }
 };
@@ -18,56 +22,60 @@ const getSupabaseClient = async () => {
 export async function getPages(language?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
+
   let query = supabase
-    .from('pages')
-    .select('*')
-    .eq('is_published', true)
-    .order('order', { ascending: true });
+    .from("pages")
+    .select("*")
+    .eq("is_published", true)
+    .order("order", { ascending: true });
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "pages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "pages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching pages:', error);
+      console.error("Error fetching pages:", error);
     }
     return [];
   }
-  
+
   return data || [];
 }
 
 export async function getPageBySlug(slug: string, language?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
-  
+
   let query = supabase
-    .from('pages')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_published', true);
+    .from("pages")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true);
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query.single();
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "pages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "pages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching page:', error);
+      console.error("Error fetching page:", error);
     }
     return null;
   }
-  
+
   return data;
 }
 
@@ -75,31 +83,36 @@ export async function getPageBySlug(slug: string, language?: string) {
 export async function getMenu(language?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
+
   let query = supabase
-    .from('menu_items')
-    .select('*')
-    .order('order', { ascending: true });
+    .from("menu_items")
+    .select("*")
+    .order("order", { ascending: true });
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "menu_items" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "menu_items" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching menu:', error);
+      console.error("Error fetching menu:", error);
     }
     return [];
   }
-  
+
   // Organize menu items hierarchically
   const menuItems = data || [];
-  const itemMap = new Map<string, Tables['menu_items']['Row'] & { children: any[] }>();
-  const rootItems: (Tables['menu_items']['Row'] & { children: any[] })[] = [];
+  const itemMap = new Map<
+    string,
+    Tables["menu_items"]["Row"] & { children: any[] }
+  >();
+  const rootItems: (Tables["menu_items"]["Row"] & { children: any[] })[] = [];
 
   // First pass: create map
   menuItems.forEach((item) => {
@@ -118,7 +131,9 @@ export async function getMenu(language?: string) {
   });
 
   // Sort children by order
-  const sortItems = (items: (Tables['menu_items']['Row'] & { children: any[] })[]) => {
+  const sortItems = (
+    items: (Tables["menu_items"]["Row"] & { children: any[] })[],
+  ) => {
     items.sort((a, b) => a.order - b.order);
     items.forEach((item) => {
       if (item.children.length > 0) {
@@ -135,50 +150,51 @@ export async function getMenu(language?: string) {
 export async function getLanguages(activeOnly = true) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
-  let query = supabase
-    .from('languages')
-    .select('*')
-    .order('code');
+
+  let query = supabase.from("languages").select("*").order("code");
 
   if (activeOnly) {
-    query = query.eq('is_active', true);
+    query = query.eq("is_active", true);
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "languages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "languages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching languages:', JSON.stringify(error));
+      console.error("Error fetching languages:", JSON.stringify(error));
     }
     return [];
   }
-  
+
   return data || [];
 }
 
 export async function getDefaultLanguage() {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
-  
+
   const { data, error } = await supabase
-    .from('languages')
-    .select('*')
-    .eq('is_default', true)
+    .from("languages")
+    .select("*")
+    .eq("is_default", true)
     .single();
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "languages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
-    } else if (error.code !== 'PGRST116') {
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "languages" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
+    } else if (error.code !== "PGRST116") {
       // PGRST116 is the code for 0 rows returned, which is fine if no default language is set yet
-      console.error('Error fetching default language:', JSON.stringify(error));
+      console.error("Error fetching default language:", JSON.stringify(error));
     }
     return null;
   }
-  
+
   return data;
 }
 
@@ -186,24 +202,24 @@ export async function getDefaultLanguage() {
 export async function getSettings(lang?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return {};
-  
-  const { data, error } = await supabase
-    .from('settings')
-    .select('*');
-  
+
+  const { data, error } = await supabase.from("settings").select("*");
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "settings" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "settings" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching settings:', error);
+      console.error("Error fetching settings:", error);
     }
     return {};
   }
-  
+
   if (!data || data.length === 0) {
     return {};
   }
-  
+
   // Convert array to object
   const settingsObj: Record<string, any> = {};
   data.forEach((setting) => {
@@ -214,34 +230,36 @@ export async function getSettings(lang?: string) {
   if (lang) {
     data.forEach((setting) => {
       if (setting.key.endsWith(`_${lang}`)) {
-        const baseKey = setting.key.replace(`_${lang}`, '');
+        const baseKey = setting.key.replace(`_${lang}`, "");
         settingsObj[baseKey] = setting.value;
       }
     });
   }
-  
+
   return settingsObj;
 }
 
 export async function getSetting(key: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
-  
+
   const { data, error } = await supabase
-    .from('settings')
-    .select('value')
-    .eq('key', key)
+    .from("settings")
+    .select("value")
+    .eq("key", key)
     .single();
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "settings" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "settings" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching setting:', error);
+      console.error("Error fetching setting:", error);
     }
     return null;
   }
-  
+
   return data?.value;
 }
 
@@ -249,15 +267,15 @@ export async function getSetting(key: string) {
 export async function getBlogPosts(language?: string, limit?: number) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
+
   let query = supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('is_published', true)
-    .order('published_at', { ascending: false });
+    .from("blog_posts")
+    .select("*")
+    .eq("is_published", true)
+    .order("published_at", { ascending: false });
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   if (limit) {
@@ -265,44 +283,48 @@ export async function getBlogPosts(language?: string, limit?: number) {
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "blog_posts" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "blog_posts" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching blog posts:', error);
+      console.error("Error fetching blog posts:", error);
     }
     return [];
   }
-  
+
   return data;
 }
 
 export async function getBlogPostBySlug(slug: string, language?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
-  
+
   let query = supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_published', true);
+    .from("blog_posts")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true);
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query.single();
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "blog_posts" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "blog_posts" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching blog post:', error);
+      console.error("Error fetching blog post:", error);
     }
     return null;
   }
-  
+
   return data;
 }
 
@@ -310,58 +332,59 @@ export async function getBlogPostBySlug(slug: string, language?: string) {
 export async function getProjects(language?: string, featuredOnly = false) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
+
   let query = supabase
-    .from('projects')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   if (featuredOnly) {
-    query = query.eq('featured', true);
+    query = query.eq("featured", true);
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "projects" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "projects" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching projects:', error);
+      console.error("Error fetching projects:", error);
     }
     return [];
   }
-  
+
   return data;
 }
 
 export async function getProjectBySlug(slug: string, language?: string) {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
-  
-  let query = supabase
-    .from('projects')
-    .select('*')
-    .eq('slug', slug);
+
+  let query = supabase.from("projects").select("*").eq("slug", slug);
 
   if (language) {
-    query = query.eq('language', language);
+    query = query.eq("language", language);
   }
 
   const { data, error } = await query.single();
-  
+
   if (error) {
-    if (error.code === 'PGRST205') {
-      console.error('Error: Table "projects" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md');
+    if (error.code === "PGRST205") {
+      console.error(
+        'Error: Table "projects" not found in Supabase. Please run the migration script in SUPABASE_SETUP.md',
+      );
     } else {
-      console.error('Error fetching project:', error);
+      console.error("Error fetching project:", error);
     }
     return null;
   }
-  
+
   return data;
 }
 
@@ -369,26 +392,25 @@ export async function getProjectBySlug(slug: string, language?: string) {
 export async function getContactMessages(limit?: number) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
-  
+
   let query = supabase
-    .from('contact_messages')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from("contact_messages")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (limit) {
     query = query.limit(limit);
   }
 
   const { data, error } = await query;
-  
+
   if (error) {
-    console.error('Error fetching contact messages:', error);
+    console.error("Error fetching contact messages:", error);
     return [];
   }
-  
+
   return data;
 }
-
 
 // Site metadata
 export async function getSiteMetadata(lang?: string) {
@@ -398,28 +420,44 @@ export async function getSiteMetadata(lang?: string) {
       getDefaultLanguage(),
     ]);
 
-    const siteUrl = (settings?.site_url || process.env.NEXT_PUBLIC_SITE_URL || 'https://habibfarooq.com').trim()
-    const contactEmail = (settings?.contact_email || 'contact@habibfarooq.com').trim()
+    const siteUrl = (
+      settings?.site_url ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "https://habibfarooq.com"
+    ).trim();
+    const contactEmail = (
+      settings?.contact_email || "contact@habibfarooq.com"
+    ).trim();
 
     return {
-      title: settings?.site_title || 'Habib',
-      description: settings?.site_description || 'Personal portfolio and blog',
+      title: settings?.site_title || "Habib",
+      description: settings?.site_description || "Personal portfolio and blog",
       url: siteUrl,
       contactEmail: contactEmail,
-      defaultLanguage: (defaultLanguage?.code || 'en').trim(),
-      keywords: settings?.seo_keywords 
-        ? typeof settings.seo_keywords === 'string' ? JSON.parse(settings.seo_keywords) : settings.seo_keywords
-        : ['Full Stack Developer', 'AI Engineer', 'React', 'Next.js', 'TypeScript', 'Python', 'Machine Learning'],
+      defaultLanguage: (defaultLanguage?.code || "en").trim(),
+      keywords: settings?.seo_keywords
+        ? typeof settings.seo_keywords === "string"
+          ? JSON.parse(settings.seo_keywords)
+          : settings.seo_keywords
+        : [
+            "Full Stack Developer",
+            "AI Engineer",
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Python",
+            "Machine Learning",
+          ],
       languages: await getLanguages(true),
     };
   } catch (error) {
-    console.error('Error fetching site metadata:', error);
+    console.error("Error fetching site metadata:", error);
     return {
-      title: 'Habib',
-      description: 'Personal portfolio and blog',
-      url: 'https://habibfarooq.com',
-      contactEmail: 'contact@habibfarooq.com',
-      defaultLanguage: 'en',
+      title: "Habib",
+      description: "Personal portfolio and blog",
+      url: "https://habibfarooq.com",
+      contactEmail: "contact@habibfarooq.com",
+      defaultLanguage: "en",
       languages: [],
     };
   }
