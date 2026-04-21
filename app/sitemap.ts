@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { locales } from "./[lang]/dictionaries";
 import { getBlogPosts, getProjects } from "@/lib/supabase/queries";
 
+export const dynamic = "force-dynamic";
+
 type UrlEntry = {
   url: string;
   lastModified: Date;
