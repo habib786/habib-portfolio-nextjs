@@ -1,17 +1,30 @@
 # Software Quality Assurance (SQA) Task List
 
-## 1. High Priority (Critical Functionality & Performance)
-- [ ] **Sitemap Dynamic Rendering Error:** The `app/sitemap.ts` file attempts to use Next.js dynamic cookies via Supabase API route handlers (`@supabase/ssr`) which throws a `DYNAMIC_SERVER_USAGE` error during the static generation phase (`next build`).  
-      *Fix:* Ensure `sitemap.ts` caches API calls or uses server-side data fetching that bypasses the request context cookie requirement during build time. This is causing standard `next build` processes to output warnings/errors during static generation.
-- [ ] **Next.js Dev Server Port Conflict:** Running `next dev` frequently encounters a "Port 3000 is in use" error (e.g. by process 37416 in prior runs). Ensure `taskkill` or process cleanup scripts are implemented securely or port is overridden if active.
+## 1. High Priority (Critical Performance & Core Vitals)
+- [ ] **LCP Optimization:** 
+      *Mobile: 5.7s (Critical). Desktop: 1.1s (Good).*
+      *Fix:* Optimize LCP image loading (priority attribute), reduce server response time, and minimize render-blocking resources.
+- [ ] **Main-thread Work & TBT:**
+      *Mobile: 630ms TBT / 6.5s Main-thread. Desktop: 70ms TBT / 2.9s Main-thread.*
+      *Fix:* Reduce JavaScript execution time, eliminate long tasks (19 found on mobile), and remove unused JS (134 KiB).
+- [ ] **Sitemap Dynamic Rendering Error:** Resolved `DYNAMIC_SERVER_USAGE` in `sitemap.ts`.
+- [ ] **Next.js Dev Server Port Conflict:** Implement process cleanup for Port 3000 conflicts.
 
-## 2. High/Medium Priority (SEO & Core Vitals)
-- [ ] **Missing `robots.txt`:** The root project is missing a `app/robots.ts` or `public/robots.txt` file which is essential for SEO crawl directing.
-- [ ] **Image Optimization:** Review all large asset references (like `/opengraph-image.png`). Ensure they use proper modern formats (WebP/AVIF) via Next.js `<Image />` component.
-- [ ] **Sitemap Page Redirect / Clean up:** The explicit `/sitemap` page provides a link to `/sitemap.xml`. Ensure this renders cleanly or just strictly rely on `sitemap.xml`.
+## 2. High/Medium Priority (Accessibility & SEO)
+- [x] **Accessible Names:** Added `aria-label` to social icons, buttons, and logo links in `Navbar`, `Footer`, and `AnimatedLogo`. (Fixes Mobile/Desktop audit).
+- [x] **Heading Hierarchy:** Corrected heading sequence (H1 -> H2 -> H3) in `HeroSection`, `ExperienceTimeline`, and `ProjectsSection`.
+- [x] **Image Dimensional Fix:** Resolved Next.js Image prop conflicts (fill vs width/height) across all hero and project components.
+- [ ] **Color Contrast:** Background and foreground colors do not have sufficient contrast.
+- [x] **Viewport Scalability:** `[user-scalable="no"]` was used. Removed `maximumScale: 1` in `layout.tsx`.
+- [x] **Missing `robots.txt`:** Verified `public/robots.txt` exists and is correctly configured.
 
-## 3. Medium Priority (UI / Component Issues)
-- [ ] **Linting Setup:** The `lint` script command was missing from `package.json` and a `lint` directory error occurred in run attempt. Ensure `next lint` executes cleanly without `eslint` errors.
+## 3. Medium Priority (Best Practices & UI)
+- [ ] **Legacy JavaScript:** Eliminate legacy JS patterns to save ~14 KiB.
+- [ ] **Non-composited Animations:** Resolve non-composited animated elements.
+- [ ] **Forced Reflow:** Resolve layout thrashing identified in both audits.
+- [ ] **Efficient Cache Lifetimes:** Optimize cache headers for static assets.
+- [ ] **Linting Setup:** Fix missing `lint` script and execution errors.
 
-## 4. Low Priority (General Code Cleanliness - Caveman Mode tasks)
-- [ ] **Code Minification / Comment Stripping:** Go through core high-traffic components (`Navbar.tsx`, `HeroSection.tsx`) and strip trailing comments/white-spaces to adhere to the compressed mode requirements.
+## 4. Low Priority (General Code Cleanliness - Caveman Mode)
+- [x] **Code Minification:** Strip trailing comments and whitespace in core components (`Navbar.tsx`, `HeroSection.tsx`).
+- [ ] **Sitemap Page Redirect:** Clean up the `/sitemap` vs `/sitemap.xml` redundancy.

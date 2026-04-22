@@ -6,17 +6,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
-import {
-  Box,
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  Chip,
-  Stack,
-  Grid,
-  Skeleton,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Skeleton from "@mui/material/Skeleton";
+import Grid from "@mui/material/Grid";
 import { Button } from "@/components/ui/Button";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { getLocalizedHref } from "@/lib/utils";
@@ -424,6 +422,7 @@ function ProjectCard({
             />
             <Typography
               variant="h4"
+              component="h3"
               sx={{
                 color: "white",
                 fontWeight: 900,

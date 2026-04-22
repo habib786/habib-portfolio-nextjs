@@ -1,4 +1,4 @@
-import { createClient } from "./server";
+import { createClient, createAnonClient } from "./server";
 import type { Database } from "../types";
 import {
   resilientQueryArray,
@@ -8,7 +8,6 @@ import {
 
 type Tables = Database["public"]["Tables"];
 
-// Helper function to get Supabase client
 const getSupabaseClient = async () => {
   try {
     return await createClient();
@@ -16,6 +15,10 @@ const getSupabaseClient = async () => {
     console.warn("Failed to create Supabase client:", error);
     return null;
   }
+};
+
+const getAnonSupabaseClient = () => {
+  return createAnonClient();
 };
 
 // Pages queries
@@ -265,7 +268,7 @@ export async function getSetting(key: string) {
 
 // Blog posts queries
 export async function getBlogPosts(language?: string, limit?: number) {
-  const supabase = await getSupabaseClient();
+  const supabase = getAnonSupabaseClient();
   if (!supabase) return [];
 
   let query = supabase
@@ -330,7 +333,7 @@ export async function getBlogPostBySlug(slug: string, language?: string) {
 
 // Projects queries
 export async function getProjects(language?: string, featuredOnly = false) {
-  const supabase = await getSupabaseClient();
+  const supabase = getAnonSupabaseClient();
   if (!supabase) return [];
 
   let query = supabase
@@ -410,6 +413,36 @@ export async function getContactMessages(limit?: number) {
   }
 
   return data;
+}
+
+// Profile data for HeroSection
+export async function getProfileData(lang?: string) {
+  const settings = await getSettings(lang);
+
+  const getVal = (key: string) => {
+    if (lang) {
+      const langKey = `${key}_${lang}`;
+      if (settings[langKey] !== undefined) return settings[langKey];
+    }
+    return settings[key];
+  };
+
+  const sanitizeImageUrl = (url: string | null | undefined) => {
+    if (!url || typeof url !== "string") return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+    const cleaned = url.replace(/^["']+|["']+$/g, "").trim();
+    if (!cleaned) return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+    if (cleaned.startsWith("/") || cleaned.startsWith("http")) return cleaned;
+    return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+  };
+
+  return {
+    name: getVal("profile_name") || "HABIB",
+    role: getVal("profile_role") || "Full Stack Web Developer",
+    experience: getVal("stat_experience") || "7+",
+    projects: getVal("stat_projects") || "70+",
+    clients: getVal("stat_clients") || "30+",
+    image: sanitizeImageUrl(getVal("profile_image")),
+};
 }
 
 // Site metadata

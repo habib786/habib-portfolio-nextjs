@@ -7,6 +7,7 @@ import Image from "next/image";
 import Counter from "../animations/Counter";
 import AnimatedSquigglyLine from "@/components/animations/AnimatedSquigglyLine";
 import AnimatedWaveSeparator from "@/components/shared/AnimatedWaveSeparator";
+import WavyHeroBackground from "@/components/shared/WavyHeroBackground";
 
 /**
  * Visual layer stack (z-order, back → front):
@@ -78,37 +79,11 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
         }}
       />
 
-      {/* ── Wavy SVG lines ── */}
       <motion.div
-        style={{ y: yLines }}
-        className="absolute top-[12%] left-0 w-full z-0 pointer-events-none"
-        aria-hidden
+        style={{ y: yLines, position: "absolute", inset: 0 }}
+        className="pointer-events-none"
       >
-        <svg
-          width="100%"
-          height="200"
-          viewBox="0 0 1440 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          style={{ opacity: 0.12 }}
-        >
-          <path
-            d="M0 50C150 100 300 0 450 50C600 100 750 0 900 50C1050 100 1200 0 1350 50C1500 100 1650 0 1800 50"
-            stroke="white"
-            strokeWidth="2"
-          />
-          <path
-            d="M0 100C150 150 300 50 450 100C600 150 750 50 900 100C1050 150 1200 50 1350 100C1500 150 1650 50 1800 100"
-            stroke="white"
-            strokeWidth="2"
-          />
-          <path
-            d="M0 150C150 200 300 100 450 150C600 200 750 100 900 150C1050 200 1200 100 1350 150C1500 200 1650 100 1800 150"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </svg>
+        <WavyHeroBackground />
       </motion.div>
 
       <Container

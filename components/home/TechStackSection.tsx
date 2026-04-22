@@ -285,10 +285,12 @@ function TechItem({
                 left: 0,
                 top: 0,
                 height: "100%",
-                width: `${tech.percent}%`,
+                width: '100%',
                 bgcolor: "secondary.main",
                 borderRadius: 1,
-                transition: "width 0.5s ease-out",
+                transition: "transform 0.5s ease-out",
+                transform: `scaleX(${tech.percent / 100})`,
+                transformOrigin: "left",
               }}
             />
           </Box>

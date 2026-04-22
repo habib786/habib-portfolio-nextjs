@@ -208,6 +208,7 @@ function TimelineItem({
 
             <Typography
               variant="h5"
+              component="h3"
               sx={{
                 fontWeight: 900,
                 mb: 1,
@@ -369,6 +370,7 @@ export default function ExperienceTimeline({
             <Box sx={{ position: "relative", width: "fit-content" }}>
               <Typography
                 variant="h3"
+                component="h2"
                 sx={{
                   fontWeight: 900,
                   color: "text.primary",
@@ -418,6 +420,7 @@ export default function ExperienceTimeline({
             <Box sx={{ position: "relative", width: "fit-content" }}>
               <Typography
                 variant="h3"
+                component="h2"
                 sx={{
                   fontWeight: 900,
                   color: "text.primary",

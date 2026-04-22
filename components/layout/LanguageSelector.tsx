@@ -16,8 +16,8 @@ type LocaleItem = {
 const defaultLanguages: LocaleItem[] = [
   { code: "en-CA", name: "English (CA)", country_code: "CA" },
   { code: "fr-CA", name: "Francais (CA)", country_code: "CA" },
-  { code: "ar-SA", name: "Arabic", country_code: "SA" },
-  { code: "ur-PK", name: "Urdu", country_code: "PK" },
+  { code: "ar-SA", name: "عربي", country_code: "SA" },
+  { code: "ur-PK", name: "اردو", country_code: "PK" },
   { code: "tr-TR", name: "Turkish", country_code: "TR" },
 ];
 
@@ -34,7 +34,7 @@ const FlagIcon = ({
     <Box
       component="img"
       src={`https://flagcdn.com/${code}.svg`}
-      alt={countryCode}
+      alt={`${countryCode} flag`}
       sx={{
         width: size,
         height: "auto",

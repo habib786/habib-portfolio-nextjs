@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   TrendingUp,
@@ -26,140 +26,36 @@ import {
   useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
 
-// Mock data - will be replaced with Supabase data
-const fallbackPopularPosts = [
-  {
-    id: 1,
-    title: "The Future of AI in Web Development",
-    slug: "future-of-ai-in-web-development",
-    views: 2103,
-  },
-  {
-    id: 2,
-    title: "TypeScript Best Practices for Large Applications",
-    slug: "typescript-best-practices-for-large-applications",
-    views: 1789,
-  },
-  {
-    id: 3,
-    title: "Implementing Authentication in Next.js with Supabase",
-    slug: "implementing-authentication-in-nextjs-with-supabase",
-    views: 1567,
-  },
-  {
-    id: 4,
-    title: "Building Scalable Next.js Applications",
-    slug: "building-scalable-nextjs-applications-with-typescript",
-    views: 1245,
-  },
-  {
-    id: 5,
-    title: "Building Real-time Applications with WebSockets",
-    slug: "building-real-time-applications-with-websockets",
-    views: 1342,
-  },
-];
+interface PopularPost {
+  id: number;
+  title: string;
+  slug: string;
+  views: number;
+}
 
-const fallbackPopularTags = [
-  { name: "Next.js", count: 12 },
-  { name: "React", count: 18 },
-  { name: "TypeScript", count: 15 },
-  { name: "AI", count: 8 },
-  { name: "Web Development", count: 22 },
-  { name: "Security", count: 7 },
-  { name: "Performance", count: 9 },
-  { name: "Tutorial", count: 14 },
-  { name: "JavaScript", count: 20 },
-  { name: "Supabase", count: 6 },
-];
+interface PopularTag {
+  name: string;
+  count: number;
+}
 
-const fallbackCategories = [
-  { name: "Web Development", count: 25, color: "#3b82f6" },
-  { name: "AI & Machine Learning", count: 8, color: "#a855f7" },
-  { name: "Security", count: 7, color: "#ef4444" },
-  { name: "Performance", count: 9, color: "#22c55e" },
-  { name: "Tutorials", count: 14, color: "#eab308" },
-  { name: "Career", count: 5, color: "#6366f1" },
-];
+interface Category {
+  name: string;
+  count: number;
+  color: string;
+}
 
-export default function BlogSidebar() {
+export default function BlogSidebar({
+  popularPosts,
+  popularTags,
+  categories,
+}: {
+  popularPosts: PopularPost[];
+  popularTags: PopularTag[];
+  categories: Category[];
+}) {
   const theme = useTheme();
   const [email, setEmail] = useState("");
-  const [popularPosts, setPopularPosts] = useState(fallbackPopularPosts);
-  const [popularTags, setPopularTags] = useState(fallbackPopularTags);
-  const [categories, setCategories] = useState(fallbackCategories);
-
-  useEffect(() => {
-    async function loadSidebarData() {
-      try {
-        const supabase = createClient();
-        if (!supabase) return;
-
-        const { data, error } = await supabase
-          .from("blog_posts")
-          .select("*")
-          .eq("is_published", true)
-          .order("published_at", { ascending: false })
-          .limit(100);
-
-        if (error || !data || data.length === 0) return;
-
-        const mappedPosts = data
-          .map((post: any) => ({
-            id: post.id,
-            title: post.title,
-            slug: post.slug,
-            views: Number(post.views || 0),
-          }))
-          .sort((a, b) => b.views - a.views)
-          .slice(0, 5);
-
-        const tagCount = new Map<string, number>();
-        const categoryCount = new Map<string, number>();
-
-        data.forEach((post: any) => {
-          const tags = Array.isArray(post.tags) ? post.tags : [];
-          tags.forEach((tag: string) => {
-            tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
-          });
-
-          const category = post.category || "General";
-          categoryCount.set(category, (categoryCount.get(category) || 0) + 1);
-        });
-
-        const mappedTags = Array.from(tagCount.entries())
-          .map(([name, count]) => ({ name, count }))
-          .sort((a, b) => b.count - a.count)
-          .slice(0, 10);
-
-        const palette = [
-          "#3b82f6",
-          "#a855f7",
-          "#ef4444",
-          "#22c55e",
-          "#eab308",
-          "#6366f1",
-        ];
-        const mappedCategories = Array.from(categoryCount.entries()).map(
-          ([name, count], index) => ({
-            name,
-            count,
-            color: palette[index % palette.length],
-          }),
-        );
-
-        if (mappedPosts.length > 0) setPopularPosts(mappedPosts as any);
-        if (mappedTags.length > 0) setPopularTags(mappedTags as any);
-        if (mappedCategories.length > 0) setCategories(mappedCategories as any);
-      } catch (error) {
-        console.error("Failed to load blog sidebar data:", error);
-      }
-    }
-
-    loadSidebarData();
-  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();

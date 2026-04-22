@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Box, Container, Typography, Chip, Stack } from "@mui/material";
 import { Clock, Eye, Calendar } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import WavyHeroBackground from "@/components/shared/WavyHeroBackground";
 
 interface ProjectHeroProps {
   project: {
@@ -45,31 +46,14 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
       <motion.div
         style={{
           y: yBg,
-          opacity: 0.1,
+          opacity: 1,
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
           zIndex: 0,
         }}
       >
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 1440 1000"
-          fill="none"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0 600C400 500 800 700 1200 600C1400 550 1440 600 1440 600V1000H0V600Z"
-            fill="white"
-            fillOpacity="0.05"
-          />
-          <path
-            d="M-100 700C300 550 800 850 1300 700C1500 640 1600 700 1600 700V1000H-100V700Z"
-            fill="white"
-            fillOpacity="0.03"
-          />
-        </svg>
+        <WavyHeroBackground />
       </motion.div>
 
       <Container maxWidth="xl" sx={{ position: "relative", zIndex: 1 }}>

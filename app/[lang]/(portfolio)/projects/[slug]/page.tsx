@@ -1,9 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Box, Container, Grid } from "@mui/material";
-import ProjectContent from "@/components/projects/ProjectContent";
+import { Box, Container } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import dynamic from "next/dynamic";
 import ProjectSidebar from "@/components/projects/ProjectSidebar";
 import ProjectHero from "@/components/projects/ProjectHero";
+
+const ProjectContent = dynamic(
+  () => import("@/components/projects/ProjectContent")
+);
 import { getProjectBySlug, getProjects } from "@/lib/supabase/queries";
 import { MappedProject, RelatedProject } from "@/lib/types";
 import { mapProject } from "@/lib/projects/mapProject";

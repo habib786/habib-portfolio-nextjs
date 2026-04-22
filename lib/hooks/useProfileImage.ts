@@ -7,16 +7,15 @@ type UseProfileImageOptions = {
 };
 
 const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60";
+  "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
 
-function preloadImage(url: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new window.Image();
-    img.onload = () => resolve(url);
-    img.onerror = () => reject(new Error("Image failed to load"));
-    img.src = url;
-  });
-}
+const sanitizeImageUrl = (url: string | null | undefined): string => {
+  if (!url || typeof url !== "string") return FALLBACK_IMAGE;
+  const cleaned = url.replace(/^["']+|["']+$/g, "").trim();
+  if (!cleaned) return FALLBACK_IMAGE;
+  if (cleaned.startsWith("/") || cleaned.startsWith("http")) return cleaned;
+  return FALLBACK_IMAGE;
+};
 
 export function useProfileImage(options: UseProfileImageOptions = {}) {
   const { defaultImage = FALLBACK_IMAGE } = options;
@@ -37,8 +36,9 @@ export function useProfileImage(options: UseProfileImageOptions = {}) {
         )?.value;
         if (typeof profileImg === "string" && profileImg.trim()) {
           const cleanedUrl = profileImg.replace(/^["']+|["']+$/g, "").trim();
-          await preloadImage(cleanedUrl);
-          setProfileImage(cleanedUrl);
+          if (cleanedUrl.startsWith("/") || cleanedUrl.startsWith("http")) {
+            setProfileImage(cleanedUrl);
+          }
         }
       } catch {
         // Keep default image on any fetch / load failure.

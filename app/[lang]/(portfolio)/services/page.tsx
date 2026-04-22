@@ -4,11 +4,11 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Button,
   Stack,
   Card,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { createClient } from "@/lib/supabase/server";
 import { cleanValue, getLocalizedHref } from "@/lib/utils";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -27,9 +27,18 @@ export default async function ServicesPage({
   const { lang } = await params;
   const pathname = `/${lang}/services`;
 
-  // Fetch profile image from settings if available
-  let profileImage =
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60";
+  const FALLBACK_IMAGE =
+    "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+
+  const sanitizeImageUrl = (url: string | null | undefined): string => {
+    if (!url || typeof url !== "string") return FALLBACK_IMAGE;
+    const cleaned = url.replace(/^["']+|["']+$/g, "").trim();
+    if (!cleaned) return FALLBACK_IMAGE;
+    if (cleaned.startsWith("/") || cleaned.startsWith("http")) return cleaned;
+    return FALLBACK_IMAGE;
+  };
+
+  let profileImage = FALLBACK_IMAGE;
   const supabase = await createClient();
 
   let services = [];
@@ -61,13 +70,7 @@ export default async function ServicesPage({
           settings[item.key] = item.value;
         }
       });
-      if (
-        settings.profile_image &&
-        typeof settings.profile_image === "string" &&
-        settings.profile_image.trim()
-      ) {
-        profileImage = cleanValue(settings.profile_image);
-      }
+      profileImage = sanitizeImageUrl(settings.profile_image);
     }
   }
 

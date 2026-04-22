@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getSettings } from "@/lib/supabase/queries";
+import { getSettings, getProjects } from "@/lib/supabase/queries";
 import ProjectsPageClient from "./ProjectsPageClient";
 
 export const revalidate = 3600;
@@ -29,5 +29,16 @@ export default async function ProjectsPage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  return <ProjectsPageClient lang={lang} />;
+  const rawProjects = await getProjects(lang);
+  
+  const projects = rawProjects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    category: p.category || "PROJECT",
+    image: p.cover_image || p.image_url,
+    slug: p.slug,
+    gridClass: p.grid_class || "col-span-1 row-span-1",
+  }));
+
+  return <ProjectsPageClient lang={lang} projects={projects} />;
 }

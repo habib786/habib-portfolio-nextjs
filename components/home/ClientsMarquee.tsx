@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -23,6 +23,7 @@ interface ClientsMarqueeProps {
 
 export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef({ left: 0, top: 0, width: 1, height: 1 });
   const [isHovered, setIsHovered] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -30,20 +31,31 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
     offset: ["start end", "end start"],
   });
 
-  // Shift the marquee slightly as we scroll
   const xTranslate = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const smoothXTranslate = useSpring(xTranslate, {
     stiffness: 100,
     damping: 30,
   });
 
-  // Mouse parallax setup
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
+  const updateRect = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      rectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+    }
+  }, []);
+
+  useEffect(() => {
+    updateRect();
+    const observer = new ResizeObserver(updateRect);
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [updateRect]);
+
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    const rect = rectRef.current;
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     mouseX.set(x);

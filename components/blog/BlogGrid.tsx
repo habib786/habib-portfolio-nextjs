@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -29,166 +29,33 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { formatDate, getLocalizedHref } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
-
-// Mock data - will be replaced with Supabase data
-const defaultBlogPosts = [
-  {
-    id: 1,
-    title: "Building Scalable Next.js Applications with TypeScript",
-    slug: "building-scalable-nextjs-applications-with-typescript",
-    excerpt:
-      "Learn how to architect and build scalable Next.js applications using TypeScript, proper folder structure, and best practices.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["Next.js", "TypeScript", "Architecture", "Web"],
-    published: true,
-    publishedAt: "2024-03-15",
-    views: 1245,
-    readTime: 8,
-    category: "Web Development",
-  },
-  {
-    id: 2,
-    title: "Mastering React Performance Optimization",
-    slug: "mastering-react-performance-optimization",
-    excerpt:
-      "Advanced techniques for optimizing React applications including memoization, code splitting, and virtualization.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["React", "Performance", "Optimization", "JS"],
-    published: true,
-    publishedAt: "2024-02-28",
-    views: 892,
-    readTime: 12,
-    category: "Web Development",
-  },
-  {
-    id: 3,
-    title: "Implementing Authentication in Next.js with Supabase",
-    slug: "implementing-authentication-in-nextjs-with-supabase",
-    excerpt:
-      "A comprehensive guide to implementing secure authentication in Next.js applications using Supabase Auth.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["Next.js", "Supabase", "Auth", "Security"],
-    published: true,
-    publishedAt: "2024-02-10",
-    views: 1567,
-    readTime: 10,
-    category: "Security",
-  },
-  {
-    id: 4,
-    title: "The Future of AI in Web Development",
-    slug: "future-of-ai-in-web-development",
-    excerpt:
-      "Exploring how artificial intelligence is transforming web development and what developers need to know.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["AI", "Web Dev", "Future", "Tech"],
-    published: true,
-    publishedAt: "2024-01-22",
-    views: 2103,
-    readTime: 15,
-    category: "AI",
-  },
-  {
-    id: 5,
-    title: "TypeScript Best Practices for Large Applications",
-    slug: "typescript-best-practices-for-large-applications",
-    excerpt:
-      "Essential TypeScript patterns and practices for maintaining large-scale applications.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["TypeScript", "Best Practices", "Architecture"],
-    published: true,
-    publishedAt: "2023-12-15",
-    views: 1789,
-    readTime: 11,
-    category: "Web Development",
-  },
-  {
-    id: 6,
-    title: "Building Real-time Applications with WebSockets",
-    slug: "building-real-time-applications-with-websockets",
-    excerpt:
-      "A practical guide to implementing real-time features using WebSockets in modern web applications.",
-    content: "Full content here...",
-    featuredImage:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=60",
-    author: "Habib Farooq",
-    tags: ["WebSockets", "Real-time", "Node.js", "Web"],
-    published: true,
-    publishedAt: "2023-11-30",
-    views: 1342,
-    readTime: 9,
-    category: "Web Development",
-  },
-];
 
 const sortOptions = ["Newest", "Popular", "Trending"];
 
-export default function BlogGrid() {
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  author: string;
+  tags: string[];
+  published: boolean;
+  publishedAt: string;
+  views: number;
+  readTime: number;
+  category: string;
+}
+
+export default function BlogGrid({ blogPosts }: { blogPosts: BlogPost[] }) {
   const theme = useTheme();
   const pathname = usePathname();
-  const [blogPosts, setBlogPosts] = useState(defaultBlogPosts);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSort, setSelectedSort] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
-
-  useEffect(() => {
-    async function loadPosts() {
-      try {
-        const supabase = createClient();
-        if (!supabase) return;
-
-        const { data, error } = await supabase
-          .from("blog_posts")
-          .select("*")
-          .eq("is_published", true)
-          .order("published_at", { ascending: false });
-
-        if (error || !data || data.length === 0) return;
-
-        const mapped = data.map((post: any) => ({
-          id: post.id,
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt || "",
-          content: post.content || "",
-          featuredImage:
-            post.cover_image ||
-            "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60",
-          author: post.author || "Habib Farooq",
-          tags: Array.isArray(post.tags) ? post.tags : [],
-          published: Boolean(post.is_published),
-          publishedAt: post.published_at || post.created_at,
-          views: Number(post.views || 0),
-          readTime: Number(post.read_time || 6),
-          category: post.category || "General",
-        }));
-
-        setBlogPosts(mapped);
-      } catch (error) {
-        console.error("Failed to load blog posts:", error);
-      }
-    }
-
-    loadPosts();
-  }, []);
 
   const categories = useMemo(() => {
     const dynamic = Array.from(

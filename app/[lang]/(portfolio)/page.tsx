@@ -1,13 +1,31 @@
 import { notFound } from "next/navigation";
+import dynamic from "next/dynamic";
 import { getDictionary, hasLocale } from "../dictionaries";
 import HeroSection from "@/components/home/HeroSection";
-import TechStackSection from "@/components/home/TechStackSection";
-import ProjectsSection from "@/components/home/ProjectsSection";
-import ExperienceEducationSection from "@/components/experience/ExperienceEducationSection";
-import ServicesSection from "@/components/home/ServicesSection";
-import ClientsSection from "@/components/home/ClientsSection";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { Box } from "@mui/material";
+import { getProfileData } from "@/lib/supabase/queries";
+
+const TechStackSection = dynamic(
+  () => import("@/components/home/TechStackSection"),
+  { loading: () => <Box sx={{ h: 200 }} /> }
+);
+const ProjectsSection = dynamic(
+  () => import("@/components/home/ProjectsSection"),
+  { loading: () => <Box sx={{ h: 400 }} /> }
+);
+const ExperienceEducationSection = dynamic(
+  () => import("@/components/experience/ExperienceEducationSection"),
+  { loading: () => <Box sx={{ h: 300 }} /> }
+);
+const ServicesSection = dynamic(
+  () => import("@/components/home/ServicesSection"),
+  { loading: () => <Box sx={{ h: 200 }} /> }
+);
+const ClientsSection = dynamic(
+  () => import("@/components/home/ClientsSection"),
+  { loading: () => <Box sx={{ h: 150 }} /> }
+);
 
 export default async function Home({
   params,
@@ -21,11 +39,11 @@ export default async function Home({
   }
 
   const dict = await getDictionary(lang);
+  const profile = await getProfileData(lang);
 
   return (
     <div className="flex flex-col min-h-screen bg-transparent font-sans overflow-hidden relative">
-      {/* We can pass dict to sections if we want to localize them */}
-      <HeroSection dict={dict} />
+      <HeroSection dict={dict} profile={profile} />
 
       <ScrollReveal>
         <TechStackSection />

@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { Box, Container, Typography, Grid, Stack } from "@mui/material";
+import { Box, Container, Typography, Stack } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import Link from "next/link";
 import Image from "next/image";
 import BlogGrid from "@/components/blog/BlogGrid";
@@ -19,15 +20,54 @@ import { useProfileImage } from "@/lib/hooks/useProfileImage";
 import AnimatedSquigglyLine from "@/components/animations/AnimatedSquigglyLine";
 import BlogCTASection from "@/components/blog/BlogCTASection";
 
-export default function BlogPageClient() {
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  author: string;
+  tags: string[];
+  published: boolean;
+  publishedAt: string;
+  views: number;
+  readTime: number;
+  category: string;
+}
+
+interface PopularPost {
+  id: number;
+  title: string;
+  slug: string;
+  views: number;
+}
+
+interface PopularTag {
+  name: string;
+  count: number;
+}
+
+interface Category {
+  name: string;
+  count: number;
+  color: string;
+}
+
+export default function BlogPageClient({
+  blogPosts,
+  popularPosts,
+  popularTags,
+  categories,
+}: {
+  blogPosts: BlogPost[];
+  popularPosts: PopularPost[];
+  popularTags: PopularTag[];
+  categories: Category[];
+}) {
   const [imgError, setImgError] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const profileImage = useProfileImage();
   const handleImgError = () => setImgError(true);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const [heroElement, setHeroElement] = useState<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -59,7 +99,7 @@ export default function BlogPageClient() {
         }}
       >
         {/* Wavy SVG Background Decor */}
-        <WavyHeroBackground animated={false} />
+        <WavyHeroBackground animated={true} />
 
         <Container maxWidth="xl" sx={{ position: "relative", zIndex: 1 }}>
           <Grid
@@ -267,7 +307,7 @@ export default function BlogPageClient() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
               >
-                <BlogGrid />
+                <BlogGrid blogPosts={blogPosts} />
               </motion.div>
             </Grid>
             <Grid size={{ xs: 12, lg: 4 }}>
@@ -276,7 +316,7 @@ export default function BlogPageClient() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
-                <BlogSidebar />
+                <BlogSidebar popularPosts={popularPosts} popularTags={popularTags} categories={categories} />
               </motion.div>
             </Grid>
           </Grid>

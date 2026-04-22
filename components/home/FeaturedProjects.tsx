@@ -7,18 +7,15 @@ import { ExternalLink, Code, Star, Eye } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { getLocalizedHref } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Chip,
-  Stack,
-  IconButton,
-  CardActions,
-  useTheme,
-  Grid,
-} from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import CardActions from "@mui/material/CardActions";
+import { Box, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 const defaultProjects = [
   {
@@ -249,6 +246,7 @@ export default function FeaturedProjects() {
                         component="a"
                         href={project.github_url}
                         target="_blank"
+                        aria-label="View source code"
                         sx={{
                           color: "white",
                           bgcolor: "rgba(255,255,255,0.2)",
@@ -264,6 +262,7 @@ export default function FeaturedProjects() {
                         component="a"
                         href={project.live_url}
                         target="_blank"
+                        aria-label="View live project"
                         sx={{
                           color: "white",
                           bgcolor: "rgba(255,255,255,0.2)",

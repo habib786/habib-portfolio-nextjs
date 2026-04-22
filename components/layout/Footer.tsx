@@ -15,9 +15,9 @@ import {
   IconButton,
   Divider,
   Stack,
-  Grid,
   Button,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { createClient } from "@/lib/supabase/client";
 import { getLocalizedHref } from "@/lib/utils";
 import { locales, hasLocale } from "@/app/[lang]/dictionaries";
@@ -156,6 +156,7 @@ export default function Footer() {
               <NextLink
                 href={getLocalizedHref("/", pathname)}
                 style={{ textDecoration: "none" }}
+                aria-label="Go to home page"
               >
                 <Box sx={{ color: "secondary.main" }}>
                   <AnimatedLogo />
@@ -177,6 +178,7 @@ export default function Footer() {
                 style={{ textDecoration: "none" }}
               >
                 <IconButton
+                  aria-label="LinkedIn profile"
                   sx={{
                     color: "text.primary",
                     bgcolor: "rgba(0,0,0,0.03)",
@@ -199,6 +201,7 @@ export default function Footer() {
                 style={{ textDecoration: "none" }}
               >
                 <IconButton
+                  aria-label="GitHub profile"
                   sx={{
                     color: "text.primary",
                     bgcolor: "rgba(0,0,0,0.03)",
@@ -219,6 +222,7 @@ export default function Footer() {
                 style={{ textDecoration: "none" }}
               >
                 <IconButton
+                  aria-label="Send email"
                   sx={{
                     color: "text.primary",
                     bgcolor: "rgba(0,0,0,0.03)",
@@ -283,11 +287,13 @@ export default function Footer() {
                           bottom: -2,
                           insetInlineStart: 0,
                           bgcolor: "primary.main",
-                          transition: "width 0.3s ease",
+                          transition: "transform 0.3s ease",
+                          transform: "scaleX(0)",
+                          transformOrigin: "left",
                         },
                         "&:hover": {
                           color: "primary.main",
-                          "&::after": { width: "100%" },
+                          "&::after": { transform: "scaleX(1)" },
                         },
                         transition: "color 0.2s",
                       }}

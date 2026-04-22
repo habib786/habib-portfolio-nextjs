@@ -43,7 +43,7 @@ export default function SectionHeading({
     >
       <Box sx={{ position: "relative", display: "inline-block" }}>
         <Typography
-          variant={variant}
+          variant={variant === "h4" ? "h2" : variant}
           component="h2"
           sx={{
             fontWeight: 900,

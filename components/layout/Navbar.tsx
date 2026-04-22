@@ -153,7 +153,6 @@ export default function Navbar() {
     fetchMenu();
   }, [pathname, supabase, fallbackLocale]);
 
-  // Helper function to flatten hierarchical menu
   const flattenMenu = (items: any[]): MenuItem[] => {
     const result: MenuItem[] = [];
     items.forEach((item) => {
@@ -165,7 +164,6 @@ export default function Navbar() {
     return result;
   };
 
-  // Filter out only root-level menu items for main navigation
   const rootNavItems = navItems.filter((item) => !item.parent_id);
 
   const rootNavWithHref = useMemo(() => {
@@ -204,6 +202,7 @@ export default function Navbar() {
               href={getLocalizedHref("/", pathname)}
               onClick={closeMenu}
               style={{ textDecoration: "none" }}
+              aria-label="Go to home page"
             >
               <Box sx={{ color: "secondary.main" }}>
                 <AnimatedLogo />
@@ -259,13 +258,15 @@ export default function Navbar() {
                           position: "absolute",
                           bottom: -4,
                           insetInlineStart: 0,
-                          width: item.isActive ? "100%" : "0%",
+                          width: '100%',
                           height: 2,
                           bgcolor: "secondary.main",
-                          transition: "width 0.3s ease",
+                          transition: "transform 0.3s ease",
+                          transform: item.isActive ? "scaleX(1)" : "scaleX(0)",
+                          transformOrigin: "left",
                         },
                         "&:hover::after": {
-                          width: "100%",
+                          transform: "scaleX(1)",
                         },
                       }}
                     >

@@ -1,19 +1,35 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    optimizePackageImports: [
-      '@mui/material',
-      '@mui/icons-material',
-      'lucide-react',
-      'react-icons',
-    ],
+  async headers() {
+    return [
+      {
+        source: '/:path*.(js|css|woff|woff2|ttf|eot)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/:path*.(ico|png|jpg|jpeg|svg|webp|avif|gif|webp)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+    ];
   },
+  // experimental: {
+  //   optimizePackageImports: [
+  //     '@mui/material',
+  //     '@mui/icons-material',
+  //     'lucide-react',
+  //     'react-icons',
+  //   ],
+  // },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: 'xvwxwrrqopcyzsnrwxbf.supabase.co',
       },
       {
         protocol: 'https',
@@ -30,6 +46,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'i.pravatar.cc',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
     ],
   },

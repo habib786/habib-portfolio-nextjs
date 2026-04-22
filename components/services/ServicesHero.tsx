@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { Box, Container, Typography, Grid, Paper } from "@mui/material";
+import { Box, Container, Typography, Paper } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import WavyHeroBackground from "@/components/shared/WavyHeroBackground";
@@ -176,7 +177,7 @@ export default function ServicesHero({
                   <Image
                     src={
                       profileImage ||
-                      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&auto=format&fit=crop&q=60"
+                      "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp"
                     }
                     alt="Service Hero Picture"
                     fill

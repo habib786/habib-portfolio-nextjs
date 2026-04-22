@@ -49,6 +49,8 @@ export const AnimatedLogo = () => {
   return (
     <Box
       onMouseEnter={handleHover}
+      role="img"
+      aria-label="Habib Logo"
       sx={{
         display: "flex",
         alignItems: "center",

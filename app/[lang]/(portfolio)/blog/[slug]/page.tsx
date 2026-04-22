@@ -1,9 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Box, Container, Grid } from "@mui/material";
-import BlogPostContent from "@/components/blog/BlogPostContent";
+import { Box, Container } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import dynamic from "next/dynamic";
 import BlogPostSidebar from "@/components/blog/BlogPostSidebar";
 import ArticleHero from "@/components/blog/ArticleHero";
+
+const BlogPostContent = dynamic(
+  () => import("@/components/blog/BlogPostContent")
+);
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/supabase/queries";
 import { RawBlogPost, MappedBlogPost } from "@/lib/types";
 
