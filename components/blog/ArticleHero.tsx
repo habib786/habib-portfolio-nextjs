@@ -71,8 +71,10 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
           <Image
             src={post.featuredImage}
             alt=""
-            fill
-            style={{ objectFit: "cover", opacity: 0.08, filter: "blur(4px)" }}
+            width={1920}
+            height={1080}
+            className="object-cover w-full h-full"
+            style={{ opacity: 0.08, filter: "blur(4px)" }}
             priority
           />
         </motion.div>

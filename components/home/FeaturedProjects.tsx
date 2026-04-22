@@ -193,6 +193,7 @@ export default function FeaturedProjects() {
               >
                 <Typography
                   variant="h2"
+                  component="span"
                   sx={{
                     fontWeight: 900,
                     color:

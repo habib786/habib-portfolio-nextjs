@@ -203,7 +203,7 @@ export default function ServicesSection({ lang }: { lang?: string }) {
           <SectionHeading
             title={dict?.services?.title}
             align="center"
-            variant="h3"
+            variant="h2"
           />
           <Grid container spacing={5}>
             {[1, 2, 3].map((i) => (
@@ -246,7 +246,7 @@ export default function ServicesSection({ lang }: { lang?: string }) {
         <SectionHeading
           title={dict?.services?.title}
           align="center"
-          variant="h3"
+          variant="h2"
         />
 
         <Grid container spacing={5}>
@@ -344,7 +344,7 @@ export default function ServicesSection({ lang }: { lang?: string }) {
                   </Box>
 
                   <Typography
-                    variant="h6"
+                    component="p"
                     color="primary"
                     sx={{
                       fontWeight: 800,

@@ -180,8 +180,9 @@ export default function ServicesHero({
                       "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp"
                     }
                     alt="Service Hero Picture"
-                    fill
-                    style={{ objectFit: "cover" }}
+                    width={420}
+                    height={480}
+                    className="object-cover w-full h-full"
                     sizes="(max-width: 768px) 280px, 420px"
                     priority
                   />

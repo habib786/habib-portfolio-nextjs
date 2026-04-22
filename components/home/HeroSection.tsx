@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -33,21 +33,9 @@ export default function HeroSection({
       "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp",
   };
   const f = profile || d;
-  const r = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: s } = useScroll({
-    target: r,
-    offset: ["start start", "end start"],
-  });
-  const yt = useTransform(s, [0, 1], [0, 200]);
-  const yi = useTransform(s, [0, 1], [0, -100]);
-  const ys = useTransform(s, [0, 1], [0, 150]);
-  const o = useTransform(s, [0, 0.8], [1, 0]);
-  const sc = useTransform(s, [0, 1], [1, 0.9]);
-  const yp = useTransform(s, [0, 1], [0, 150]);
   return (
     <Box
       component="section"
-      ref={r}
       sx={{
         position: "relative",
         width: "100%",
@@ -92,7 +80,6 @@ export default function HeroSection({
       />
       <motion.div
         style={{
-          y: yp,
           zIndex: 0,
           insetInlineStart: 0,
           insetInlineEnd: 0,
@@ -109,7 +96,7 @@ export default function HeroSection({
       >
         <Grid container spacing={4} sx={{ alignItems: "center" }}>
           <Grid size={{ xs: 12, md: 5 }}>
-            <motion.div style={{ y: yt, opacity: o }}>
+            <motion.div>
               <Typography
                 variant="subtitle1"
                 component="span"
@@ -207,10 +194,9 @@ export default function HeroSection({
                   }}
                 />
                 <Typography
-                  variant="h6"
                   component="p"
                   sx={{
-                    color: "#D4F5E4",
+                    color: "#FFFFFF",
                     fontWeight: 700,
                     letterSpacing: 3,
                     textTransform: "uppercase",
@@ -283,7 +269,6 @@ export default function HeroSection({
                 }}
               />
               <motion.div
-                style={{ y: yi, scale: sc }}
                 className="relative w-full h-full z-10"
               >
                 <Box
@@ -341,7 +326,7 @@ export default function HeroSection({
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
-            <motion.div style={{ y: ys, opacity: o }}>
+            <motion.div>
               <Stack
                 direction={{ xs: "row", md: "column" }}
                 spacing={{ xs: 3, md: 6 }}
@@ -369,7 +354,6 @@ export default function HeroSection({
                     }}
                   >
                     <Typography
-                      variant="caption"
                       component="p"
                       sx={{
                         color: "secondary.main",
@@ -384,7 +368,6 @@ export default function HeroSection({
                       {s.l}
                     </Typography>
                     <Typography
-                      variant="h2"
                       component="p"
                       sx={{
                         fontWeight: 900,

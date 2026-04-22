@@ -171,9 +171,10 @@ export default function ContactHero({
                     <Image
                       src={profileImage}
                       alt="Habib"
-                      fill
+                      width={340}
+                      height={420}
+                      className="object-cover object-top w-full h-full"
                       priority
-                      style={{ objectFit: "cover", objectPosition: "top" }}
                     />
                   </Box>
                 </motion.div>

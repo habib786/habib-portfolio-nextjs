@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
@@ -100,11 +100,8 @@ export default function ProjectsSection() {
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { scrollYProgress: sp } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const xBg = useTransform(sp, [0, 1], [-100, 100]);
+  const { scrollYProgress: sp } = { scrollYProgress: 0 }; // Removed scroll for performance
+  const xBg = -50; // Static fallback
 
   const defaultProjects = [
     {
@@ -253,12 +250,11 @@ export default function ProjectsSection() {
       }}
     >
       {/* Background Parallax Text */}
-      <motion.div
-        style={{ x: xBg }}
+      <div
         className="absolute top-1/2 inset-inline-start-0 text-[10rem] md:text-[15rem] font-bold text-gray-50 dark:text-gray-900/10 pointer-events-none whitespace-nowrap z-0 select-none"
       >
         PORTFOLIO WORKS
-      </motion.div>
+      </div>
 
       <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
         <SectionHeading
@@ -326,13 +322,7 @@ function ProjectCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Internal image parallax
-  const yImage = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+  // Removed internal image parallax for performance
 
   const buttonLabel = dict?.projects?.exploreProject || "EXPLORE PROJECT →";
 
@@ -380,7 +370,7 @@ function ProjectCard({
             overflow: "hidden",
           }}
         >
-          <motion.div style={{ y: yImage }}>
+          <div>
               <Image
                 src={project.image}
                 alt={project.title}
@@ -389,7 +379,7 @@ function ProjectCard({
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover w-full h-full transition-transform duration-700 ease-out"
               />
-          </motion.div>
+          </div>
           <Box
             className="project-overlay"
             sx={{

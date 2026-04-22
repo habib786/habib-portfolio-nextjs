@@ -249,8 +249,9 @@ export default function AboutHero({ profileImage }: { profileImage: string }) {
                   <Image
                     src={profileImage}
                     alt="Habib"
-                    fill
-                    style={{ objectFit: "cover", objectPosition: "top center" }}
+                    width={320}
+                    height={400}
+                    className="object-cover object-top w-full h-full"
                     sizes="(max-width: 768px) 270px, 320px"
                     priority
                   />

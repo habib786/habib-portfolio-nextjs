@@ -118,8 +118,9 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
             <Image
               src={post.featuredImage}
               alt={post.title}
-              fill
-              style={{ objectFit: "cover" }}
+              width={1200}
+              height={630}
+              className="object-cover w-full h-full"
             />
           ) : (
             <Box
