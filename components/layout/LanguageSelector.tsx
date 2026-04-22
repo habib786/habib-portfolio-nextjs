@@ -122,29 +122,8 @@ export default function LanguageSelector() {
     router.push(newPath);
   };
 
-  if (!mounted) {
-    return (
-      <div className="relative">
-        <Box
-          sx={{
-            minWidth: 130,
-            height: 36,
-            borderRadius: 1,
-            border: "1px solid rgba(16, 106, 90, 0.3)",
-            bgcolor: "rgba(255,255,255,0.95)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1.5,
-            px: 2,
-          }}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div className="relative">
+    <div className="relative" suppressHydrationWarning>
       <Button
         variant="ghost"
         size="sm"
@@ -152,11 +131,13 @@ export default function LanguageSelector() {
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
-        onClick={handleClick}
+        onClick={mounted ? handleClick : undefined}
+        suppressHydrationWarning
         sx={{
           color: "#106A5A",
           fontWeight: 700,
-          opacity: 1,
+          opacity: mounted ? 1 : 0,
+          pointerEvents: mounted ? "auto" : "none",
           border: "1px solid rgba(16, 106, 90, 0.3)",
           textTransform: "uppercase",
           fontSize: "0.85rem",

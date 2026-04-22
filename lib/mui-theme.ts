@@ -10,9 +10,9 @@ const getDesignTokens = (mode: "light" | "dark"): ThemeOptions => ({
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#FACC15",
-      light: "#fde047",
-      dark: "#eab308",
+      main: "#EAB308",
+      light: "#FACC15",
+      dark: "#CA8A04",
       contrastText: "#000000",
     },
     background: {

@@ -309,11 +309,10 @@ export default function HeroSection({
                   <Image
                     src={f.image}
                     alt={f.name}
-                    width={380}
-                    height={460}
+                    fill
                     priority
                     sizes="(max-width: 900px) 280px, 380px"
-                    className="object-cover object-top w-full h-full"
+                    className="object-cover object-top"
                   />
                   <Box
                     sx={{

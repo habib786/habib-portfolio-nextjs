@@ -7,40 +7,33 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useTheme } from "next-themes";
 import { lightTheme, darkTheme } from "@/lib/mui-theme";
 
-function getInitialTheme(): "dark" | "light" {
-  if (typeof window === "undefined") return "light";
-  try {
-    const stored = localStorage.getItem("theme");
-    if (stored === "dark") return "dark";
-    if (stored === "light") return "light";
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-      return "dark";
-  } catch {}
-  return "light";
-}
+import { StyledEngineProvider } from "@mui/material/styles";
 
-export function MuiProvider({ children }: { children: React.ReactNode }) {
+export function MuiProvider({
+  children,
+  initialTheme = "light",
+}: {
+  children: React.ReactNode;
+  initialTheme?: "light" | "dark";
+}) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(() =>
-    typeof window !== "undefined" ? getInitialTheme() : "light",
-  );
-  const [clientMounted, setClientMounted] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setClientMounted(true);
+    setMounted(true);
   }, []);
 
-  const currentTheme =
-    (clientMounted ? resolvedTheme : mounted) === "dark"
-      ? darkTheme
-      : lightTheme;
+  const activeTheme = mounted && resolvedTheme ? resolvedTheme : initialTheme;
+  const currentTheme = activeTheme === "dark" ? darkTheme : lightTheme;
 
   return (
-    <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-      <MuiThemeProvider theme={currentTheme}>
-        <CssBaseline />
-        {children}
-      </MuiThemeProvider>
-    </AppRouterCacheProvider>
+    <StyledEngineProvider injectFirst>
+      <AppRouterCacheProvider options={{ key: "mui" }}>
+        <MuiThemeProvider theme={currentTheme}>
+          <CssBaseline />
+          {children}
+        </MuiThemeProvider>
+      </AppRouterCacheProvider>
+    </StyledEngineProvider>
   );
 }

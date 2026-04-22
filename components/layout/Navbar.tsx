@@ -204,7 +204,7 @@ export default function Navbar() {
               style={{ textDecoration: "none" }}
               aria-label="Go to home page"
             >
-              <Box sx={{ color: "secondary.main" }}>
+              <Box sx={{ color: "secondary.main" }} suppressHydrationWarning>
                 <AnimatedLogo />
               </Box>
             </Link>
@@ -296,6 +296,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
+              suppressHydrationWarning
               sx={{
                 color: "white",
                 bgcolor: "rgba(255,255,255,0.05)",
@@ -318,6 +319,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
+              suppressHydrationWarning
               sx={{
                 color: "white",
                 bgcolor: "rgba(255,255,255,0.05)",

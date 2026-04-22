@@ -273,7 +273,7 @@ export default async function RootLayout({
           // disableTransitionOnChange removed for smooth theme transitions
         >
           <ThemeCookieSync />
-          <MuiProvider>
+          <MuiProvider initialTheme={initialTheme}>
             <ThemeConfigProvider>
               <SmoothScrollProvider>
                 <Suspense fallback={<LoadingFallback />}>
