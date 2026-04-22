@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, useTheme } from "@mui/material";
-import { motion } from "framer-motion";
+import { Box } from "@mui/material";
 
 interface AnimatedWaveSeparatorProps {
   color?: string;
@@ -15,6 +14,23 @@ export default function AnimatedWaveSeparator({
   height = { xs: 80, md: 120 },
   backgroundColor = "transparent",
 }: AnimatedWaveSeparatorProps) {
+  const waveStyle = (
+    dur: string,
+    dir: "normal" | "reverse",
+    opacity: number,
+    h: string
+  ) => ({
+    position: "absolute" as const,
+    bottom: 0,
+    left: 0,
+    width: "200%",
+    height: h,
+    opacity,
+    display: "flex",
+    animation: `waveMarch ${dur} linear infinite ${dir === "reverse" ? "reverse" : "normal"}`,
+    willChange: "transform",
+  });
+
   return (
     <Box
       className="wave-separator"
@@ -30,123 +46,42 @@ export default function AnimatedWaveSeparator({
         zIndex: 2,
         bgcolor: backgroundColor,
         direction: "ltr !important",
+        "@keyframes waveMarch": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       }}
     >
-      <Box
-        sx={{
-          position: "relative",
-          width: "200%",
-          height: "100%",
-          left: 0,
-          right: "auto",
-          display: "flex",
-          flexDirection: "row",
-          direction: "ltr",
-        }}
-      >
-        {/* Wave Layer 1 (Back) */}
-        <motion.div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            opacity: 0.3,
-            display: "flex",
-          }}
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        >
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{ width: "50.1%", height: "100%", display: "block" }}
-          >
+      <Box sx={{ position: "relative", width: "100%", height: "100%", direction: "ltr" }}>
+        {/* Wave Layer 1 */}
+        <Box sx={waveStyle("25s", "normal", 0.3, "100%")}>
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block" }}>
             <path d="M0,60 C300,100 900,20 1200,60 V120 H0 Z" fill={color} />
           </svg>
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{
-              width: "50.1%",
-              height: "100%",
-              display: "block",
-              marginLeft: "-0.1%",
-            }}
-          >
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block", marginLeft: "-0.1%" }}>
             <path d="M0,60 C300,100 900,20 1200,60 V120 H0 Z" fill={color} />
           </svg>
-        </motion.div>
+        </Box>
 
-        {/* Wave Layer 2 (Middle) */}
-        <motion.div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            height: "90%",
-            opacity: 0.5,
-            display: "flex",
-          }}
-          animate={{ x: ["-50%", "0%"] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{ width: "50.1%", height: "100%", display: "block" }}
-          >
+        {/* Wave Layer 2 */}
+        <Box sx={waveStyle("20s", "reverse", 0.5, "90%")}>
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block" }}>
             <path d="M0,60 C400,20 800,100 1200,60 V120 H0 Z" fill={color} />
           </svg>
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{
-              width: "50.1%",
-              height: "100%",
-              display: "block",
-              marginLeft: "-0.1%",
-            }}
-          >
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block", marginLeft: "-0.1%" }}>
             <path d="M0,60 C400,20 800,100 1200,60 V120 H0 Z" fill={color} />
           </svg>
-        </motion.div>
+        </Box>
 
-        {/* Wave Layer 3 (Front - Solid) */}
-        <motion.div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            height: "80%",
-            display: "flex",
-          }}
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        >
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{ width: "50.1%", height: "100%", display: "block" }}
-          >
+        {/* Wave Layer 3 */}
+        <Box sx={waveStyle("15s", "normal", 1, "80%")}>
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block" }}>
             <path d="M0,60 C300,10 900,110 1200,60 V120 H0 Z" fill={color} />
           </svg>
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            style={{
-              width: "50.1%",
-              height: "100%",
-              display: "block",
-              marginLeft: "-0.1%",
-            }}
-          >
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ width: "50.1%", height: "100%", display: "block", marginLeft: "-0.1%" }}>
             <path d="M0,60 C300,10 900,110 1200,60 V120 H0 Z" fill={color} />
           </svg>
-        </motion.div>
+        </Box>
       </Box>
     </Box>
   );

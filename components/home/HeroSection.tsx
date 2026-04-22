@@ -14,7 +14,7 @@ import Counter from "@/components/animations/Counter";
 import AnimatedWaveSeparator from "@/components/shared/AnimatedWaveSeparator";
 import WavyHeroBackground from "@/components/shared/WavyHeroBackground";
 import { getLocalizedHref } from "@/lib/utils";
-const MB = motion(Box);
+
 export default function HeroSection({
   dict,
   profile,
@@ -208,9 +208,9 @@ export default function HeroSection({
                 />
                 <Typography
                   variant="h6"
-                  component="h3"
+                  component="p"
                   sx={{
-                    color: "#BBEAD0",
+                    color: "#D4F5E4",
                     fontWeight: 700,
                     letterSpacing: 3,
                     textTransform: "uppercase",
@@ -263,13 +263,7 @@ export default function HeroSection({
                 height: { xs: 340, md: 460 },
               }}
             >
-              <MB
-                animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 360],
-                  opacity: [0.1, 0.2, 0.1],
-                }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              <Box
                 sx={{
                   position: "absolute",
                   top: "-10%",
@@ -279,40 +273,38 @@ export default function HeroSection({
                   border: "1px dashed rgba(250,204,21,.4)",
                   borderRadius: "10%",
                   zIndex: 0,
+                  opacity: 0.15,
+                  animation: "heroSpin 20s linear infinite",
+                  willChange: "transform",
+                  "@keyframes heroSpin": {
+                    "0%": { transform: "rotate(0deg)" },
+                    "100%": { transform: "rotate(360deg)" },
+                  },
                 }}
               />
               <motion.div
                 style={{ y: yi, scale: sc }}
                 className="relative w-full h-full z-10"
               >
-                <motion.div
-                  animate={{
-                    y: [0, -15, 0],
-                    rotateX: [0, 5, 0],
-                    rotateY: [0, -5, 0],
-                  }}
-                  transition={{
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                    rotateX: {
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                    rotateY: {
-                      duration: 7,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
+                <Box
                   className="w-full h-full rounded-[5px] bg-gradient-to-b from-yellow-400 to-yellow-500 overflow-hidden flex items-end justify-center shadow-[0_30px_60px_rgba(0,0,0,.5)] border-[8px] border-white/20"
+                  sx={{
+                    animation: "heroFloat 4s ease-in-out infinite",
+                    willChange: "transform",
+                    "@keyframes heroFloat": {
+                      "0%, 100%": { transform: "translateY(0px)" },
+                      "50%": { transform: "translateY(-15px)" },
+                    },
+                  }}
                 >
                   <Image
                     src={f.image}
                     alt={f.name}
-                    fill
+                    width={380}
+                    height={460}
                     priority
                     sizes="(max-width: 900px) 280px, 380px"
-                    className="object-cover object-top"
+                    className="object-cover object-top w-full h-full"
                   />
                   <Box
                     sx={{
@@ -325,15 +317,9 @@ export default function HeroSection({
                         "linear-gradient(to top,rgba(16,106,90,.6),transparent)",
                     }}
                   />
-                </motion.div>
+                </Box>
               </motion.div>
-              <MB
-                animate={{ x: [0, 15, 0], y: [0, -10, 0], rotate: [0, 2, 0] }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+              <Box
                 sx={{
                   position: "absolute",
                   top: -20,
@@ -344,6 +330,12 @@ export default function HeroSection({
                   borderRadius: 2,
                   zIndex: 0,
                   pointerEvents: "none",
+                  animation: "heroOffsetFloat 8s ease-in-out infinite",
+                  willChange: "transform",
+                  "@keyframes heroOffsetFloat": {
+                    "0%, 100%": { transform: "translate(0px, 0px) rotate(0deg)" },
+                    "50%": { transform: "translate(15px, -10px) rotate(2deg)" },
+                  },
                 }}
               />
             </Box>
@@ -378,7 +370,7 @@ export default function HeroSection({
                   >
                     <Typography
                       variant="caption"
-                      component="h4"
+                      component="p"
                       sx={{
                         color: "secondary.main",
                         fontWeight: 600,
@@ -393,6 +385,7 @@ export default function HeroSection({
                     </Typography>
                     <Typography
                       variant="h2"
+                      component="p"
                       sx={{
                         fontWeight: 900,
                         fontSize: { xs: "2rem", md: "3rem" },

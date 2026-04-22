@@ -9,6 +9,7 @@ import {
   useSpring,
   useMotionValue,
 } from "framer-motion";
+import { Box } from "@mui/material";
 
 interface Client {
   name: string;
@@ -90,17 +91,17 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
         style={{ x: smoothXTranslate }}
         className="flex flex-col gap-4 relative z-10"
       >
-        <motion.div
+        <Box
           className="flex items-center gap-12 md:gap-24 w-max"
-          animate={{
-            x: ["0%", "-33.33%"],
+          sx={{
+            animation: "marqueeScroll 50s linear infinite",
+            willChange: "transform",
+            "&:hover": { animationPlayState: "paused" },
+            "@keyframes marqueeScroll": {
+              "0%": { transform: "translateX(0%)" },
+              "100%": { transform: "translateX(-33.33%)" },
+            },
           }}
-          transition={{
-            duration: 50,
-            ease: "linear",
-            repeat: Infinity,
-          }}
-          whileHover={{ animationPlayState: "paused" }}
         >
           {duplicatedClients.map((client, index) => (
             <motion.div
@@ -150,7 +151,7 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
               )}
             </motion.div>
           ))}
-        </motion.div>
+        </Box>
       </motion.div>
 
       {/* Decorative background text for extra parallax depth */}

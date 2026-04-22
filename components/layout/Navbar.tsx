@@ -248,7 +248,7 @@ export default function Navbar() {
                         letterSpacing: 1.5,
                         textTransform: "uppercase",
                         color: item.isActive ? "secondary.main" : "white",
-                        opacity: item.isActive ? 1 : 0.8,
+                        opacity: item.isActive ? 1 : 0.9,
                         whiteSpace: "nowrap",
                         "&:hover": { color: "secondary.main", opacity: 1 },
                         transition: "all 0.2s",

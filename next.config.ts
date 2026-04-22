@@ -17,14 +17,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // experimental: {
-  //   optimizePackageImports: [
-  //     '@mui/material',
-  //     '@mui/icons-material',
-  //     'lucide-react',
-  //     'react-icons',
-  //   ],
-  // },
+  experimental: {
+    optimizePackageImports: [
+      '@mui/material',
+      '@mui/icons-material',
+      'lucide-react',
+      'react-icons',
+    ],
+  },
   images: {
     remotePatterns: [
       {
