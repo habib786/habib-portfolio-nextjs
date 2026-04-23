@@ -192,10 +192,10 @@ export default function FeaturedProjects() {
                 }}
               >
                 <Typography
-                  variant="h2"
                   component="span"
                   sx={{
                     fontWeight: 900,
+                    fontSize: "5rem",
                     color:
                       hoveredProject === project.id
                         ? "rgba(255,255,255,0.2)"

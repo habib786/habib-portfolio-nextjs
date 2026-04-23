@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { animate, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 
 interface CounterProps {
   value: string;
@@ -19,13 +19,22 @@ export default function Counter({ value, duration = 2 }: CounterProps) {
   const suffix = value.replace(/\d+/, "");
 
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(0, numericValue, {
-        duration: duration,
-        ease: "easeOut",
-        onUpdate: (value) => setDisplayValue(Math.round(value)),
-      });
-      return controls.stop;
+    if (isInView && numericValue > 0) {
+      let startTimestamp: number | null = null;
+      const step = (timestamp: number) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
+        
+        // Ease out quad
+        const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        
+        setDisplayValue(Math.floor(easedProgress * numericValue));
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
     }
   }, [isInView, numericValue, duration]);
 

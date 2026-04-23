@@ -252,6 +252,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://xvwxwrrqopcyzsnrwxbf.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://xvwxwrrqopcyzsnrwxbf.supabase.co" />
         <meta name="color-scheme" content={initialTheme} />
       </head>
       <body

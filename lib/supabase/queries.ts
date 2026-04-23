@@ -415,7 +415,6 @@ export async function getContactMessages(limit?: number) {
   return data;
 }
 
-// Profile data for HeroSection
 export async function getProfileData(lang?: string) {
   const settings = await getSettings(lang);
 
@@ -428,21 +427,30 @@ export async function getProfileData(lang?: string) {
   };
 
   const sanitizeImageUrl = (url: string | null | undefined) => {
-    if (!url || typeof url !== "string") return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+    if (!url || typeof url !== "string")
+      return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
     const cleaned = url.replace(/^["']+|["']+$/g, "").trim();
-    if (!cleaned) return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
+    if (!cleaned)
+      return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
     if (cleaned.startsWith("/") || cleaned.startsWith("http")) return cleaned;
     return "https://xvwxwrrqopcyzsnrwxbf.supabase.co/storage/v1/object/public/habib-portfolio-bucket/habib_professional_suit.webp";
   };
 
+  const sanitize = (val: any, fallback: string) => {
+    if (!val || typeof val !== "string") return fallback;
+    const cleaned = val.replace(/^["']+|["']+$/g, "").trim();
+    return cleaned || fallback;
+  };
+
+
   return {
-    name: getVal("profile_name") || "HABIB",
-    role: getVal("profile_role") || "Full Stack Web Developer",
-    experience: getVal("stat_experience") || "7+",
-    projects: getVal("stat_projects") || "70+",
-    clients: getVal("stat_clients") || "30+",
+    name: sanitize(getVal("profile_name"), "HABIB"),
+    role: sanitize(getVal("profile_role"), "Full Stack Web Developer"),
+    experience: sanitize(getVal("stat_experience"), "7+"),
+    projects: sanitize(getVal("stat_projects"), "70+"),
+    clients: sanitize(getVal("stat_clients"), "30+"),
     image: sanitizeImageUrl(getVal("profile_image")),
-};
+  };
 }
 
 // Site metadata

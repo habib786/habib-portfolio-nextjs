@@ -265,9 +265,9 @@ export default function HeroSection({
                     },
                   }}
                 >
-<Image
+                  <Image
                     src={f.image}
-                    alt={f.name}
+                    alt={f.name || "HABIB"}
                     width={380}
                     height={460}
                     priority

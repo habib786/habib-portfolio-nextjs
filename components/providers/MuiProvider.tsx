@@ -16,15 +16,8 @@ export function MuiProvider({
   children: React.ReactNode;
   initialTheme?: "light" | "dark";
 }) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const activeTheme = mounted && resolvedTheme ? resolvedTheme : initialTheme;
-  const currentTheme = activeTheme === "dark" ? darkTheme : lightTheme;
+  // Use initialTheme for stable hydration, next-themes will update it if needed
+  const currentTheme = initialTheme === "dark" ? darkTheme : lightTheme;
 
   return (
     <StyledEngineProvider injectFirst>
