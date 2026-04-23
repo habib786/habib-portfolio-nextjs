@@ -36,9 +36,8 @@ const FlagIcon = ({
       src={`https://flagcdn.com/${code}.svg`}
       alt={`${countryCode} flag`}
       width={Math.round(size)}
-      height={Math.round(size * 0.75)} // Approximate aspect ratio
+      height={Math.round(size * 0.75)}
       sx={{
-        width: size,
         height: "auto",
         borderRadius: "2px",
         boxShadow: "0 1px 2px rgba(0,0,0,0.1)",

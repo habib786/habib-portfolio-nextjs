@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -16,9 +16,9 @@ import {
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getLocalizedHref } from "@/lib/utils";
+
+const CodeBlock = lazy(() => import("./CodeBlock"));
 
 interface BlogPostContentProps {
   post: {
@@ -226,15 +226,11 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
               code({ node, inline, className, children, ...props }: any) {
                 const match = /language-(\w+)/.exec(className || "");
                 return !inline && match ? (
-                  <SyntaxHighlighter
-                    style={vscDarkPlus}
-                    language={match[1]}
-                    PreTag="div"
-                    customStyle={{ borderRadius: "5px", marginBottom: "16px" }}
-                    {...props}
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
+                  <Suspense fallback={<div className="bg-gray-900 rounded p-4 text-sm">Loading...</div>}>
+                    <CodeBlock language={match[1]}>
+                      {String(children).replace(/\n$/, "")}
+                    </CodeBlock>
+                  </Suspense>
                 ) : (
                   <code className={className} {...props}>
                     {children}

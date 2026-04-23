@@ -20,7 +20,7 @@ import { locales } from "./dictionaries";
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
-  display: "swap",
+  display: "optional",
   preload: true,
   variable: "--font-outfit",
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial"],
@@ -29,7 +29,7 @@ const outfit = Outfit({
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700", "900"],
-  display: "swap",
+  display: "optional",
   preload: true,
   variable: "--font-vazirmatn",
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial"],

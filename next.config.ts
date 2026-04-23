@@ -23,9 +23,13 @@ const nextConfig: NextConfig = {
       '@mui/icons-material',
       'lucide-react',
       'react-icons',
+      'react-syntax-highlighter',
+      'framer-motion',
     ],
   },
   images: {
+    loader: "custom",
+    loaderFile: "./lib/image-loader.ts",
     remotePatterns: [
       {
         protocol: 'https',

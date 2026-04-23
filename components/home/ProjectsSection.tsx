@@ -30,7 +30,7 @@ const FALLBACK_PROJECTS = [
     title: "Sales Al Jomaih",
     category: "WEB APP",
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=75",
     className: "md:col-span-1 md:row-span-2",
   },
   {
@@ -38,7 +38,7 @@ const FALLBACK_PROJECTS = [
     title: "Brand Identity",
     category: "DESIGN",
     image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=75",
     className: "md:col-span-1 md:row-span-1",
   },
   {
@@ -46,7 +46,7 @@ const FALLBACK_PROJECTS = [
     title: "Choco Delivery",
     category: "UI/UX DESIGN",
     image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80",
+      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=75",
     className: "md:col-span-1 md:row-span-1",
   },
   {
@@ -54,7 +54,7 @@ const FALLBACK_PROJECTS = [
     title: "Tours Platform",
     category: "WEB APP",
     image:
-      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=75",
     className: "md:col-span-1 md:row-span-1",
   },
 ];
@@ -123,8 +123,8 @@ export default function ProjectsSection() {
       id: 3,
       title: "Choco Delivery",
       category: "UI/UX DESIGN",
-      image:
-        "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80",
+image:
+      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=75",
       className: "md:col-span-1 md:row-span-1",
     },
     {

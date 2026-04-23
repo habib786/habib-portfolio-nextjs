@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Bookmark, Code, ExternalLink, Star } from "lucide-react";
@@ -15,9 +15,9 @@ import {
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { MappedProject } from "@/lib/types";
+
+const CodeBlock = lazy(() => import("@/components/blog/CodeBlock"));
 
 interface ProjectContentProps {
   project: MappedProject;
@@ -166,13 +166,11 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               const match = /language-(\w+)/.exec(className || "");
               const inline = !match;
               return !inline && match ? (
-                <SyntaxHighlighter
-                  style={vscDarkPlus}
-                  language={match[1]}
-                  PreTag="div"
-                >
-                  {String(children).replace(/\n$/, "")}
-                </SyntaxHighlighter>
+                <Suspense fallback={<div className="bg-gray-900 rounded p-4 text-sm">Loading...</div>}>
+                  <CodeBlock language={match[1]}>
+                    {String(children).replace(/\n$/, "")}
+                  </CodeBlock>
+                </Suspense>
               ) : (
                 <code className={className} {...props}>
                   {children}

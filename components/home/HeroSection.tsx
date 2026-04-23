@@ -265,7 +265,7 @@ export default function HeroSection({
                     },
                   }}
                 >
-                  <Image
+<Image
                     src={f.image}
                     alt={f.name}
                     width={380}

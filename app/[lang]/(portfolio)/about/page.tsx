@@ -15,7 +15,7 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 const fancyFont = Pacifico({
     weight: "400",
     subsets: ["latin"],
-    display: "swap",
+    display: "optional",
 });
 
 export default async function AboutPage({

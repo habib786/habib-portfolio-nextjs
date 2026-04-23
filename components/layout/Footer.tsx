@@ -451,7 +451,7 @@ export default function Footer() {
             <Typography
               variant="caption"
               sx={{
-                color: "text.disabled",
+                color: "text.secondary",
                 display: "flex",
                 alignItems: "center",
                 gap: 1,

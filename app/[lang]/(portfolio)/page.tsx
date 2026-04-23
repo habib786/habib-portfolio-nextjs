@@ -8,23 +8,23 @@ import { getProfileData } from "@/lib/supabase/queries";
 
 const TechStackSection = dynamic(
   () => import("@/components/home/TechStackSection"),
-  { loading: () => <Box sx={{ h: 200 }} /> }
+  { loading: () => <Box sx={{ height: 200 }} /> }
 );
 const ProjectsSection = dynamic(
   () => import("@/components/home/ProjectsSection"),
-  { loading: () => <Box sx={{ h: 400 }} /> }
+  { loading: () => <Box sx={{ height: 400 }} /> }
 );
 const ExperienceEducationSection = dynamic(
   () => import("@/components/experience/ExperienceEducationSection"),
-  { loading: () => <Box sx={{ h: 300 }} /> }
+  { loading: () => <Box sx={{ height: 300 }} /> }
 );
 const ServicesSection = dynamic(
   () => import("@/components/home/ServicesSection"),
-  { loading: () => <Box sx={{ h: 200 }} /> }
+  { loading: () => <Box sx={{ height: 200 }} /> }
 );
 const ClientsSection = dynamic(
   () => import("@/components/home/ClientsSection"),
-  { loading: () => <Box sx={{ h: 150 }} /> }
+  { loading: () => <Box sx={{ height: 150 }} /> }
 );
 
 export default async function Home({

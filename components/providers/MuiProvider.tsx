@@ -28,7 +28,7 @@ export function MuiProvider({
 
   return (
     <StyledEngineProvider injectFirst>
-      <AppRouterCacheProvider options={{ key: "mui" }}>
+      <AppRouterCacheProvider options={{ key: "mui", prepend: true }}>
         <MuiThemeProvider theme={currentTheme}>
           <CssBaseline />
           {children}

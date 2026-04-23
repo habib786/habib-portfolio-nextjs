@@ -222,7 +222,8 @@ function TimelineItem({
             </Typography>
 
             <Typography
-              variant="subtitle1"
+              variant="h4"
+              component="h4"
               sx={{
                 color: "primary.main",
                 fontWeight: 700,
