@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
@@ -327,13 +326,9 @@ function ProjectCard({
   const buttonLabel = dict?.projects?.exploreProject || "EXPLORE PROJECT →";
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
       style={{ position: "relative" }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
     >
       <Card
         sx={{
@@ -451,7 +446,7 @@ function ProjectCard({
           </Box>
         </Box>
       </Card>
-    </motion.div>
+    </div>
   );
 }
 

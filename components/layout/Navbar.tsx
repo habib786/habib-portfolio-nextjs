@@ -247,7 +247,7 @@ export default function Navbar() {
                         fontSize: "0.85rem",
                         letterSpacing: 1.5,
                         textTransform: "uppercase",
-                        color: item.isActive ? "secondary.main" : "white",
+                        color: item.isActive ? "#FFE082" : "white",
                         opacity: item.isActive ? 1 : 0.9,
                         whiteSpace: "nowrap",
                         "&:hover": { color: "secondary.main", opacity: 1 },
@@ -407,7 +407,7 @@ export default function Navbar() {
                           textTransform: "uppercase",
                           color:
                             pathname === getLocalizedHref(item.url, pathname)
-                              ? "secondary.main"
+                              ? "#FFE082"
                               : "white",
                         },
                       }}

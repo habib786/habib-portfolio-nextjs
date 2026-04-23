@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import {
   Box,
@@ -80,10 +79,6 @@ export default function TechStackSection() {
   const [dict, setDict] = useState<any>(defaultDict);
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
 
   useEffect(() => {
     setMounted(true);
@@ -182,7 +177,6 @@ export default function TechStackSection() {
               key={i}
               tech={tech}
               index={i}
-              scrollYProgress={scrollYProgress}
               dict={dict}
             />
           ))}
@@ -195,25 +189,19 @@ export default function TechStackSection() {
 function TechItem({
   tech,
   index,
-  scrollYProgress,
   dict,
 }: {
   tech: any;
   index: number;
-  scrollYProgress: any;
   dict: any;
 }) {
-  // Each item moves at a slightly different speed based on its index
-  const y = useTransform(scrollYProgress, [0, 1], [0, ((index % 3) + 1) * -30]);
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-
   const tooltipTemplate: string = dict?.techStack?.tooltip;
   const tooltipTitle = tooltipTemplate
-    .replace("{name}", String(tech.name))
-    .replace("{percent}", String(tech.percent));
-
+    ? tooltipTemplate.replace("{name}", String(tech.name)).replace("{percent}", String(tech.percent))
+    : `${tech.name} - ${tech.percent}%`;
+    
   return (
-    <motion.div style={{ y, opacity }}>
+    <div>
       <Tooltip title={tooltipTitle} arrow>
         <Box
           sx={{
@@ -261,7 +249,7 @@ function TechItem({
               fontWeight: 800,
               textTransform: "uppercase",
               letterSpacing: 1.5,
-              color: "text.secondary",
+              color: "text.primary",
               textAlign: "center",
               mb: 1,
             }}
@@ -296,6 +284,6 @@ function TechItem({
           </Box>
         </Box>
       </Tooltip>
-    </motion.div>
+    </div>
   );
 }

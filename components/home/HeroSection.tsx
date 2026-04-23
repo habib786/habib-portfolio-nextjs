@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -78,7 +77,7 @@ export default function HeroSection({
           zIndex: 0,
         }}
       />
-      <motion.div
+      <div
         style={{
           zIndex: 0,
           insetInlineStart: 0,
@@ -89,19 +88,19 @@ export default function HeroSection({
         className="pointer-events-none"
       >
         <WavyHeroBackground />
-      </motion.div>
+      </div>
       <Container
         maxWidth="lg"
         sx={{ position: "relative", zIndex: 10, width: "100%" }}
       >
         <Grid container spacing={4} sx={{ alignItems: "center" }}>
           <Grid size={{ xs: 12, md: 5 }}>
-            <motion.div>
+            <div>
               <Typography
                 variant="subtitle1"
                 component="span"
                 sx={{
-                  color: "secondary.main",
+                  color: "#FFE082",
                   fontWeight: 600,
                   mb: 1,
                   display: "inline-block",
@@ -145,36 +144,20 @@ export default function HeroSection({
                     fill="none"
                     preserveAspectRatio="none"
                   >
-                    <motion.path
+                    <path
                       d="M2 20 L10 10 L18 24 L28 14 Q60 32 118 16"
                       stroke="#FACC15"
                       strokeWidth="4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      initial={{ pathLength: 0 }}
-                      whileInView={{ pathLength: 1 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 1.2,
-                        delay: 0.5,
-                        ease: "easeInOut",
-                      }}
                     />
-                    <motion.path
+                    <path
                       d="M6 17 L14 7 L22 21 L32 11 Q64 29 114 13"
                       stroke="#FACC15"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       opacity=".6"
-                      initial={{ pathLength: 0 }}
-                      whileInView={{ pathLength: 1 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 1.2,
-                        delay: 0.6,
-                        ease: "easeInOut",
-                      }}
                     />
                   </svg>
                 </div>
@@ -236,7 +219,7 @@ export default function HeroSection({
                   {dict?.hero?.letsTalk || "LET'S TALK"}
                 </Button>
               </Box>
-            </motion.div>
+            </div>
           </Grid>
           <Grid
             size={{ xs: 12, md: 4 }}
@@ -268,7 +251,7 @@ export default function HeroSection({
                   },
                 }}
               />
-              <motion.div
+              <div
                 className="relative w-full h-full z-10"
               >
                 <Box
@@ -303,7 +286,7 @@ export default function HeroSection({
                     }}
                   />
                 </Box>
-              </motion.div>
+              </div>
               <Box
                 sx={{
                   position: "absolute",
@@ -326,7 +309,7 @@ export default function HeroSection({
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
-            <motion.div>
+            <div>
               <Stack
                 direction={{ xs: "row", md: "column" }}
                 spacing={{ xs: 3, md: 6 }}
@@ -356,7 +339,7 @@ export default function HeroSection({
                     <Typography
                       component="p"
                       sx={{
-                        color: "secondary.main",
+                        color: "#FFE082",
                         fontWeight: 600,
                         display: "block",
                         mb: 0.5,
@@ -379,7 +362,7 @@ export default function HeroSection({
                   </Box>
                 ))}
               </Stack>
-            </motion.div>
+            </div>
           </Grid>
         </Grid>
       </Container>
